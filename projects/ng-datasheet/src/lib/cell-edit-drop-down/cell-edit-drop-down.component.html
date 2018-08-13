@@ -1,0 +1,3 @@
+<select [(ngModel)]="data[column.data]" class="form-control edit-select edit-dd" tabindex="-1" (keydown)="onKeyDown($event)" #container>
+    <option *ngFor="let option of column.options.dataSet" [ngValue]="option">{{ option[column.options.label] }}</option>
+  </select>

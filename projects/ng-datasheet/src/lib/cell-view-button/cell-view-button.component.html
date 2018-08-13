@@ -1,0 +1,3 @@
+<button *ngFor="let button of column.options.dataSet" (click)="button.event($event, data)" class="view-button">
+    <i class="fa fa-{{ button.icon }}"></i>
+  </button>

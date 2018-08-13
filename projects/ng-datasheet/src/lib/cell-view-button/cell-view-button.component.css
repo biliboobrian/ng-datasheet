@@ -1,0 +1,8 @@
+.view-button {
+    background: none;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin: -2px 2px;
+    width: 26px;
+    cursor: pointer;
+}

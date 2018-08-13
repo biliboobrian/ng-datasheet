@@ -1,0 +1,18 @@
+<div class="form-group edit-dp" tabIndex="-1">
+    <div class="input-group" tabIndex="-1">
+      <input class="form-control edit-dp-input" 
+      [placeholder]="column.options.format" 
+      name="dp" [(ngModel)]="dateModel" 
+      ngbDatepicker 
+      #d="ngbDatepicker" 
+      (keydown)="onKeyDown($event)" 
+      #container 
+      tabIndex="-1"
+      (dateSelect)="onDateSelect($event)">
+      <div class="input-group-append" tabIndex="-1">
+        <button class="btn btn-outline-secondary edit-dp-icon" (click)="d.toggle()" type="button" tabIndex="-1">
+            <i class="fa fa-calendar"></i>
+        </button>
+      </div>
+    </div>
+  </div>

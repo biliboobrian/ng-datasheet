@@ -1,0 +1,12 @@
+{
+  "name": "ng-datasheet",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^2.2.0",
+    "font-awesome": "^4.7.0",
+    "moment": "^2.22.2",
+    "moment-es6":"^1.0.0"
+  }
+}
