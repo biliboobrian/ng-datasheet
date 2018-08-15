@@ -15,6 +15,8 @@ import { CellViewButtonComponent } from './cell-view-button/cell-view-button.com
 import { CellViewDateComponent } from './cell-view-date/cell-view-date.component';
 import { CellEditDateComponent } from './cell-edit-date/cell-edit-date.component';
 import { CellViewObjectComponent } from './cell-view-object/cell-view-object.component';
+import { CellViewLinkComponent } from './cell-view-link/cell-view-link.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -23,7 +25,8 @@ import { CellViewObjectComponent } from './cell-view-object/cell-view-object.com
     FormsModule,
     NgbTypeaheadModule,
     NgbDatepickerModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    RouterModule
   ],
   declarations: [
     NgDatasheetComponent,
@@ -32,6 +35,7 @@ import { CellViewObjectComponent } from './cell-view-object/cell-view-object.com
     CellViewButtonComponent,
     CellViewDateComponent,
     CellViewObjectComponent,
+    CellViewLinkComponent,
     CellEditBasicComponent,
     CellEditAutoCompleteComponent,
     CellEditDropDownComponent,
@@ -42,6 +46,7 @@ import { CellViewObjectComponent } from './cell-view-object/cell-view-object.com
     CellViewButtonComponent,
     CellViewDateComponent,
     CellViewObjectComponent,
+    CellViewLinkComponent,
     CellEditBasicComponent,
     CellEditAutoCompleteComponent,
     CellEditDropDownComponent,

@@ -28,7 +28,7 @@
     <td style="width: 26px"></td>
     <td *ngFor="let column of columns; let col = index" class="header">
       <div class="inner-addon right-addon" *ngIf="column.searchable">
-        <input [(ngModel)]="filters[column.data]" type="text" class="form-control filter" placeholder="{{ column.title }} .."
+        <input [(ngModel)]="filters[col].value" type="text" class="form-control filter" placeholder="{{ column.title }} .."
           (keyup)="onFilterChange($event, col)" />
         <i class="fa fa-filter"></i>
       </div>
@@ -37,7 +37,7 @@
   <ng-container *ngFor="let obj of dataSet; let row = index">
     <tr *ngIf="isVisible(row)">
       <td>
-        <input *ngIf="isNeededForAdd(row)" [(ngModel)]="selection[row]" type="checkbox" class="checkbox" />
+        <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" />
       </td>
       <ng-container *ngFor="let column of columns; let col = index">
         <td (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
@@ -52,10 +52,10 @@
       </ng-container>
     </tr>
   </ng-container>
-  <tr *ngIf="withAdd && newModelFunction">
+  <tr *ngIf="withAdd && newModelFunction && newModel && printNew">
     <td style="width: 26px"></td>
     <ng-container *ngFor="let column of columns; let col = index">
-      <td (mousedown)="onMouseDown($event, newModel, -1, col)" (mouseup)="onMouseUp($event, newModel, -1, col)" (mouseover)="onMouseOver($event, newModel, -1, col)"
+      <td (mousedown)="onMouseDown($event, newModel, -1, col)" (mouseup)="onMouseUp($event, newModel, -1, col)"
         (dblclick)="onDblClick($event, -1, col)" [class.cell-selected]="isSelected(-1, col)" [class.cell-selected-main]="isSelectedMain(-1, col)"
         [class.cell-selected-up]="isSelected(-1, col, 1)" [class.cell-selected-right]="isSelected(-1, col, 2)" [class.cell-selected-down]="isSelected(-1, col, 3)"
         [class.cell-selected-left]="isSelected(-1, col, 4)" [class.cell-edited]="isEdited(-1, col)">
@@ -67,6 +67,29 @@
     </ng-container>
   </tr>
 </table>
+<ng-container *ngIf="pagination && withPagination && dataSet && dataSet.length > 0">
+    <span class="float-left">Total: {{ pagination.total }}</span>
+    <nav>
+      <ul class="pagination justify-content-end">
+        <li class="page-item" [class.disabled]="pagination.currentPage === 0">
+          <a class="page-link" href="javascript:void(0)" (click)="goToFirstPage($event)" tabindex="-1">First</a>
+        </li>
+        <li class="page-item" [class.disabled]="pagination.currentPage === 0">
+          <a class="page-link" href="javascript:void(0)" (click)="goToPreviousPage($event)" tabindex="-1">Previous</a>
+        </li>
+        <li *ngFor="let page of pagination.pages" class="page-item" [class.disabled]="page === pagination.currentPage">
+          <a class="page-link" (click)="goToPage($event, page)" href="javascript:void(0)">{{ page + 1 }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
+          <a class="page-link" (click)="goToNextPage($event)" href="javascript:void(0)">Next</a>
+        </li>
+        <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
+          <a class="page-link" (click)="goToLastPage($event)" href="javascript:void(0)" tabindex="-1">Last</a>
+        </li>
+      </ul>
+    </nav>
+</ng-container>
+
 <div class="select">
   <textarea (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)"
     #selectBox tabIndex="-1"></textarea>

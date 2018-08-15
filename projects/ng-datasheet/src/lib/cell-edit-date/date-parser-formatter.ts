@@ -20,11 +20,11 @@ export class DateParserFormatter extends NgbDateParserFormatter {
         if (!value) {
             return null;
         }
-        const d = new Date(value);
+        const d: moment_.Moment = moment(value, this.formatDate);
         return {
-            year: d.getFullYear(),
-            month: d.getMonth() + 1,
-            day: d.getDate()
+            year: parseInt(d.format('YYYY'), 10),
+            month: parseInt(d.format('MM'), 10),
+            day: parseInt(d.format('DD'), 10)
         };
     }
 }

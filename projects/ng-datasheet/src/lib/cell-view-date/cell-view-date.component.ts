@@ -20,14 +20,16 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
 
   public static copyData(data: any, column: Column): string {
     const d: moment_.Moment = data;
-    return d.format(column.options.format);
+    if (d) {
+      return d.format(column.options.format);
+    } else {
+      return '';
+    }
   }
 
 
   public static pasteData(data: string, column: Column): any {
     const myMoment: moment_.Moment = moment(data, column.options.format);
-    // const dateParts = data.split('/');
-    // const dateObject = new Date(parseInt(dateParts[2], 10), parseInt(dateParts[1], 10) - 1, parseInt(dateParts[0], 10));
     return myMoment;
   }
 

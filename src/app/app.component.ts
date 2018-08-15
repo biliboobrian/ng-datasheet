@@ -13,7 +13,8 @@ import {
   CellEditDropDownComponent,
   CellViewButtonComponent,
   CellViewObjectComponent,
-  CellEditAutoCompleteComponent
+  CellEditAutoCompleteComponent,
+  CellViewLinkComponent
 } from 'ng-datasheet';
 import * as moment_ from 'moment'; const moment = moment_;
 
@@ -49,26 +50,26 @@ export class AppComponent implements OnInit {
     this.staticDataSet = [
       {
         id: 1,
-        nom: 'DOE',
-        prenom: 'John',
+        lastname: 'DOE',
+        firstname: 'John',
         hobby: this.hobbiesDataSet[0],
         birthdate: moment_(new Date(1983, 2, 27)),
-        wiki: 'poilu'
-      }
-      /*{
+        wiki: {
+          name: 'Poilu',
+          link: 'https://en.wikipedia.org/wiki/Poilu'
+        }
+      },
+      {
         id: 2,
-        nom: 'Foe',
-        prenom: 'Paul',
-        hobby: 'Hand',
-        marque: new Marque({
-          mq_code: '1-KON',
-          mq_descr: 'KonicaMinolta'
-        }),
-        birthdate: new Date(1993, 8, 7),
-        client: new Client({
-          cl_nom: 'Immobilière Reiserbann'
-        })
-      }, */
+        lastname: 'FOE',
+        firstname: 'Paul',
+        hobby: this.hobbiesDataSet[0],
+        birthdate: moment_(new Date(1983, 2, 27)),
+        wiki: {
+          name: 'Poil de carotte',
+          link: 'https://en.wikipedia.org/wiki/Poil_de_carotte'
+        }
+      }
     ];
 
     this.staticColumns = new Array<Column>();
@@ -83,23 +84,23 @@ export class AppComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column();
-    col.title = 'Prénom';
-    col.data = 'prenom';
+    col.title = 'Firstname';
+    col.data = 'firstname';
     col.width = 150;
     col.cellView = CellViewBasicComponent;
     col.cellEdit = CellEditBasicComponent;
     this.staticColumns.push(col);
 
     col = new Column();
-    col.title = 'Nom';
-    col.data = 'nom';
+    col.title = 'Lastname';
+    col.data = 'lastname';
     col.width = 150;
     col.cellView = CellViewBasicComponent;
     col.cellEdit = CellEditBasicComponent;
     this.staticColumns.push(col);
 
     col = new Column();
-    col.title = 'Date de naissance';
+    col.title = 'Birthdate';
     col.data = 'birthdate';
     col.width = 200;
     col.options = new Options();
@@ -127,8 +128,10 @@ export class AppComponent implements OnInit {
     col.options = new Options();
     col.options.retreiveFunction = this.inlineSearchWiki;
     col.options.label = 'name';
+    col.options.value = 'link';
+    col.options.format = '_blank';
     col.options.placeHolder = 'Search ...';
-    col.cellView = CellViewObjectComponent;
+    col.cellView = CellViewLinkComponent;
     col.cellEdit = CellEditAutoCompleteComponent;
     this.staticColumns.push(col);
 
@@ -155,9 +158,13 @@ export class AppComponent implements OnInit {
     col = new Column();
     col.title = 'Name';
     col.data = 'name';
-    col.width = 60;
+    col.options = new Options();
+    col.options.label = 'name';
+    col.options.value = 'link';
+    col.options.format = '_blank';
+    col.width = 200;
     col.editable = false;
-    col.cellView = CellViewBasicComponent;
+    col.cellView = CellViewLinkComponent;
     col.cellEdit = CellEditBasicComponent;
     this.paginatedColumns.push(col);
 
@@ -169,19 +176,10 @@ export class AppComponent implements OnInit {
     col.cellView = CellViewBasicComponent;
     col.cellEdit = CellEditBasicComponent;
     this.paginatedColumns.push(col);
-
-    col = new Column();
-    col.title = 'Link';
-    col.data = 'link';
-    col.width = 150;
-    col.editable = false;
-    col.cellView = CellViewBasicComponent;
-    col.cellEdit = CellEditBasicComponent;
-    this.paginatedColumns.push(col);
   }
 
-  inlineSearchWiki = (text$: Observable<string>) =>
-    text$.pipe(
+  inlineSearchWiki = (text$: Observable<string>) => {
+    return text$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       tap(() => this.searching = true),
@@ -194,7 +192,9 @@ export class AppComponent implements OnInit {
           }))
       ),
       tap(() => this.searching = false)
-    )
+    );
+  }
+
 
   onDeleteEvent = (event: MouseEvent, data: Object) => {
     for (let index = 0; index < this.staticDataSet.length; index++) {
@@ -217,7 +217,7 @@ export class AppComponent implements OnInit {
   createItem() {
     return {
       id: null,
-      nom: null,
+      lastname: null,
       marque: null,
       birthdate: null,
       client: null

@@ -5,3 +5,25 @@
     height: 30px;
     padding: 4px;
 }
+
+.inner-addon { 
+    position: relative; 
+    margin: 1px;
+}
+
+.inner-addon i {
+    position: absolute;
+    padding: 8px 2px;
+    pointer-events: none;
+  }
+
+.right-addon i { 
+    right: 0px;
+}
+
+.right-addon input {
+    height: 28px;
+    padding-left: 4px; 
+    padding-right: 30px; 
+    display: inline;
+}

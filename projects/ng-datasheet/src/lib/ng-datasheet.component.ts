@@ -3,6 +3,8 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Sort } from './models/sort';
 import { Column } from './models/column';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Pagination } from './models/pagination';
+import { Filter } from './models/filter';
 
 let COL_FORMAT = '';
 
@@ -28,9 +30,13 @@ export class NgDatasheetComponent implements OnInit {
   set dataSet(val: Array<Object>) {
     this._dataSet = val;
 
-    /* if (this.withAdd && this.newModelFunction) {
-      this._dataSet.push(this.newModelFunction());
-    }*/
+    if (this.withPagination && this.static) {
+      this.pagination = new Pagination();
+      this.pagination.currentPage = 0;
+      this.pagination.perPage = 15;
+      this.pagination.total = this.dataSet.length;
+      this.filterDataSet();
+    }
   }
 
   @Input() public columns: Array<Column>;
@@ -39,31 +45,60 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public withAdd = true;
   @Input() public primaryKey = 'id';
   @Input() public newModelFunction: Function;
+  @Input() public dateFormat = 'MM-DD-YYYY';
+  @Input() public static = true;
+  @Input() public withPagination = false;
+  @Input() public filters: Array<Filter>;
+  @Input() public pagination: Pagination;
+  @Input() public sort: Sort;
 
   @ViewChild('selectBox') selectBox;
   @ViewChild('tbl') tbl;
 
-  public filters: Object = {};
   public selection: Object = {};
   public newModel: Object;
+  public printNew = true;
 
   private start: Array<number>;
   private end: Array<number>;
   private main: Array<number>;
   private edited: Array<number>;
   private selected: Boolean = false;
-  private sort: Sort = new Sort();
   private filterList: Array<number>;
-  private isFiltered = false;
   private colOnTab: number;
-  
+
   constructor() { }
 
   ngOnInit() {
     if (this.columns) {
+      // datePicker trick for ng-bootstrap date parsing
+      COL_FORMAT = this.dateFormat;
+
       const maxWidth: number = this.tbl.nativeElement.clientWidth;
       const defaultWidth: number = Math.trunc((maxWidth / this.columns.length));
+
       let noWidthFound = false;
+      let initFilters = false;
+      let initSort = false;
+
+      if (!this.filters) {
+        this.filters = new Array<Filter>();
+        initFilters = true;
+      }
+
+      if (!this.sort) {
+        this.sort = new Sort();
+        initSort = true;
+      }
+
+      if (this.withPagination && this.static && !this.pagination && this.dataSet) {
+        this.pagination = new Pagination();
+        this.pagination.currentPage = 0;
+        this.pagination.perPage = 15;
+        this.pagination.total = this.dataSet.length;
+        this.filterDataSet();
+      }
+
 
       for (let i = 0; i < this.columns.length; i++) {
         if (!this.columns[i].width) {
@@ -74,10 +109,12 @@ export class NgDatasheetComponent implements OnInit {
           }
         }
 
-        if (this.columns[i].options && this.columns[i].options.format) {
-          COL_FORMAT = this.columns[i].options.format;
+        if (initFilters) {
+          const filter: Filter = new Filter(this.columns[i]);
+          this.filters.push(filter);
         }
       }
+
 
       if (!noWidthFound) {
         this.columns[this.columns.length - 1].width = 0;
@@ -91,12 +128,17 @@ export class NgDatasheetComponent implements OnInit {
 
   onMouseDown(event: MouseEvent, obj: Object, row: number, col: number) {
     if (this.columns[col].selectable) {
-      this.start = [row, col];
       this.main = [row, col];
-      this.selected = false;
+      this.colOnTab = col;
       this.end = null;
+
       if (this.edited && (this.edited[0] !== row || this.edited[1] !== col)) {
         this.edited = null;
+      }
+
+      if (row !== -1 && !this.edited) {
+        this.selected = false;
+        this.start = [row, col];
       }
     }
   }
@@ -110,7 +152,11 @@ export class NgDatasheetComponent implements OnInit {
   onMouseUp(event: MouseEvent, obj: Object, row: number, col: number) {
 
     if (!this.selected) {
-      this.end = [row, col];
+      if (row !== -1) {
+        this.end = [row, col];
+      } else {
+        this.end = [this.dataSet.length - 1, col];
+      }
     }
 
     if (this.start && this.start[0] === row && this.start[1] === col) {
@@ -140,13 +186,20 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   onPaste(event: ClipboardEvent) {
-    if (this.main) {
-      this.start = [this.main[0], this.main[1]];
+    if (this.main && !this.edited) {
       let text: string = event.clipboardData.getData('text/plain');
       text = text.trim();
 
       let row: number = this.main[0];
       let col: number = this.main[1];
+
+      if (this.main[0] !== -1) {
+        this.start = [this.main[0], this.main[1]];
+      } else {
+        this.start = [this.dataSet.length, this.main[1]];
+        this.main = [this.dataSet.length, this.main[1]];
+      }
+
       let lineSeparator = '\r\n';
 
       if (text.indexOf(lineSeparator) === -1) {
@@ -155,30 +208,36 @@ export class NgDatasheetComponent implements OnInit {
 
       text.split(lineSeparator).forEach(rowPaste => {
         col = this.main[1];
-        rowPaste.split('\t').forEach(colPaste => {
 
-          if (this.withAdd && this.newModelFunction
-            && row === this._dataSet.length - 1) {
+        if (this.withAdd && this.newModelFunction) {
+          if (row === -1 || row === this._dataSet.length) {
             this._dataSet.push(this.newModelFunction());
           }
-
-          if (this.dataSet[row] && this.columns[col]) {
-            if (this.columns[col].editable) {
+          rowPaste.split('\t').forEach(colPaste => {
+            if (this.columns[col] && this.columns[col].editable) {
               const data: any = this.pasteType(colPaste, this.columns[col]);
-              this.dataSet[row][this.columns[col]['data']] = data;
+              if (row === -1) {
+                this.dataSet[this.dataSet.length - 1][this.columns[col].data] = data;
+              } else {
+                this.dataSet[row][this.columns[col].data] = data;
+              }
             }
-
-          }
-          col++;
-        });
-        row++;
+            col++;
+          });
+        }
+        if (row !== -1) {
+          row++;
+        }
       });
-      this.end = [row - 1, col - 1];
+
+      if (row !== -1) {
+        this.end = [row - 1, col - 1];
+      } else {
+        this.end = [this.dataSet.length - 1, col - 1];
+      }
       this.selected = true;
+      return false;
     }
-
-
-    return false;
   }
 
   onKeyUp(event: KeyboardEvent) {
@@ -193,56 +252,52 @@ export class NgDatasheetComponent implements OnInit {
 
   }
 
+  insertNewObject(): void {
+    this._dataSet.push(this.newModel);
+  }
+
+
   onKeyEdit(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 13: // enter
         if (this.withAdd && this.newModelFunction
+          && this._dataSet.length > 0
           && this.main[0] === this._dataSet.length - 1) {
-          this._dataSet.push(this.newModelFunction());
-        }
-
-        if (this.main[0] < this.dataSet.length - 1) {
+          this.main[0] = -1;
+        } else if (this.main[0] === -1) {
+          this.insertNewObject();
+          this.printNew = false;
+          delete (this.newModel);
+          this.newModel = this.newModelFunction();
+          this.filterDataSet();
+          setTimeout(() => {
+            this.printNew = true;
+          }, 10);
+        } else if (this.main[0] < this.dataSet.length - 1) {
           this.main[0]++;
         }
+        this.main[1] = this.colOnTab;
         this.edited = [this.main[0], this.main[1]];
         break;
       case 9: // tab
-        if (this.main[1] < this.columns.length - 1) {
-          const next = this.getNextColumnEditable(true, this.main[1], this.main[1]);
-          if (next === this.main[1]) {
-            if (this.main[0] < this.dataSet.length - 1) {
-
-              if (this.isColumnEditable(0)) {
-                this.main[1] = 0;
-              } else {
-                this.main[1] = this.getNextColumnEditable(true, 0, 0);
-              }
-
-              this.main[0]++;
-              this.edited = [this.main[0], this.main[1]];
-              event.preventDefault();
-            } else {
-              this.edited = null;
-              this.main = null;
-            }
-          } else {
-            this.main[1] = next;
-            this.edited = [this.main[0], this.main[1]];
-            event.preventDefault();
-          }
-
-        } else {
-          if (this.main[0] < this.dataSet.length - 1) {
+        const next = this.getNextColumnEditable(true, this.main[1], this.main[1]);
+        if (next === this.main[1]) {
+          if (this.isColumnEditable(0)) {
             this.main[1] = 0;
-            this.main[0]++;
-            this.edited = [this.main[0], this.main[1]];
-            event.preventDefault();
           } else {
-            this.edited = null;
-            this.main = null;
+            this.main[1] = this.getNextColumnEditable(true, 0, 0);
           }
-        }
 
+          if (this.main[0] < this.dataSet.length - 1) {
+            this.main[0]++;
+          } else {
+            this.main[0] = -1;
+          }
+        } else {
+          this.main[1] = next;
+        }
+        this.edited = [this.main[0], this.main[1]];
+        event.preventDefault();
         break;
       case 27: // esc
         this.edited = null;
@@ -274,27 +329,21 @@ export class NgDatasheetComponent implements OnInit {
         this.end = null;
         switch (event.keyCode) {
           case 9: // tab
-            if (this.main[1] < this.columns.length - 1) {
-              const next = this.getNextColumnSelectable(true, this.main[1], this.main[1]);
-              if (next === this.main[1]) {
-                if (this.main[0] < this.dataSet.length - 1) {
-
-                  if (this.isColumnSelectable(0)) {
-                    this.main[1] = 0;
-                  } else {
-                    this.main[1] = this.getNextColumnSelectable(true, 0, 0);
-                  }
-
-                  this.main[0]++;
-                }
+            const next = this.getNextColumnSelectable(true, this.main[1], this.main[1]);
+            if (next === this.main[1]) {
+              if (this.isColumnSelectable(0)) {
+                this.main[1] = 0;
               } else {
-                this.main[1] = next;
+                this.main[1] = this.getNextColumnSelectable(true, 0, 0);
+              }
+
+              if (this.main[0] < this.dataSet.length - 1) {
+                this.main[0]++;
+              } else {
+                this.main[0] = -1;
               }
             } else {
-              if (this.main[0] < this.dataSet.length - 1) {
-                this.main[1] = 0;
-                this.main[0]++;
-              }
+              this.main[1] = next;
             }
             event.preventDefault();
             break;
@@ -320,8 +369,10 @@ export class NgDatasheetComponent implements OnInit {
             }
             break;
           case 38: // up
-            if (this.main[0] > 0) {
+            if (this.main[0] >= 0) {
               this.main[0]--;
+            } else {
+              this.main[0] = this.dataSet.length - 1;
             }
             break;
           case 39: // right
@@ -332,6 +383,8 @@ export class NgDatasheetComponent implements OnInit {
           case 40: // down
             if (this.main[0] < this.dataSet.length - 1) {
               this.main[0]++;
+            } else {
+              this.main[0] = -1;
             }
             break;
 
@@ -362,7 +415,6 @@ export class NgDatasheetComponent implements OnInit {
             if (this.end[0] < this.dataSet.length - 1) {
               this.end[0]++;
             }
-
             break;
         }
       }
@@ -438,30 +490,78 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   onSort(event: MouseEvent, col: Column) {
-    if (this.sort && this.sort.column === col) {
-      this.sort.asc = !this.sort.asc;
-    } else {
-      this.sort = new Sort();
-      this.sort.column = col;
-    }
+    if (col.sortable) {
+      if (this.sort && this.sort.column === col) {
+        this.sort.asc = !this.sort.asc;
+      } else {
+        this.sort = new Sort();
+        this.sort.column = col;
+      }
 
-    this.sortDataSet();
+      this.sortDataSet();
+    }
   }
 
   onFilterChange(event, col) {
+    if (this.withPagination && this.static) {
+      this.pagination.currentPage = 0;
+    }
+
+    this.filterDataSet();
+  }
+
+  onSelectAll(event: MouseEvent) {
+    for (let index = 0; index < this._dataSet.length; index++) {
+      this.selection[index] = true;
+    }
+  }
+
+  onUnselectAll(event: MouseEvent) {
+    for (let index = 0; index < this._dataSet.length; index++) {
+      this.selection[index] = false;
+    }
+  }
+
+  goToFirstPage(event: MouseEvent): void {
+    this.pagination.currentPage = 0;
+    this.filterDataSet();
+  }
+
+  goToPreviousPage(event: MouseEvent): void {
+    this.pagination.currentPage--;
+    this.filterDataSet();
+  }
+
+  goToPage(event: MouseEvent, page: number): void {
+    this.pagination.currentPage = page;
+    this.filterDataSet();
+  }
+
+  goToNextPage(event: MouseEvent): void {
+    this.pagination.currentPage++;
+    this.filterDataSet();
+  }
+
+  goToLastPage(event: MouseEvent): void {
+    this.pagination.currentPage = this.pagination.lastPage;
+    this.filterDataSet();
+  }
+
+  filterDataSet(): void {
     this.filterList = new Array<number>();
-    this.isFiltered = false;
 
     for (let i = 0; i < this._dataSet.length; i++) {
       const obj = this._dataSet[i];
       let visible = true;
 
       for (const index in this.filters) {
-        if (this.filters.hasOwnProperty(index) && this.filters[index] !== '') {
-          this.isFiltered = true;
-          const keywords = this.filters[index].split(' ').join('|');
-          if (obj[index]) {
-            const txt: string = this.copyType(obj[index], this.columns[col]);
+        if (this.filters.hasOwnProperty(index)
+          && this.filters[index].value
+          && this.filters[index].value !== '') {
+
+          const keywords = this.filters[index].value.split(' ').join('|');
+          if (obj[this.filters[index].column.data]) {
+            const txt: string = this.copyType(obj[this.filters[index].column.data], this.filters[index].column);
             if (!txt.toString().match(new RegExp('(' + keywords + ')', 'gi'))) {
               visible = false;
             }
@@ -475,21 +575,22 @@ export class NgDatasheetComponent implements OnInit {
         this.filterList.push(i);
       }
     }
-  }
 
-  onSelectAll(event: MouseEvent) {
-    for (let index = 0; index < this._dataSet.length - 1; index++) {
-      this.selection[index] = true;
+    if (this.withPagination && this.static) {
+      this.pagination.total = this.filterList.length;
+
+      const paginatedList: Array<number> = [];
+      for (let index = this.pagination.currentPage * this.pagination.perPage;
+        index < (this.pagination.currentPage + 1) * this.pagination.perPage;
+        index++) {
+        if (this.filterList[index]) {
+          paginatedList.push(this.filterList[index]);
+        }
+
+      }
+
+      this.filterList = paginatedList;
     }
-  }
-
-  onUnselectAll(event: MouseEvent) {
-    for (let index = 0; index < this._dataSet.length - 1; index++) {
-      this.selection[index] = false;
-    }
-  }
-
-  filterDataSet(): void {
 
   }
 
@@ -520,6 +621,7 @@ export class NgDatasheetComponent implements OnInit {
       }
       return 0;
     });
+    this.filterDataSet();
   }
 
   copyFromSelectedRange(sRow: number, eRow: number, sCol: number, eCol: number, clear: boolean = false): string {
@@ -545,7 +647,7 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   isVisible(row: number) {
-    if (this.isFiltered) {
+    if (this.filterList) {
       let visible = false;
       this.filterList.forEach(rowFilter => {
         if (rowFilter === row) {
@@ -553,8 +655,9 @@ export class NgDatasheetComponent implements OnInit {
         }
       });
       return visible;
+    } else {
+      return true;
     }
-    return true;
   }
 
   isColumnSorted(col: string): number {

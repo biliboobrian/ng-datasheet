@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { NgDatasheetModule } from 'ng-datasheet';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,10 @@ import { NgDatasheetModule } from 'ng-datasheet';
     BrowserModule,
     NgDatasheetModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot([
+      {path: '**', redirectTo: ''}
+    ]),
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

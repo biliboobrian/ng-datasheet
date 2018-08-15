@@ -26,9 +26,7 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
       case 13: // enter
       case 27: // esc
       case 37: // left
-      case 38: // up
       case 39: // right
-      case 40: // down
         this.container.nativeElement.blur();
         this.key.emit(event);
       break;

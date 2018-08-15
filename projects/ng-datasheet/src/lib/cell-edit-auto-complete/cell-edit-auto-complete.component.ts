@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
 import { CellDynamicComponent } from '../Cell/cell-dynamic-component';
@@ -51,12 +50,15 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
           this.key.emit(event);
         }
         break;
-
+      case 38: // up
+      case 40: // down
+        if (this.container.nativeElement.className.indexOf('open') === -1) {
+          this.key.emit(event);
+        }
+        break;
       case 9: // tab
       case 27: // esc
       case 13: // enter
-      case 38: // up
-      case 40: // down
         this.key.emit(event);
         break;
     }

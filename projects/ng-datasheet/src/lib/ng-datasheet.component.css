@@ -95,11 +95,12 @@
 
 .inner-addon { 
     position: relative; 
+    margin: 1px;
 }
 
 .inner-addon i {
     position: absolute;
-    padding: 6px 3px;
+    padding: 9px 2px;
     color: #4b89ff;
     pointer-events: none;
   }

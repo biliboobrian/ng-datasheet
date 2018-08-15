@@ -54,15 +54,26 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
   }
 
   onKeyDown(event: KeyboardEvent) {
+    let input: HTMLInputElement;
     switch (event.keyCode) {
+      case 37: // left
+        input = event.currentTarget as HTMLInputElement;
+        if (input.selectionStart === 0) {
+          this.key.emit(event);
+        }
+        break;
+      case 39: // right
+        input = event.currentTarget as HTMLInputElement;
+        if (input.selectionStart === input.value.length) {
+          this.key.emit(event);
+        }
+        break;
       case 9: // tab
       case 13: // enter
       case 27: // esc
-      case 37: // left
       case 38: // up
-      case 39: // right
       case 40: // down
-        this.container.nativeElement.blur();
+        // this.container.nativeElement.blur();
         this.key.emit(event);
         break;
       case 32: // space
