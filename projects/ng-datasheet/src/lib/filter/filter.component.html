@@ -1,0 +1,5 @@
+<div class="inner-addon right-addon" *ngIf="column.searchable">
+  <input [(ngModel)]="filters[col].value" type="text" class="form-control filter" placeholder="{{ column.title }} .."
+    (keyup)="onFilterChange($event)" />
+  <i class="fa fa-filter"></i>
+</div>

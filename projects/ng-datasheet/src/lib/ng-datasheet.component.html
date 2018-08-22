@@ -1,52 +1,81 @@
 <table class="table table-sm table-bordered data-grid" (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)"
   #tbl>
   <tr>
-    <th style="width: 26px">
-      <div ngbDropdown class="d-inline-block">
-        <button class="parameter" id="dropdownBasic1" ngbDropdownToggle>
-          <i class="fa fa-cog"></i>
-        </button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button class="dropdown-item" (click)="onSelectAll($event)">Sélectionner tout</button>
-          <button class="dropdown-item" (click)="onUnselectAll($event)">Désélectionner tout</button>
-          <div class="dropdown-divider"></div>
-          <button class="dropdown-item">Opération spéciale</button>
-        </div>
-      </div>
+    <th ds-global-menu 
+      style="width: 26px" 
+      [dataSet]="dataSet" 
+      [filterList]="filterList" 
+      [parameterButtons]="parameterButtons" 
+      [selection]="selection"
+    >
     </th>
-    <th *ngFor="let column of columns" (click)="onSort($event, column)" [ngStyle]="getColumnWidth(column)">
-      <span>{{ column.title }}</span>
-      <div class="text-right float-right" *ngIf="column.sortable">
-
-        <i *ngIf="isColumnSorted(column.data) === 1" class="fa fa-sort-up"></i>
-        <i *ngIf="isColumnSorted(column.data) === -1" class="fa fa-sort-down"></i>
-        <i *ngIf="isColumnSorted(column.data) === 0" class="fa fa-sort"></i>
-      </div>
+    <th ds-column 
+      *ngFor="let column of columns"
+      [dataSet]="dataSet" 
+      [filterList]="filterList" 
+      [column]="column"
+      [sort]="sort"
+      [filters]="filters"
+      [pagination]="pagination"
+      [staticDs]="static"
+      [withPagination]="withPagination"
+      (renderEvent)="renderEvent.emit($event)"
+      [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
+    >
     </th>
   </tr>
   <tr>
     <td style="width: 26px"></td>
-    <td *ngFor="let column of columns; let col = index" class="header">
+    <td ds-filter 
+      *ngFor="let column of columns; let col = index"
+      [dataSet]="dataSet" 
+      [filterList]="filterList" 
+      [column]="column"
+      [col]="col"
+      [sort]="sort"
+      [filters]="filters"
+      [pagination]="pagination"
+      [staticDs]="static"
+      [withPagination]="withPagination"
+      (renderEvent)="renderEvent.emit($event)"
+      class="header">
+    <!-- <td *ngFor="let column of columns; let col = index" class="header">
       <div class="inner-addon right-addon" *ngIf="column.searchable">
         <input [(ngModel)]="filters[col].value" type="text" class="form-control filter" placeholder="{{ column.title }} .."
           (keyup)="onFilterChange($event, col)" />
         <i class="fa fa-filter"></i>
-      </div>
+      </div>-->
     </td>
   </tr>
   <ng-container *ngFor="let obj of dataSet; let row = index">
-    <tr *ngIf="isVisible(row)">
+    <tr *ngIf="renderingService.isVisible(filterList, row)">
       <td>
         <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" />
       </td>
       <ng-container *ngFor="let column of columns; let col = index">
+        <!-- <td ds-row
+          [obj]="obj"
+          [row]="row"
+          [col]="col"
+          [dataSet]="dataSet"
+          [main]="main"
+          [edited]="edited"
+          [start]="start"
+          [end]="end"
+          [column]="column"
+          [selected]="selected"
+          [colOnTab]="colOnTab"
+          [selectBox]="selectBox"
+          (keyView)="onKeyView($event)"
+          (keyEdit)="onKeyEdit($event)"
+        >-->
         <td (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
-          (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)" [class.cell-selected-main]="isSelectedMain(row, col)"
+          (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
           [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)" [class.cell-selected-down]="isSelected(row, col, 3)"
-          [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="isEdited(row, col)">
-          <ds-cell *ngIf="!isEdited(row, col)" [component]="column.cellView" (key)="onKeyView($event)"
+          [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)">
+          <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView" (key)="onKeyView($event)"
             [column]="column" [data]="obj"></ds-cell>
-          <ds-cell *ngIf="isEdited(row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
+          <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
             [column]="column" [data]="obj"></ds-cell>
         </td>
       </ng-container>
@@ -55,13 +84,28 @@
   <tr *ngIf="withAdd && newModelFunction && newModel && printNew">
     <td style="width: 26px"></td>
     <ng-container *ngFor="let column of columns; let col = index">
+        <!--<td ds-row
+        [obj]="newModel"
+        [row]="-1"
+        [col]="col"
+        [dataSet]="dataSet"
+        [main]="main"
+        [edited]="edited"
+        [start]="start"
+        [end]="end"
+        [column]="column"
+        [selected]="selected"
+        [colOnTab]="colOnTab"
+        [selectBox]="selectBox"
+        
+      >-->
       <td (mousedown)="onMouseDown($event, newModel, -1, col)" (mouseup)="onMouseUp($event, newModel, -1, col)"
-        (dblclick)="onDblClick($event, -1, col)" [class.cell-selected]="isSelected(-1, col)" [class.cell-selected-main]="isSelectedMain(-1, col)"
+        (dblclick)="onDblClick($event, -1, col)" [class.cell-selected]="isSelected(-1, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, -1, col)"
         [class.cell-selected-up]="isSelected(-1, col, 1)" [class.cell-selected-right]="isSelected(-1, col, 2)" [class.cell-selected-down]="isSelected(-1, col, 3)"
-        [class.cell-selected-left]="isSelected(-1, col, 4)" [class.cell-edited]="isEdited(-1, col)">
-        <ds-cell *ngIf="!isEdited(-1, col) && isNeededForAdd(col)" [component]="column.cellView" (key)="onKeyView($event)"
+        [class.cell-selected-left]="isSelected(-1, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, -1, col)">
+        <ds-cell *ngIf="!renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellView" (key)="onKeyView($event)"
           [column]="column" [data]="newModel"></ds-cell>
-        <ds-cell *ngIf="isEdited(-1, col) && isNeededForAdd(col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
+        <ds-cell *ngIf="renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
           [column]="column" [data]="newModel"></ds-cell>
       </td>
     </ng-container>
@@ -72,19 +116,19 @@
     <nav>
       <ul class="pagination justify-content-end">
         <li class="page-item" [class.disabled]="pagination.currentPage === 0">
-          <a class="page-link" href="javascript:void(0)" (click)="goToFirstPage($event)" tabindex="-1">First</a>
+          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, 0)" tabindex="-1">First</a>
         </li>
         <li class="page-item" [class.disabled]="pagination.currentPage === 0">
-          <a class="page-link" href="javascript:void(0)" (click)="goToPreviousPage($event)" tabindex="-1">Previous</a>
+          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, pagination.previousPage)" tabindex="-1">Previous</a>
         </li>
         <li *ngFor="let page of pagination.pages" class="page-item" [class.disabled]="page === pagination.currentPage">
           <a class="page-link" (click)="goToPage($event, page)" href="javascript:void(0)">{{ page + 1 }}</a>
         </li>
         <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
-          <a class="page-link" (click)="goToNextPage($event)" href="javascript:void(0)">Next</a>
+          <a class="page-link" (click)="goToPage($event, pagination.nextPage)" href="javascript:void(0)">Next</a>
         </li>
         <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
-          <a class="page-link" (click)="goToLastPage($event)" href="javascript:void(0)" tabindex="-1">Last</a>
+          <a class="page-link" (click)="goToPage($event, pagination.lastPage)" href="javascript:void(0)" tabindex="-1">Last</a>
         </li>
       </ul>
     </nav>

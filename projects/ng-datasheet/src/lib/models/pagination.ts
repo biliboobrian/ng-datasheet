@@ -3,6 +3,12 @@ export class Pagination {
     total: number;
     currentPage: number;
 
+    constructor(total:number, perPage:number, currentPage: number) {
+        this.perPage = perPage;
+        this.total = total;
+        this.currentPage = currentPage;
+    }
+
     get previousPage(): number {
         if (this.currentPage > 0) {
             return this.currentPage - 1;

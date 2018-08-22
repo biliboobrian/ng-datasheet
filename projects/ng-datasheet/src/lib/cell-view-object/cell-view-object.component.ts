@@ -16,12 +16,11 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
   }
 
   public static copyData(data: any, column: Column): string {
-    if (data && column.options.label) {
+    if (column.options.label) {
       return data[column.options.label];
     } else {
-      return null;
+      return data;
     }
-
   }
 
 

@@ -17,6 +17,10 @@ import { CellEditDateComponent } from './cell-edit-date/cell-edit-date.component
 import { CellViewObjectComponent } from './cell-view-object/cell-view-object.component';
 import { CellViewLinkComponent } from './cell-view-link/cell-view-link.component';
 import { RouterModule } from '@angular/router';
+import { GlobalMenuComponent } from './global-menu/global-menu.component';
+import { ColumnComponent } from './column/column.component';
+import { FilterComponent } from './filter/filter.component';
+import { RowComponent } from './row/row.component';
 
 @NgModule({
   imports: [
@@ -39,7 +43,11 @@ import { RouterModule } from '@angular/router';
     CellEditBasicComponent,
     CellEditAutoCompleteComponent,
     CellEditDropDownComponent,
-    CellEditDateComponent
+    CellEditDateComponent,
+    GlobalMenuComponent,
+    ColumnComponent,
+    FilterComponent,
+    RowComponent
   ],
   entryComponents: [
     CellViewBasicComponent,

@@ -46,15 +46,6 @@
     height: 1px;
 }
 
-.filter {
-    border-radius: 0px;
-    border: none;
-    padding: 1px;
-    font-size: 14px;
-    margin: 0px;
-}
-
-
 .cell-selected {
     background-color: #e6efff;
 }
@@ -81,39 +72,6 @@
 
 .checkbox {
     margin: 5px 0 0 8px;
-}
-
-.parameter {
-    border: none;
-    width: 28px;
-    cursor: pointer;
-}
-
-.parameter::after {
-    content: none;
-}
-
-.inner-addon { 
-    position: relative; 
-    margin: 1px;
-}
-
-.inner-addon i {
-    position: absolute;
-    padding: 9px 2px;
-    color: #4b89ff;
-    pointer-events: none;
-  }
-
-.right-addon i { 
-    right: 0px;
-}
-
-.right-addon input {
-    height: 32px;
-    padding-left: 4px; 
-    padding-right: 30px; 
-    display: inline;
 }
 
 .header {

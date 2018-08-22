@@ -1,0 +1,30 @@
+.inner-addon { 
+    position: relative; 
+    margin: 1px;
+}
+
+.inner-addon i {
+    position: absolute;
+    padding: 9px 2px;
+    color: #4b89ff;
+    pointer-events: none;
+  }
+
+.right-addon i { 
+    right: 0px;
+}
+
+.right-addon input {
+    height: 32px;
+    padding-left: 4px; 
+    padding-right: 30px; 
+    display: inline;
+}
+
+.filter {
+    border-radius: 0px;
+    border: none;
+    padding: 1px;
+    font-size: 14px;
+    margin: 0px;
+}

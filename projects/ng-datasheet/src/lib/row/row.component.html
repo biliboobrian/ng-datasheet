@@ -1,0 +1,9 @@
+<div (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mouseover)="onMouseOver($event)"
+  (dblclick)="onDblClick($event)" [class.cell-selected]="isSelected()" [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
+  [class.cell-selected-up]="isSelected(1)" [class.cell-selected-right]="isSelected(2)" [class.cell-selected-down]="isSelected(3)"
+  [class.cell-selected-left]="isSelected(4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)">
+  <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView" (key)="onKeyView($event)" [column]="column"
+    [data]="obj"></ds-cell>
+  <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)" [column]="column"
+    [data]="obj"></ds-cell>
+</div>

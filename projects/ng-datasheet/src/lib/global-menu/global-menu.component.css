@@ -1,0 +1,9 @@
+.parameter {
+    border: none;
+    width: 28px;
+    cursor: pointer;
+}
+
+.parameter::after {
+    content: none;
+}
