@@ -33,24 +33,39 @@ export class NgDatasheetComponent implements OnInit {
     return this._dataSet;
   }
 
-  @Input('dataSet')
-  set dataSet(val: Array<Object>) {
+  @Input('dataSet') set dataSet(val: Array<Object>) {
     this._dataSet = val;
 
     if (this.withPagination && this.static) {
-      this.pagination = new Pagination(this.dataSet.length, 15, 0);
-      this.dataService.filterDataSet(
-        this.dataSet,
-        this.filterList,
-        this.filters,
-        this.withPagination,
-        this.static,
-        this.pagination
-      );
+      if (this.pagination) {
+        this.pagination.total = this.dataSet.length;
+        this.pagination.currentPage = 0;
+      } else {
+        this.pagination = new Pagination(this.dataSet.length, 15, 0);
+      }
+    }
+
+    this.filterList = this.dataService.filterDataSet(
+      this.dataSet,
+      this.filterList,
+      this.filters,
+      this.withPagination,
+      this.static,
+      this.pagination
+    );
+  }
+
+  get columns(): Array<Column> {
+    return this._columns;
+  }
+
+  @Input('columns') set columns(val: Array<Column>) {
+    this._columns = val;
+    if (this._columns && this.tbl.nativeElement) {
+      this.renderingService.setNoWidthColumn(this.columns, this.tbl.nativeElement, this.dsKey);
     }
   }
 
-  @Input() public columns: Array<Column>;
   @Input() public parameterButtons: Array<ParameterButton>;
   @Input() public withFilters = true;
   @Input() public paginated = false;
@@ -63,6 +78,7 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public filters: Array<Filter>;
   @Input() public pagination: Pagination;
   @Input() public sort: Sort;
+  @Input() public dsKey: string;
 
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
 
@@ -81,8 +97,9 @@ export class NgDatasheetComponent implements OnInit {
   public colOnTab: number;
 
   private _dataSet: Array<Object>;
-  
-  
+  private _columns: Array<Column>;
+
+
   constructor(
     public navigatingService: NavigatingService,
     public renderingService: RenderingService,
@@ -103,12 +120,16 @@ export class NgDatasheetComponent implements OnInit {
         this.sort = new Sort();
       }
 
-      if (this.withPagination && this.static && !this.pagination && this.dataSet) {
-        this.pagination = new Pagination(this.dataSet.length, 15, 0);
-        
+      if (this.withPagination && this.static && this.dataSet) {
+        if (this.pagination) {
+          this.pagination.total = this.dataSet.length;
+          this.pagination.currentPage = 0;
+        } else {
+          this.pagination = new Pagination(this.dataSet.length, 15, 0);
+        }
       }
 
-      this.dataService.filterDataSet(
+      this.filterList = this.dataService.filterDataSet(
         this.dataSet,
         this.filterList,
         this.filters,
@@ -117,7 +138,10 @@ export class NgDatasheetComponent implements OnInit {
         this.pagination
       );
 
-      this.renderingService.setNoWidthColumn(this.columns, this.tbl.nativeElement);
+      if (this.columns) {
+        this.renderingService.setNoWidthColumn(this.columns, this.tbl.nativeElement, this.dsKey);
+      }
+
     }
 
     if (this.withAdd && this.newModelFunction) {
@@ -235,7 +259,7 @@ export class NgDatasheetComponent implements OnInit {
         this.end.setCoord(this.dataSet.length - 1, col - 1);
       }
       this.selected = true;
-      this.dataService.filterDataSet(
+      this.filterList = this.dataService.filterDataSet(
         this.dataSet,
         this.filterList,
         this.filters,
@@ -401,7 +425,7 @@ export class NgDatasheetComponent implements OnInit {
 
         }
       } else {
-        if (!this.end && event.keyCode !== 16) {
+        if (this.end.isEmpty() && event.keyCode !== 16) {
           this.start.setCoord(this.main.row, this.main.col);
           this.end.setCoord(this.main.row, this.main.col);
           this.selected = true;
@@ -452,8 +476,8 @@ export class NgDatasheetComponent implements OnInit {
 
   goToPage(event: MouseEvent, page: number): void {
     this.pagination.currentPage = page;
-    
-    this.dataService.filterDataSet(
+
+    this.filterList = this.dataService.filterDataSet(
       this.dataSet,
       this.filterList,
       this.filters,
@@ -528,7 +552,11 @@ export class NgDatasheetComponent implements OnInit {
       event.clipboardData.setData('text/plain', txt);
       event.preventDefault();
     } else if (this.main) {
-      const str: string = this.dataService.copyType(this.dataSet[this.main.row][this.columns[this.main.col]['data']], this.columns[this.main.col]);
+      const str: string = this.dataService.copyType(
+        this.dataSet[this.main.row][this.columns[this.main.col]['data']],
+        this.columns[this.main.col]
+      );
+
       event.clipboardData.setData('text/plain', str);
       if (clear) {
         this.dataSet[this.main.row][this.columns[this.main.col]['data']] = null;

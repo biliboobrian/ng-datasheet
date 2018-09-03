@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
         id: 1,
         lastname: 'DOE',
         firstname: 'John',
-        hobby: this.hobbiesDataSet[0],
+        hobby: 0,
         birthdate: moment_(new Date(1983, 2, 27)),
         wiki: {
           name: 'Poilu',
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
         id: 2,
         lastname: 'FOE',
         firstname: 'Paul',
-        hobby: this.hobbiesDataSet[0],
+        hobby: 1,
         birthdate: moment_(new Date(1983, 2, 27)),
         wiki: {
           name: 'Poil de carotte',
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
     col = new Column();
     col.title = 'Firstname';
     col.data = 'firstname';
-    col.width = 150;
+    col.noWidth = true;
     col.cellView = CellViewBasicComponent;
     col.cellEdit = CellEditBasicComponent;
     this.staticColumns.push(col);
@@ -116,6 +116,7 @@ export class AppComponent implements OnInit {
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
+    col.options.format = 'string';
     col.cellView = CellViewObjectComponent;
     col.cellEdit = CellEditDropDownComponent;
     this.staticColumns.push(col);
@@ -124,7 +125,6 @@ export class AppComponent implements OnInit {
     col.title = 'Wiki';
     col.data = 'wiki';
     col.sortable = false;
-    col.noWidth = true;
     col.options = new Options();
     col.options.retreiveFunction = this.inlineSearchWiki;
     col.options.label = 'name';

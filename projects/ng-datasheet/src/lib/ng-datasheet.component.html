@@ -4,20 +4,21 @@
     <th ds-global-menu 
       style="width: 26px" 
       [dataSet]="dataSet" 
-      [filterList]="filterList" 
+      [(filterList)]="filterList" 
       [parameterButtons]="parameterButtons" 
       [selection]="selection"
     >
     </th>
     <th ds-column 
-      *ngFor="let column of columns"
+      *ngFor="let column of columns; let col = index"
       [dataSet]="dataSet" 
-      [filterList]="filterList" 
+      [(filterList)]="filterList" 
       [column]="column"
       [sort]="sort"
       [filters]="filters"
       [pagination]="pagination"
       [staticDs]="static"
+      [previousNoWidth]="renderingService.previousNoWidth(columns, col)"
       [withPagination]="withPagination"
       (renderEvent)="renderEvent.emit($event)"
       [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
@@ -29,7 +30,7 @@
     <td ds-filter 
       *ngFor="let column of columns; let col = index"
       [dataSet]="dataSet" 
-      [filterList]="filterList" 
+      [(filterList)]="filterList" 
       [column]="column"
       [col]="col"
       [sort]="sort"

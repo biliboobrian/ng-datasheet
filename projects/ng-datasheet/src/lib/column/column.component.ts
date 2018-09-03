@@ -22,16 +22,17 @@ export class ColumnComponent implements OnInit {
   @Input() public pagination: Pagination;
   @Input() public staticDs = true;
   @Input() public withPagination = false;
+  @Input() public previousNoWidth = false;
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
   @Output() public resizeColumn: EventEmitter<Column> = new EventEmitter<Column>();
-  
+
 
   private mouseX: number;
   private resizing = false;
   private actualWidth: number;
   private mMove: any;
   private mUp: any;
-  
+
 
   constructor(
     public renderingService: RenderingService,
@@ -42,7 +43,7 @@ export class ColumnComponent implements OnInit {
   }
 
   onSort(event: MouseEvent, col: Column) {
-    if(!this.column.isResizing) {
+    if (!this.column.isResizing) {
       if (col.sortable) {
         if (this.sort && this.sort.column === col) {
           this.sort.asc = !this.sort.asc;
@@ -71,10 +72,10 @@ export class ColumnComponent implements OnInit {
     this.mouseX = event.clientX;
     this.actualWidth = this.column.width;
     this.column.isResizing = true;
-    
+
     this.mMove = this.onMouseMove.bind(this);
     this.mUp = this.onMouseUp.bind(this);
-    
+
     window.addEventListener('mousemove', this.mMove);
     window.addEventListener('mouseup', this.mUp);
   }
@@ -82,15 +83,22 @@ export class ColumnComponent implements OnInit {
 
 
   onMouseMove(event: MouseEvent): void {
-    if(this.column.isResizing) {
-      this.column.width = this.actualWidth + event.clientX - this.mouseX;
+    if (this.column.isResizing) {
+      if (this.previousNoWidth) {
+        this.column.width = this.actualWidth - event.clientX + this.mouseX;
+      } else {
+        this.column.width = this.actualWidth + event.clientX - this.mouseX;
+      }
     }
-      
   }
 
   onMouseUp(event: MouseEvent) {
-    if(this.column.isResizing) {
-      this.column.width = this.actualWidth + event.clientX - this.mouseX;
+    if (this.column.isResizing) {
+      if (this.previousNoWidth) {
+        this.column.width = this.actualWidth - event.clientX + this.mouseX;
+      } else {
+        this.column.width = this.actualWidth + event.clientX - this.mouseX;
+      }
       this.column.isResizing = false;
       window.removeEventListener('mousemove', this.mMove);
       window.removeEventListener('mouseup', this.mUp);

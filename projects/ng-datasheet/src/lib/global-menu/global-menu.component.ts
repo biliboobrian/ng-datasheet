@@ -19,20 +19,27 @@ export class GlobalMenuComponent implements OnInit {
   }
 
   onSelectAll(event: MouseEvent) {
-    for (let index = 0; index < this.dataSet.length; index++) {
-      this.selection[index] = true;
+    if (this.dataSet) {
+      for (let index = 0; index < this.dataSet.length; index++) {
+        this.selection[index] = true;
+      }
     }
+
   }
 
   onSelectDisplayed(event: MouseEvent) {
-    for (let index = 0; index < this.filterList.length; index++) {
-      this.selection[this.filterList[index]] = true;
+    if (this.filterList) {
+      for (let index = 0; index < this.filterList.length; index++) {
+        this.selection[this.filterList[index]] = true;
+      }
     }
   }
 
   onUnselectAll(event: MouseEvent) {
-    for (let index = 0; index < this.dataSet.length; index++) {
-      this.selection[index] = false;
+    if (this.dataSet) {
+      for (let index = 0; index < this.dataSet.length; index++) {
+        this.selection[index] = false;
+      }
     }
   }
 

@@ -11,10 +11,11 @@ export class RenderingService {
 
   constructor() { }
 
-  setNoWidthColumn(columns: Array<Column>, tableElement:any): void {
+  setNoWidthColumn(columns: Array<Column>, tableElement: any, dsKey: string): void {
     const maxWidth: number = tableElement.clientWidth;
     const defaultWidth: number = Math.trunc((maxWidth / columns.length));
     let noWidthFound = false;
+    const userColumnsWidths: Array<number> = JSON.parse(localStorage.getItem(dsKey + 'ColumnWidths'));
 
     for (let i = 0; i < columns.length; i++) {
       if (!columns[i].width) {
@@ -26,8 +27,16 @@ export class RenderingService {
       }
     }
 
-    if (!noWidthFound) {
+    if (!noWidthFound && columns.length > 0) {
       columns[columns.length - 1].width = 0;
+    }
+
+    if (userColumnsWidths) {
+      for (let i = 0; i < userColumnsWidths.length; i++) {
+        if (userColumnsWidths[i] > 0) {
+          columns[i].width = userColumnsWidths[i];
+        }
+      }
     }
   }
 
@@ -111,7 +120,7 @@ export class RenderingService {
     }
   }
 
-  isColumnSorted(sort:Sort, col: string): number {
+  isColumnSorted(sort: Sort, col: string): number {
     if (sort && sort.column && sort.column.data === col) {
       if (sort.asc) {
         return 1;
@@ -147,4 +156,15 @@ export class RenderingService {
     }
   }
 
+  previousNoWidth(columns: Array<Column>, index: number) {
+    let previousNoWidth = false;
+
+    for (let i = 0; i < index; i++) {
+      if (columns[i].noWidth) {
+        previousNoWidth = true;
+      }
+    }
+
+    return previousNoWidth;
+  }
 }

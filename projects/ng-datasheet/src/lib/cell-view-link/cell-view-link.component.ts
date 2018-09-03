@@ -24,12 +24,15 @@ export class CellViewLinkComponent extends CellDynamicComponent implements OnIni
   }
 
   public static copyData(data: any, column: Column): string {
-    if (data && column.options.label) {
-      return data[column.options.label];
+    if (data instanceof Object) {
+      if (data && column.options.label) {
+        return data[column.options.label];
+      } else {
+        return '';
+      }
     } else {
-      return null;
+      return data;
     }
-
   }
 
   public static pasteData(data: string, column: Column): any {

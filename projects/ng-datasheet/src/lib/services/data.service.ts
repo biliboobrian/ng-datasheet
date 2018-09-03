@@ -41,59 +41,57 @@ export class DataService {
   }
 
   filterDataSet(
-    dataSet: Array<Object>, 
-    filterList: Array<number>, 
+    dataSet: Array<Object>,
+    filterList: Array<number>,
     filters: Array<Filter>,
     withPagination: boolean,
     staticDs: boolean,
     pagination: Pagination
-  ): void {
-    if(filterList) {
+  ): Array<number> {
+    if (filterList && dataSet) {
       filterList.length = 0;
-    } else {
-      filterList = new Array<number>();
-    }
-    
 
-    for (let i = 0; i < dataSet.length; i++) {
-      const obj = dataSet[i];
-      let visible = true;
+      for (let i = 0; i < dataSet.length; i++) {
+        const obj = dataSet[i];
+        let visible = true;
 
-      for (const index in filters) {
-        if (filters.hasOwnProperty(index)
-          && filters[index].value
-          && filters[index].value !== '') {
+        for (const index in filters) {
+          if (filters.hasOwnProperty(index)
+            && filters[index].value
+            && filters[index].value !== '') {
 
-          const keywords = filters[index].value.split(' ').join('|');
-          if (obj[filters[index].column.data]) {
-            const txt: string = this.copyType(obj[filters[index].column.data], filters[index].column);
-            if (!txt.toString().match(new RegExp('(' + keywords + ')', 'gi'))) {
+            const keywords = filters[index].value.split(' ').join('|');
+            if (obj[filters[index].column.data]) {
+              const txt: string = this.copyType(obj[filters[index].column.data], filters[index].column);
+              if (!txt.toString().match(new RegExp('(' + keywords + ')', 'gi'))) {
+                visible = false;
+              }
+            } else {
               visible = false;
             }
-          } else {
-            visible = false;
           }
         }
-      }
 
-      if (visible) {
-        filterList.push(i);
-      }
-    }
-
-    if (withPagination && staticDs) {
-      pagination.total = filterList.length;
-
-      const paginatedList: Array<number> = [];
-      for (let index = pagination.currentPage * pagination.perPage;
-        index < (pagination.currentPage + 1) * pagination.perPage;
-        index++) {
-        if (filterList[index]) {
-          paginatedList.push(filterList[index]);
+        if (visible) {
+          filterList.push(i);
         }
       }
-      filterList = paginatedList;
+
+      if (withPagination && staticDs) {
+        pagination.total = filterList.length;
+
+        const paginatedList: Array<number> = [];
+        for (let index = pagination.currentPage * pagination.perPage;
+          index < (pagination.currentPage + 1) * pagination.perPage;
+          index++) {
+          if (filterList[index] !== null) {
+            paginatedList.push(filterList[index]);
+          }
+        }
+        filterList = paginatedList;
+      }
     }
+    return filterList;
   }
 
   copyType(data: any, column: Column): string {

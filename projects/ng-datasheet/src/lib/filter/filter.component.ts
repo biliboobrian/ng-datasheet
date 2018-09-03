@@ -32,19 +32,19 @@ export class FilterComponent implements OnInit {
   }
 
   onFilterChange(event: KeyboardEvent) {
-      if (this.withPagination && this.staticDs) {
-        this.pagination.currentPage = 0;
-      }
-  
-      this.dataService.filterDataSet(
-        this.dataSet,
-        this.filterList,
-        this.filters,
-        this.withPagination,
-        this.staticDs,
-        this.pagination
-      );
-  
-      this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort));
+    if (this.withPagination && this.staticDs) {
+      this.pagination.currentPage = 0;
     }
+
+    this.dataService.filterDataSet(
+      this.dataSet,
+      this.filterList,
+      this.filters,
+      this.withPagination,
+      this.staticDs,
+      this.pagination
+    );
+
+    this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort));
+  }
 }

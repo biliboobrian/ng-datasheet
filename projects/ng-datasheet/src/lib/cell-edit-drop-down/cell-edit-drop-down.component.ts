@@ -29,7 +29,25 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
       case 39: // right
         this.container.nativeElement.blur();
         this.key.emit(event);
-      break;
+        break;
+    }
+  }
+
+  get dataModel(): Object {
+    if (this.column.options.format && this.column.options.format === 'string') {
+      return this.column.options.dataSet.find(element => {
+        return element[this.column.options.value] === this.data[this.column.data];
+      });
+    } else {
+      return this.data[this.column.data];
+    }
+  }
+
+  set dataModel(val: Object) {
+    if (this.column.options.format && this.column.options.format === 'string') {
+      this.data[this.column.data] = val[this.column.options.value];
+    } else {
+      this.data[this.column.data] = val;
     }
   }
 }

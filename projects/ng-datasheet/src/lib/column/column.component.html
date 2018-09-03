@@ -1,13 +1,14 @@
 <div (click)="onSort($event, column)">
+  <div *ngIf="!column.noWidth && previousNoWidth" class="column-resize-left" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mouseMove)="onMouseMove($event)"></div>
   <span>{{ column.title }}</span>
   <div class="text-right float-right" *ngIf="column.sortable">
-
+    
     <i class="fa"
     [class.fa-sort-up]="renderingService.isColumnSorted(sort, column.data) === 1"
     [class.fa-sort-down]="renderingService.isColumnSorted(sort, column.data) === -1"
     [class.fa-sort]="renderingService.isColumnSorted(sort, column.data) === 0"
     ></i>
     
-    <div class="column-resize" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mouseMove)="onMouseMove($event)"></div>
+    <div *ngIf="!column.noWidth && !previousNoWidth" class="column-resize" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mouseMove)="onMouseMove($event)"></div>
   </div>
 </div>
