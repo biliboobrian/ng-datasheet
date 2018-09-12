@@ -8,7 +8,7 @@ export class Coordinate {
     }
 
     isEmpty(): boolean {
-        if(this.row == null && this.col == null) {
+        if (this.row == null && this.col == null) {
             return true;
         } else {
             return false;

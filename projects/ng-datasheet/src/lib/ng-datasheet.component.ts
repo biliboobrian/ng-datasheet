@@ -185,6 +185,10 @@ export class NgDatasheetComponent implements OnInit {
     if (this.start.row === row && this.start.col === col) {
       this.start.empty();
       this.end.empty();
+
+      if (this.columns[col].autoOpen) {
+        this.edited.setCoord(row, col);
+      }
     }
 
     this.selected = true;
@@ -312,7 +316,8 @@ export class NgDatasheetComponent implements OnInit {
           this.main.row++;
         }
         this.main.col = this.colOnTab;
-        this.edited.setCoord(this.main.row, this.main.col);
+        this.edited.empty();
+        this.selectBox.nativeElement.focus();
         break;
       case 9: // tab
         const next = this.renderingService.getNextColumnEditable(this.columns, true, this.main.col, this.main.col);
@@ -331,7 +336,8 @@ export class NgDatasheetComponent implements OnInit {
         } else {
           this.main.col = next;
         }
-        this.edited.setCoord(this.main.row, this.main.col);
+        this.edited.empty();
+        this.selectBox.nativeElement.focus();
         event.preventDefault();
         break;
       case 27: // esc
@@ -422,7 +428,12 @@ export class NgDatasheetComponent implements OnInit {
               this.main.row = -1;
             }
             break;
+          default:
+            if (this.columns[this.main.col].editable) {
+              this.columns[this.main.col].componentParam = 'byKey';
+              this.edited.setCoord(this.main.row, this.main.col);
 
+            }
         }
       } else {
         if (this.end.isEmpty() && event.keyCode !== 16) {

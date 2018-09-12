@@ -12,6 +12,8 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
+  public open = true;
+
   constructor() {
     super();
   }
@@ -21,7 +23,22 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   onKeyDown(event: KeyboardEvent) {
+    let index;
     switch (event.keyCode) {
+      case 38: // up
+        index = this.column.options.dataSet.indexOf(this.dataModel);
+
+        if (index > 0) {
+          this.dataModel = this.column.options.dataSet[index - 1];
+        }
+        break;
+      case 40: // down
+        index = this.column.options.dataSet.indexOf(this.dataModel);
+
+        if (index < this.column.options.dataSet.length - 1) {
+          this.dataModel = this.column.options.dataSet[index + 1];
+        }
+        break;
       case 9: // tab
       case 13: // enter
       case 27: // esc
@@ -31,6 +48,19 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
         this.key.emit(event);
         break;
     }
+  }
+
+  onSelect(option: Object): void {
+    this.dataModel = option;
+    this.open = false;
+  }
+
+  onToggle(event: MouseEvent): void {
+    this.open = !this.open;
+  }
+
+  isSelected(option: Object): boolean {
+    return option === this.dataModel;
   }
 
   get dataModel(): Object {
@@ -48,6 +78,16 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
       this.data[this.column.data] = val[this.column.options.value];
     } else {
       this.data[this.column.data] = val;
+    }
+  }
+
+  getDisplayedLabel(): string {
+    if (this.column.options.format && this.column.options.format === 'string') {
+      return this.column.options.dataSet.find(element => {
+        return element[this.column.options.value] === this.data[this.column.data];
+      })[this.column.options.label];
+    } else {
+      return this.data[this.column.data][this.column.options.label];
     }
   }
 }

@@ -12,12 +12,28 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
+  public _model = '';
+
+  public set model(val: string) {
+    this._model = val;
+  }
+
+  public get model(): string {
+    return this._model;
+  }
+
   constructor() {
     super();
   }
 
   ngOnInit() {
     this.container.nativeElement.focus();
+    if (this.column.componentParam === 'byKey') {
+      this._model = '';
+    } else {
+      this._model = this.data[this.column.data];
+    }
+    this.column.componentParam = '';
   }
 
   onKeyDown(event: KeyboardEvent): void {
@@ -35,9 +51,11 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
           this.key.emit(event);
         }
         break;
-
-      case 9: // tab
       case 27: // esc
+        this._model = this.data[this.column.data];
+        this.key.emit(event);
+        break;
+      case 9: // tab
       case 13: // enter
       case 38: // up
       case 40: // down
@@ -46,4 +64,7 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
     }
   }
 
+  onBlur(event: FocusEvent): void {
+    this.data[this.column.data] = this._model;
+  }
 }

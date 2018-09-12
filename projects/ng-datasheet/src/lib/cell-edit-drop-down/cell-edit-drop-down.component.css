@@ -5,3 +5,31 @@
     height: 30px !important;
     padding: 0px;
 }
+
+.drop-dd {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.lbl-dd {
+    height: 31px;
+    padding: 5px;
+}
+
+.icon-dd {
+    font-size: 10px;
+    margin: 2px;
+}
+.option-dd {
+    padding: 5px;
+}
+.selected-dd {
+    background-color: rgb(115, 176, 255) !important;
+}
+
+.option-dd:hover {
+    background-color: rgb(182, 182, 182);
+}

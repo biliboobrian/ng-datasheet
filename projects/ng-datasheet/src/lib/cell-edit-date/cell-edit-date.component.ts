@@ -51,6 +51,7 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
       this._dateModel = null;
     }
     this.container.nativeElement.focus();
+    this.d.toggle();
   }
 
   onKeyDown(event: KeyboardEvent) {

@@ -6,6 +6,7 @@ export abstract class CellDynamicComponent {
 
     protected _column: Column = new Column();
     protected _data: Object = {};
+    public autoOpen = false;
 
     @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
 

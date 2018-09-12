@@ -117,6 +117,7 @@ export class AppComponent implements OnInit {
     col.options.value = 'id';
     col.options.label = 'name';
     col.options.format = 'string';
+    col.autoOpen = true;
     col.cellView = CellViewObjectComponent;
     col.cellEdit = CellEditDropDownComponent;
     this.staticColumns.push(col);
