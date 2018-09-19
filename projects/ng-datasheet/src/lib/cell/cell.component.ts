@@ -19,10 +19,12 @@ export class CellComponent implements OnInit, OnDestroy {
   @Input() column: Column;
   @Input() data: Object;
   @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
+  @Output() blurinput: EventEmitter<KeyboardEvent> = new EventEmitter();
   @ViewChild('container', { read: ViewContainerRef })
   container: ViewContainerRef;
 
   keySubscription: Subscription;
+  focusSubscription: Subscription;
 
   private componentRef: ComponentRef<{}>;
 
@@ -41,6 +43,10 @@ export class CellComponent implements OnInit, OnDestroy {
       this.keySubscription = instance.key.subscribe(keyboardEvent => {
         this.key.emit(keyboardEvent);
       });
+
+      this.focusSubscription = instance.blurinput.subscribe(focusEvent => {
+        this.blurinput.emit(focusEvent);
+      });
     }
   }
 
@@ -51,6 +57,9 @@ export class CellComponent implements OnInit, OnDestroy {
         this.keySubscription.unsubscribe();
       }
 
+      if (this.focusSubscription) {
+        this.focusSubscription.unsubscribe();
+      }
       this.componentRef.destroy();
       this.componentRef = null;
     }

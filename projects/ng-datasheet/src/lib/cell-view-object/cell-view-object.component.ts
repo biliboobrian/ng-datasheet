@@ -69,9 +69,12 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
 
   getLabel(obj: object) {
     if (this.column.options.format && this.column.options.format === 'string') {
-      const elem = this.column.options.dataSet.find(element => {
-        return element[this.column.options.value] === obj;
-      });
+      let elem;
+      if (this.column.options.dataSet) {
+        elem = this.column.options.dataSet.find(element => {
+          return element[this.column.options.value] === obj;
+        });
+      }
 
       if (elem) {
         return elem[this.column.options.label];

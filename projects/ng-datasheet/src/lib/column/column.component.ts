@@ -54,7 +54,7 @@ export class ColumnComponent implements OnInit {
 
         this.dataService.sortDataSet(this.dataSet, this.sort);
 
-        this.dataService.filterDataSet(
+        this.filterList = this.dataService.filterDataSet(
           this.dataSet,
           this.filterList,
           this.filters,
@@ -63,7 +63,7 @@ export class ColumnComponent implements OnInit {
           this.pagination
         );
 
-        this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort));
+        this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort, this.filterList));
       }
     }
   }

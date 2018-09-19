@@ -16,7 +16,8 @@ import {
   CellEditAutoCompleteComponent,
   CellViewLinkComponent
 } from 'ng-datasheet';
-import * as moment_ from 'moment'; const moment = moment_;
+import * as moment_ from 'moment';import { Person } from './models/person';
+ const moment = moment_;
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
   paginatedColumns: Array<Column>;
   staticDataSet: Array<Object> = [];
   paginatedDataSet: Array<Object> = [];
-  hobbiesDataSet: Array<Object> = [];
+  hobbiesDataSet: Array<Object>;
 
   searching = false;
   searchFailed = false;
@@ -47,8 +48,20 @@ export class AppComponent implements OnInit {
       { id: 4, name: 'Swimming' }
     ];
 
-    this.staticDataSet = [
-      {
+    this.staticDataSet = [];
+    const p = new Person();
+    p.id = 1;
+    p.lastname = 'DOE';
+    p.firstname = 'John';
+    p.hobby = 0;
+    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.wiki = {
+      name: 'Poilu',
+      link: 'https://en.wikipedia.org/wiki/Poilu'
+    };
+    this.staticDataSet.push(p);
+
+    /*  {
         id: 1,
         lastname: 'DOE',
         firstname: 'John',
@@ -70,7 +83,7 @@ export class AppComponent implements OnInit {
           link: 'https://en.wikipedia.org/wiki/Poil_de_carotte'
         }
       }
-    ];
+    ];*/
 
     this.staticColumns = new Array<Column>();
 

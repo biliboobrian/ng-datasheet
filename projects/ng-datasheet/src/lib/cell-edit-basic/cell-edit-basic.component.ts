@@ -66,5 +66,6 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
 
   onBlur(event: FocusEvent): void {
     this.data[this.column.data] = this._model;
+    this.blurinput.emit(event);
   }
 }

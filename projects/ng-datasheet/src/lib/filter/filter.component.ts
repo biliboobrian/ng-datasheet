@@ -36,7 +36,7 @@ export class FilterComponent implements OnInit {
       this.pagination.currentPage = 0;
     }
 
-    this.dataService.filterDataSet(
+    this.filterList = this.dataService.filterDataSet(
       this.dataSet,
       this.filterList,
       this.filters,
@@ -45,6 +45,6 @@ export class FilterComponent implements OnInit {
       this.pagination
     );
 
-    this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort));
+    this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort, this.filterList));
   }
 }

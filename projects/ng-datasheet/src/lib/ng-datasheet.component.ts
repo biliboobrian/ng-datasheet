@@ -15,6 +15,10 @@ import { Coordinate } from './models/coordinate';
 
 let COL_FORMAT = '';
 
+export function dateParseFactory() {
+  return new DateParserFormatter(COL_FORMAT);
+}
+
 // @dynamic
 @Component({
   selector: 'ds-datasheet',
@@ -23,10 +27,11 @@ let COL_FORMAT = '';
   providers: [
     {
       provide: NgbDateParserFormatter,
-      useFactory: () => new DateParserFormatter(COL_FORMAT)
+      useFactory: dateParseFactory
     }
   ]
 })
+
 export class NgDatasheetComponent implements OnInit {
 
   get dataSet(): Array<Object> {
@@ -79,6 +84,7 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public pagination: Pagination;
   @Input() public sort: Sort;
   @Input() public dsKey: string;
+  @Input() public trBgColor: string;
 
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
 
@@ -98,6 +104,7 @@ export class NgDatasheetComponent implements OnInit {
 
   private _dataSet: Array<Object>;
   private _columns: Array<Column>;
+  private _actualRow: number;
 
 
   constructor(
@@ -164,6 +171,51 @@ export class NgDatasheetComponent implements OnInit {
         this.start.setCoord(row, col);
       }
     }
+    this.selectBox.nativeElement.focus();
+  }
+
+  onBlur(event: FocusEvent, newRow: boolean = false): void {
+    if (newRow) {
+      this.dataSet.push(this.newModel);
+      this.printNew = false;
+      delete (this.newModel);
+      this.newModel = this.newModelFunction();
+
+      this.dataService.filterDataSet(
+        this.dataSet,
+        this.filterList,
+        this.filters,
+        this.withPagination,
+        this.static,
+        this.pagination
+      );
+      this.edited.row = this.dataSet.length - 1;
+      this.main.row = this.dataSet.length - 1;
+
+      setTimeout(() => {
+        this.printNew = true;
+      }, 10);
+    }
+
+    if (this.selectBox.nativeElement !== event.relatedTarget) {
+      this.end.empty();
+      this.start.empty();
+      this.edited.empty();
+      this.main.empty();
+    }
+
+  }
+
+  getBgColor(row: number = null): string {
+    if (this._actualRow === row && this.trBgColor) {
+      return this.trBgColor;
+    } else {
+      return '';
+    }
+  }
+
+  changeTRStyle(row: number = null): void {
+    this._actualRow = row;
   }
 
   onMouseOver(event: MouseEvent, obj: Object, row: number, col: number) {
@@ -295,7 +347,7 @@ export class NgDatasheetComponent implements OnInit {
           && this.main.row === this._dataSet.length - 1) {
           this.main.row = -1;
         } else if (this.main.row === -1) {
-          this.dataSet.push(this.newModel);
+          /* this.dataSet.push(this.newModel);
           this.printNew = false;
           delete (this.newModel);
           this.newModel = this.newModelFunction();
@@ -311,7 +363,7 @@ export class NgDatasheetComponent implements OnInit {
 
           setTimeout(() => {
             this.printNew = true;
-          }, 10);
+          }, 10); */
         } else if (this.main.row < this.dataSet.length - 1) {
           this.main.row++;
         }
@@ -497,7 +549,12 @@ export class NgDatasheetComponent implements OnInit {
       this.pagination
     );
 
-    this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort));
+    this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort, this.filterList));
+  }
+
+  rendering(event: RenderEvent) {
+    this.filterList = event.filterList;
+    this.renderEvent.emit(event);
   }
 
   copyFromSelectedRange(sRow: number, eRow: number, sCol: number, eCol: number, clear: boolean = false): string {

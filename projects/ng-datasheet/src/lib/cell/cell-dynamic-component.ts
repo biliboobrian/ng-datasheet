@@ -9,6 +9,7 @@ export abstract class CellDynamicComponent {
     public autoOpen = false;
 
     @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
+    @Output() blurinput: EventEmitter<FocusEvent> = new EventEmitter();
 
     get data(): Object {
         return this._data;

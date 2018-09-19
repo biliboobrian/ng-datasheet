@@ -6,7 +6,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <ds-datasheet [dataSet]="staticDataSet" [columns]="staticColumns" [newModelFunction]="createItem"></ds-datasheet>
+      <ds-datasheet [trBgColor]="'#fffede'" [dataSet]="staticDataSet" [columns]="staticColumns" [newModelFunction]="createItem" [dateFormat]="'DD/MM/YYYY'"></ds-datasheet>
     </div>
   </div>
 
@@ -27,7 +27,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <ds-datasheet [dataSet]="paginatedDataSet" [columns]="paginatedColumns" [withPagination]="true" ></ds-datasheet>
+      <ds-datasheet [dataSet]="paginatedDataSet" [columns]="paginatedColumns" [withPagination]="true" [dateFormat]="'DD/MM/YYYY'" [trBgColor]="'#fffede'"></ds-datasheet>
     </div>
   </div>
 
@@ -38,7 +38,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <ds-datasheet [dataSet]="staticDataSet" [columns]="staticColumns" [newModelFunction]="createItem"></ds-datasheet>
+      <ds-datasheet [dataSet]="staticDataSet" [columns]="staticColumns" [newModelFunction]="createItem" [dateFormat]="'DD/MM/YYYY'" [trBgColor]="'#fffede'"></ds-datasheet>
     </div>
   </div>
 </div>

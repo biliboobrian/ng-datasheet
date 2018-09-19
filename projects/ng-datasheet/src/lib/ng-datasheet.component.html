@@ -20,7 +20,7 @@
       [staticDs]="static"
       [previousNoWidth]="renderingService.previousNoWidth(columns, col)"
       [withPagination]="withPagination"
-      (renderEvent)="renderEvent.emit($event)"
+      (renderEvent)="rendering($event)"
       [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
     >
     </th>
@@ -38,7 +38,7 @@
       [pagination]="pagination"
       [staticDs]="static"
       [withPagination]="withPagination"
-      (renderEvent)="renderEvent.emit($event)"
+      (renderEvent)="rendering($event)"
       class="header">
     <!-- <td *ngFor="let column of columns; let col = index" class="header">
       <div class="inner-addon right-addon" *ngIf="column.searchable">
@@ -49,7 +49,7 @@
     </td>
   </tr>
   <ng-container *ngFor="let obj of dataSet; let row = index">
-    <tr *ngIf="renderingService.isVisible(filterList, row)">
+    <tr *ngIf="renderingService.isVisible(filterList, row)" [style.background-color]="getBgColor(row)" (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
       <td>
         <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" />
       </td>
@@ -75,14 +75,14 @@
           [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)" [class.cell-selected-down]="isSelected(row, col, 3)"
           [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)">
           <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView" (key)="onKeyView($event)"
-            [column]="column" [data]="obj"></ds-cell>
+          (blurinput)="onBlur($event)" [column]="column" [data]="obj"></ds-cell>
           <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
-            [column]="column" [data]="obj"></ds-cell>
+          (blurinput)="onBlur($event)" [column]="column" [data]="obj"></ds-cell>
         </td>
       </ng-container>
     </tr>
   </ng-container>
-  <tr *ngIf="withAdd && newModelFunction && newModel && printNew">
+  <tr *ngIf="withAdd && newModelFunction && newModel && printNew" [style.background-color]="getBgColor(-1)" (mouseover)="changeTRStyle(-1)" (mouseout)="changeTRStyle()">
     <td style="width: 26px"></td>
     <ng-container *ngFor="let column of columns; let col = index">
         <!--<td ds-row
@@ -105,9 +105,9 @@
         [class.cell-selected-up]="isSelected(-1, col, 1)" [class.cell-selected-right]="isSelected(-1, col, 2)" [class.cell-selected-down]="isSelected(-1, col, 3)"
         [class.cell-selected-left]="isSelected(-1, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, -1, col)">
         <ds-cell *ngIf="!renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellView" (key)="onKeyView($event)"
-          [column]="column" [data]="newModel"></ds-cell>
+          (blurinput)="onBlur($event)" [column]="column" [data]="newModel"></ds-cell>
         <ds-cell *ngIf="renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
-          [column]="column" [data]="newModel"></ds-cell>
+          (blurinput)="onBlur($event, true)" [column]="column" [data]="newModel"></ds-cell>
       </td>
     </ng-container>
   </tr>
