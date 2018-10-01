@@ -14,9 +14,12 @@ import {
   CellViewButtonComponent,
   CellViewObjectComponent,
   CellEditAutoCompleteComponent,
-  CellViewLinkComponent
+  CellViewLinkComponent,
+  ItemEvent,
+  DefaultTranslation
 } from 'ng-datasheet';
-import * as moment_ from 'moment';import { Person } from './models/person';
+import * as moment_ from 'moment';
+import { Person } from './models/person';
  const moment = moment_;
 
 @Component({
@@ -28,9 +31,10 @@ export class AppComponent implements OnInit {
 
   staticColumns: Array<Column>;
   paginatedColumns: Array<Column>;
-  staticDataSet: Array<Object> = [];
+  staticDataSet: Array<Person> = [];
   paginatedDataSet: Array<Object> = [];
   hobbiesDataSet: Array<Object>;
+  defaultTranslation: DefaultTranslation;
 
   searching = false;
   searchFailed = false;
@@ -41,6 +45,9 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.defaultTranslation = new DefaultTranslation();
+    this.defaultTranslation.selectAll = 'Selectionner tout';
     this.hobbiesDataSet = [
       { id: 1, name: 'Basket ball' },
       { id: 2, name: 'Base ball' },
@@ -118,6 +125,7 @@ export class AppComponent implements OnInit {
     col.width = 200;
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
+    col.autoOpen = true;
     col.cellView = CellViewDateComponent;
     col.cellEdit = CellEditDateComponent;
     this.staticColumns.push(col);
@@ -147,6 +155,9 @@ export class AppComponent implements OnInit {
     col.options.placeHolder = 'Search ...';
     col.cellView = CellViewLinkComponent;
     col.cellEdit = CellEditAutoCompleteComponent;
+    col.itemEvent.subscribe((event: ItemEvent) => {
+      this.staticDataSet[event.row].firstname = event.row.toFixed(2);
+    });
     this.staticColumns.push(col);
 
     col = new Column();
@@ -160,8 +171,8 @@ export class AppComponent implements OnInit {
     col.neededForAdd = false;
     col.options = new Options();
     col.options.dataSet = [
-      { icon: 'cog', event: this.onClick },
-      { icon: 'trash', event: this.onDeleteEvent },
+      { icon: 'cog', event: this.onClick, title: 'Edit' },
+      { icon: 'trash', event: this.onDeleteEvent, title: 'Suppress' },
     ];
     col.cellView = CellViewButtonComponent;
     col.cellEdit = CellViewButtonComponent;

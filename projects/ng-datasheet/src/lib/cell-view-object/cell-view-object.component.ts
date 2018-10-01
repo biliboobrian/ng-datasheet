@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CellDynamicComponent } from '../Cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
 import { Column } from '../models/column';
-import { Observable, Subscriber, Subscription } from 'rxjs';
+import { Observable, of} from 'rxjs';
 
 @Component({
   selector: 'ds-cell-view-object',
@@ -31,7 +31,7 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
         return data;
       }
     } else {
-      if (column.options.label) {
+      if ( data && column.options.label) {
         return data[column.options.label];
       } else {
         return data;
@@ -53,11 +53,7 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
         }
       }
     } else if (column.options.retreiveFunction) {
-      const objFunction = column.options.retreiveFunction() as Observable<any>;
-      const subObjFunction: Subscription = objFunction.subscribe(element => {
-        subObjFunction.unsubscribe();
-        return element;
-      });
+      return column.options.retreiveFunction(of(data)) as Observable<any>;
     }
     return null;
   }

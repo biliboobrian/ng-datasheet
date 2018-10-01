@@ -15,4 +15,12 @@ export class CellViewBasicComponent extends CellDynamicComponent implements OnIn
 
   ngOnInit() {
   }
+
+  getDisplayedLabel(): string {
+    if (this.column.options.retreiveFunction) {
+      return this.column.options.retreiveFunction(this.data);
+    } else {
+      return this.data[this.column.data];
+    }
+  }
 }

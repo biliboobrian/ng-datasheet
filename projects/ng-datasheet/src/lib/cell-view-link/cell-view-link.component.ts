@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CellDynamicComponent } from '../Cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
 import { Router } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Column } from '../models/column';
 
 @Component({
@@ -11,9 +11,6 @@ import { Column } from '../models/column';
   styleUrls: ['./cell-view-link.component.css']
 })
 export class CellViewLinkComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
-
-  @ViewChild('container', { read: ElementRef })
-  container: ElementRef;
 
   usePointer = false;
 
@@ -43,17 +40,12 @@ export class CellViewLinkComponent extends CellDynamicComponent implements OnIni
         }
       }
     } else if (column.options.retreiveFunction) {
-      const objFunction = column.options.retreiveFunction() as Observable<any>;
-      const subObjFunction: Subscription = objFunction.subscribe(element => {
-        subObjFunction.unsubscribe();
-        return element;
-      });
+      return column.options.retreiveFunction(of(data)) as Observable<any>;
     }
     return null;
   }
 
   ngOnInit() {
-    this.container.nativeElement.focus();
   }
 
   onClick(event: MouseEvent): void {

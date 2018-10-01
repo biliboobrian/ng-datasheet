@@ -19,6 +19,11 @@ export * from './lib/models/column';
 export * from './lib/models/filter';
 export * from './lib/models/sort';
 export * from './lib/models/options';
+export * from './lib/models/item-event';
+export * from './lib/models/pagination';
+export * from './lib/models/parameter-button';
+export * from './lib/models/render-event';
+export * from './lib/models/default-translation';
 
 // interface and common component
 export * from './lib/cell/cell.component';

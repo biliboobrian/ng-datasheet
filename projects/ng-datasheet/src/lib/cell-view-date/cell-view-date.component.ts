@@ -30,7 +30,11 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
 
   public static pasteData(data: string, column: Column): any {
     const myMoment: moment_.Moment = moment(data, column.options.format);
-    return myMoment;
+    if (myMoment.isValid()) {
+      return myMoment;
+    } else {
+      return null;
+    }
   }
 
   ngOnInit() {

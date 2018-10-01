@@ -7,6 +7,7 @@ import { Pagination } from '../models/pagination';
 import { DataService } from '../services/data.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: '[ds-filter]',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css']

@@ -5,6 +5,7 @@
   <div class="inner-addon right-addon">
 <input id="typeahead-http" type="text" class="form-control edit-ac" [class.is-invalid]="searchFailed" 
 [(ngModel)]="data[column.data]" [ngbTypeahead]="column.options.retreiveFunction" placeholder="{{ column.options.placeHolder }}" 
-[resultTemplate]="rt" [inputFormatter]="formatter" tabindex="-1" (keydown)="onKeyDown($event)" #container/>
+[resultTemplate]="rt" [inputFormatter]="formatter" tabindex="-1" (keydown)="onKeyDown($event)" (selectItem)="onSelectItem($event)"
+(blur)="onBlur($event)" #container/>
   <i *ngIf="searching" class="fa fa-spinner fa-spin"></i>
 </div>

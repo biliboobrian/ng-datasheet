@@ -21,8 +21,6 @@
 }
 
 .right-addon input {
-    height: 28px;
     padding-left: 4px; 
-    padding-right: 30px; 
     display: inline;
 }

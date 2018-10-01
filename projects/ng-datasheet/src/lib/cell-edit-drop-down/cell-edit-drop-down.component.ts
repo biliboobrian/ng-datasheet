@@ -53,6 +53,7 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   onSelect(option: Object): void {
     this.dataModel = option;
     this.open = false;
+    this.container.nativeElement.focus();
   }
 
   onToggle(event: MouseEvent): void {
@@ -83,9 +84,15 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
 
   getDisplayedLabel(): string {
     if (this.column.options.format && this.column.options.format === 'string') {
-      return this.column.options.dataSet.find(element => {
+      const elem: Object = this.column.options.dataSet.find(element => {
         return element[this.column.options.value] === this.data[this.column.data];
-      })[this.column.options.label];
+      });
+
+      if (elem) {
+        return elem[this.column.options.label];
+      } else {
+        return '';
+      }
     } else {
       return this.data[this.column.data][this.column.options.label];
     }

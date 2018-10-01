@@ -1,3 +1,5 @@
+import { DefaultTranslation } from './models/default-translation';
+import { ItemEvent } from './models/item-event';
 import { DateParserFormatter } from './cell-edit-date/date-parser-formatter';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Sort } from './models/sort';
@@ -12,6 +14,7 @@ import { RenderingService } from './services/rendering.service';
 import { ResizingService } from './services/resizing.service';
 import { DataService } from './services/data.service';
 import { Coordinate } from './models/coordinate';
+import { Observable } from 'rxjs';
 
 let COL_FORMAT = '';
 
@@ -72,6 +75,7 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   @Input() public parameterButtons: Array<ParameterButton>;
+  @Input() public defaultTranslation: DefaultTranslation = new DefaultTranslation();
   @Input() public withFilters = true;
   @Input() public paginated = false;
   @Input() public withAdd = true;
@@ -295,10 +299,30 @@ export class NgDatasheetComponent implements OnInit {
           rowPaste.split('\t').forEach(colPaste => {
             if (this.columns[col] && this.columns[col].editable) {
               const data: any = this.dataService.pasteType(colPaste, this.columns[col]);
-              if (row === -1) {
-                this.dataSet[this.dataSet.length - 1][this.columns[col].data] = data;
+              const columnItem: Column = this.columns[col];
+              const rowItem: number = (row === -1) ? this.dataSet.length - 1 : row;
+              if (data instanceof Observable) {
+                data.subscribe(function (rowItemPasted: number, columnItemPasted: Column, dataItem: Array<any>) {
+                  let newData: Object = null;
+                  if (dataItem && dataItem.length !== 0) {
+                    newData = dataItem[0];
+                  }
+                  this.dataSet[rowItemPasted][columnItemPasted.data] = newData;
+
+                  const ie = new ItemEvent();
+                  ie.column = columnItemPasted;
+                  ie.data = this.dataSet[rowItemPasted];
+                  ie.item = newData;
+                  ie.row = rowItemPasted;
+                  columnItemPasted.itemEvent.emit(ie);
+
+                }.bind(this, rowItem, columnItem));
               } else {
-                this.dataSet[row][this.columns[col].data] = data;
+                if (row === -1) {
+                  this.dataSet[this.dataSet.length - 1][this.columns[col].data] = data;
+                } else {
+                  this.dataSet[row][this.columns[col].data] = data;
+                }
               }
             }
             col++;
@@ -368,7 +392,13 @@ export class NgDatasheetComponent implements OnInit {
           this.main.row++;
         }
         this.main.col = this.colOnTab;
-        this.edited.empty();
+
+        if (this.columns[this.main.col].autoOpen) {
+          this.edited.setCoord(this.main.row, this.main.col);
+        } else {
+          this.edited.empty();
+        }
+
         this.selectBox.nativeElement.focus();
         break;
       case 9: // tab
@@ -388,7 +418,13 @@ export class NgDatasheetComponent implements OnInit {
         } else {
           this.main.col = next;
         }
-        this.edited.empty();
+
+        if (this.columns[this.main.col].autoOpen) {
+          this.edited.setCoord(this.main.row, this.main.col);
+        } else {
+          this.edited.empty();
+        }
+
         this.selectBox.nativeElement.focus();
         event.preventDefault();
         break;

@@ -86,4 +86,8 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
   onDateSelect(event) {
     this.container.nativeElement.focus();
   }
+
+  onBlur(event: FocusEvent): void {
+    this.blurinput.emit(event);
+  }
 }

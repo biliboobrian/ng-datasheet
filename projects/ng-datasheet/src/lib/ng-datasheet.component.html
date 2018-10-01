@@ -1,5 +1,4 @@
-<table class="table table-sm table-bordered data-grid" (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)"
-  #tbl>
+<table class="table table-sm table-bordered data-grid" (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)" #tbl>
   <tr>
     <th ds-global-menu 
       style="width: 26px" 
@@ -7,7 +6,7 @@
       [(filterList)]="filterList" 
       [parameterButtons]="parameterButtons" 
       [selection]="selection"
-    >
+      [defaultTranslation]="defaultTranslation">
     </th>
     <th ds-column 
       *ngFor="let column of columns; let col = index"
@@ -21,8 +20,7 @@
       [previousNoWidth]="renderingService.previousNoWidth(columns, col)"
       [withPagination]="withPagination"
       (renderEvent)="rendering($event)"
-      [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
-    >
+      [ngStyle]="(column)?renderingService.getColumnWidth(column):''">
     </th>
   </tr>
   <tr>
@@ -40,12 +38,6 @@
       [withPagination]="withPagination"
       (renderEvent)="rendering($event)"
       class="header">
-    <!-- <td *ngFor="let column of columns; let col = index" class="header">
-      <div class="inner-addon right-addon" *ngIf="column.searchable">
-        <input [(ngModel)]="filters[col].value" type="text" class="form-control filter" placeholder="{{ column.title }} .."
-          (keyup)="onFilterChange($event, col)" />
-        <i class="fa fa-filter"></i>
-      </div>-->
     </td>
   </tr>
   <ng-container *ngFor="let obj of dataSet; let row = index">
@@ -54,30 +46,14 @@
         <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" />
       </td>
       <ng-container *ngFor="let column of columns; let col = index">
-        <!-- <td ds-row
-          [obj]="obj"
-          [row]="row"
-          [col]="col"
-          [dataSet]="dataSet"
-          [main]="main"
-          [edited]="edited"
-          [start]="start"
-          [end]="end"
-          [column]="column"
-          [selected]="selected"
-          [colOnTab]="colOnTab"
-          [selectBox]="selectBox"
-          (keyView)="onKeyView($event)"
-          (keyEdit)="onKeyEdit($event)"
-        >-->
         <td (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
           (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
           [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)" [class.cell-selected-down]="isSelected(row, col, 3)"
-          [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)">
+          [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)" [class.view-read-only]="!columns[col].editable">
           <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView" (key)="onKeyView($event)"
-          (blurinput)="onBlur($event)" [column]="column" [data]="obj"></ds-cell>
+          (blurinput)="onBlur($event)" [column]="column" [data]="obj" [row]="row"></ds-cell>
           <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
-          (blurinput)="onBlur($event)" [column]="column" [data]="obj"></ds-cell>
+          (blurinput)="onBlur($event)" [column]="column" [data]="obj" [row]="row"></ds-cell>
         </td>
       </ng-container>
     </tr>
@@ -85,29 +61,14 @@
   <tr *ngIf="withAdd && newModelFunction && newModel && printNew" [style.background-color]="getBgColor(-1)" (mouseover)="changeTRStyle(-1)" (mouseout)="changeTRStyle()">
     <td style="width: 26px"></td>
     <ng-container *ngFor="let column of columns; let col = index">
-        <!--<td ds-row
-        [obj]="newModel"
-        [row]="-1"
-        [col]="col"
-        [dataSet]="dataSet"
-        [main]="main"
-        [edited]="edited"
-        [start]="start"
-        [end]="end"
-        [column]="column"
-        [selected]="selected"
-        [colOnTab]="colOnTab"
-        [selectBox]="selectBox"
-        
-      >-->
       <td (mousedown)="onMouseDown($event, newModel, -1, col)" (mouseup)="onMouseUp($event, newModel, -1, col)"
         (dblclick)="onDblClick($event, -1, col)" [class.cell-selected]="isSelected(-1, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, -1, col)"
         [class.cell-selected-up]="isSelected(-1, col, 1)" [class.cell-selected-right]="isSelected(-1, col, 2)" [class.cell-selected-down]="isSelected(-1, col, 3)"
         [class.cell-selected-left]="isSelected(-1, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, -1, col)">
         <ds-cell *ngIf="!renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellView" (key)="onKeyView($event)"
-          (blurinput)="onBlur($event)" [column]="column" [data]="newModel"></ds-cell>
+          (blurinput)="onBlur($event)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
         <ds-cell *ngIf="renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
-          (blurinput)="onBlur($event, true)" [column]="column" [data]="newModel"></ds-cell>
+          (blurinput)="onBlur($event, true)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
       </td>
     </ng-container>
   </tr>
@@ -117,19 +78,19 @@
     <nav>
       <ul class="pagination justify-content-end">
         <li class="page-item" [class.disabled]="pagination.currentPage === 0">
-          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, 0)" tabindex="-1">First</a>
+          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, 0)" tabindex="-1">{{ defaultTranslation.first }}</a>
         </li>
         <li class="page-item" [class.disabled]="pagination.currentPage === 0">
-          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, pagination.previousPage)" tabindex="-1">Previous</a>
+          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, pagination.previousPage)" tabindex="-1">{{ defaultTranslation.previous }}</a>
         </li>
         <li *ngFor="let page of pagination.pages" class="page-item" [class.disabled]="page === pagination.currentPage">
           <a class="page-link" (click)="goToPage($event, page)" href="javascript:void(0)">{{ page + 1 }}</a>
         </li>
         <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
-          <a class="page-link" (click)="goToPage($event, pagination.nextPage)" href="javascript:void(0)">Next</a>
+          <a class="page-link" (click)="goToPage($event, pagination.nextPage)" href="javascript:void(0)">{{ defaultTranslation.next }}</a>
         </li>
         <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
-          <a class="page-link" (click)="goToPage($event, pagination.lastPage)" href="javascript:void(0)" tabindex="-1">Last</a>
+          <a class="page-link" (click)="goToPage($event, pagination.lastPage)" href="javascript:void(0)" tabindex="-1">{{ defaultTranslation.last }}</a>
         </li>
       </ul>
     </nav>

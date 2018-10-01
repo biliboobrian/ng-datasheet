@@ -1,13 +1,16 @@
+import { DefaultTranslation } from './../models/default-translation';
 import { Component, OnInit, Input } from '@angular/core';
 import { ParameterButton } from '../models/parameter-button';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: '[ds-global-menu]',
   templateUrl: './global-menu.component.html',
   styleUrls: ['./global-menu.component.css']
 })
 export class GlobalMenuComponent implements OnInit {
 
+  @Input() public defaultTranslation: DefaultTranslation = new DefaultTranslation();
   @Input() public parameterButtons: Array<ParameterButton>;
   @Input() public dataSet: Array<Object>;
   @Input() public filterList: Array<number>;

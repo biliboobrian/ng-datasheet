@@ -74,3 +74,7 @@
 .header {
     padding: 0px !important;
 }
+
+.view-read-only {
+    background-color: #efefef;
+}

@@ -16,6 +16,7 @@
 .lbl-dd {
     height: 31px;
     padding: 5px;
+    background-color: #ffffff;
 }
 
 .icon-dd {
@@ -30,5 +31,5 @@
 }
 
 .option-dd:hover {
-    background-color: rgb(182, 182, 182);
+    background-color: #f5f5f5;
 }

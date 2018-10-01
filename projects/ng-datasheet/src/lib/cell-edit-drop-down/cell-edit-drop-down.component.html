@@ -1,13 +1,12 @@
-<!-- <select  [(ngModel)]="dataModel" class="form-control edit-select edit-dd" tabindex="-1" (keydown)="onKeyDown($event)" #container>
-    <option *ngFor="let option of column.options.dataSet" [ngValue]="option">{{ option[column.options.label] }}</option>
-  </select>-->
-<div class="lbl-dd" tabindex="-1" #container (click)="onToggle($event)" (keydown)="onKeyDown($event)">
+<div class="lbl-dd" tabindex="-1" #container (click)="onToggle($event)" 
+(keydown)="onKeyDown($event)">
   <span></span>{{ getDisplayedLabel() }}
   <div class="text-right float-right">
     <i class="fa fa-chevron-down icon-dd"></i>
   </div>
 </div>
-<div class="drop-dd" [class.invisible]="!open" [style.width]="column.width + 'px'">
+<div class="drop-dd" tabindex="-1" [class.invisible]="!open" [style.width]="column.width + 'px'">
   <div *ngFor="let option of column.options.dataSet" class="option-dd" [class.selected-dd]="isSelected(option)" (click)="onSelect(option)">{{
-    option[column.options.label] }}</div>
+    option[column.options.label] }}
+  </div>
 </div>

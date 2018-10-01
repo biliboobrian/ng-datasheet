@@ -6,6 +6,7 @@ export abstract class CellDynamicComponent {
 
     protected _column: Column = new Column();
     protected _data: Object = {};
+    protected _row = 0;
     public autoOpen = false;
 
     @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
@@ -27,6 +28,13 @@ export abstract class CellDynamicComponent {
         this._column = val;
     }
 
+    get row(): number {
+        return this._row;
+    }
+
+    set row(val: number) {
+        this._row = val;
+    }
     public static copyData(data: any, column: Column): string {
         if (data) {
             return data.toString();
