@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CellDynamicComponent } from '../Cell/cell-dynamic-component';
-import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
+import { CellDynamicComponent } from '../cell/cell-dynamic-component';
+import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Column } from '../models/column';

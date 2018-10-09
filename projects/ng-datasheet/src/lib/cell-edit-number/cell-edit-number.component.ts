@@ -1,24 +1,28 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { CellDynamicInterface } from './../cell/cell-dynamic-interface';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
-import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 
 @Component({
-  selector: 'ds-cell-edit-basic',
-  templateUrl: './cell-edit-basic.component.html',
-  styleUrls: ['./cell-edit-basic.component.css']
+  selector: 'ds-cell-edit-number',
+  templateUrl: './cell-edit-number.component.html',
+  styleUrls: ['./cell-edit-number.component.css']
 })
-export class CellEditBasicComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
+export class CellEditNumberComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
 
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
-  public _model = '';
+  public _model = 0;
 
-  public set model(val: string) {
-    this._model = val;
+  public set model(val: number) {
+    if (val) {
+      this._model = val;
+    } else {
+      this._model = 0;
+    }
   }
 
-  public get model(): string {
+  public get model(): number {
     return this._model;
   }
 
@@ -29,11 +33,15 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
   ngOnInit() {
     this.container.nativeElement.focus();
     if (this.column.componentParam['type'] === 'byKey') {
-      this._model = '';
+      this._model = 0;
     } else {
       this._model = this.data[this.column.data];
     }
     this.column.componentParam['type'] = '';
+  }
+
+  getStep(): number {
+    return 1 / Math.pow(10, this.column.componentParam['step']);
   }
 
   onKeyDown(event: KeyboardEvent): void {

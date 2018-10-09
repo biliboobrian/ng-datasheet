@@ -89,6 +89,7 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public sort: Sort;
   @Input() public dsKey: string;
   @Input() public trBgColor: string;
+  @Input() public editable = true;
 
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
 
@@ -296,39 +297,41 @@ export class NgDatasheetComponent implements OnInit {
           if (row === -1 || row === this.dataSet.length) {
             this.dataSet.push(this.newModelFunction());
           }
-          rowPaste.split('\t').forEach(colPaste => {
-            if (this.columns[col] && this.columns[col].editable) {
-              const data: any = this.dataService.pasteType(colPaste, this.columns[col]);
-              const columnItem: Column = this.columns[col];
-              const rowItem: number = (row === -1) ? this.dataSet.length - 1 : row;
-              if (data instanceof Observable) {
-                data.subscribe(function (rowItemPasted: number, columnItemPasted: Column, dataItem: Array<any>) {
-                  let newData: Object = null;
-                  if (dataItem && dataItem.length !== 0) {
-                    newData = dataItem[0];
-                  }
-                  this.dataSet[rowItemPasted][columnItemPasted.data] = newData;
+        }
 
-                  const ie = new ItemEvent();
-                  ie.column = columnItemPasted;
-                  ie.data = this.dataSet[rowItemPasted];
-                  ie.item = newData;
-                  ie.row = rowItemPasted;
-                  columnItemPasted.itemEvent.emit(ie);
-
-                }.bind(this, rowItem, columnItem));
-              } else {
-                if (row === -1) {
-                  this.dataSet[this.dataSet.length - 1][this.columns[col].data] = data;
-                } else {
-                  this.dataSet[row][this.columns[col].data] = data;
+        rowPaste.split('\t').forEach(colPaste => {
+          if (this.columns[col] && this.columns[col].editable) {
+            const data: any = this.dataService.pasteType(colPaste, this.columns[col]);
+            const columnItem: Column = this.columns[col];
+            const rowItem: number = (row === -1) ? this.dataSet.length - 1 : row;
+            if (data instanceof Observable) {
+              data.subscribe(function (rowItemPasted: number, columnItemPasted: Column, dataItem: Array<any>) {
+                let newData: Object = null;
+                if (dataItem && dataItem.length !== 0) {
+                  newData = dataItem[0];
                 }
+                this.dataSet[rowItemPasted][columnItemPasted.data] = newData;
+
+                const ie = new ItemEvent();
+                ie.column = columnItemPasted;
+                ie.data = this.dataSet[rowItemPasted];
+                ie.item = newData;
+                ie.row = rowItemPasted;
+                columnItemPasted.itemEvent.emit(ie);
+
+              }.bind(this, rowItem, columnItem));
+            } else {
+              if (row === -1) {
+                this.dataSet[this.dataSet.length - 1][this.columns[col].data] = data;
+              } else {
+                this.dataSet[row][this.columns[col].data] = data;
               }
             }
-            col++;
-          });
-        }
-        if (row !== -1) {
+          }
+          col++;
+        });
+
+        if (row !== -1 && row < this.dataSet.length) {
           row++;
         }
       });
@@ -435,19 +438,37 @@ export class NgDatasheetComponent implements OnInit {
       case 37: // left
         if (this.main.col > 0) {
           this.main.col = this.renderingService.getNextColumnEditable(this.columns, false, this.main.col, this.main.col);
-          this.edited.setCoord(this.main.row, this.main.col);
+          if (this.columns[this.main.col].autoOpen) {
+            this.edited.setCoord(this.main.row, this.main.col);
+          } else {
+            this.edited.empty();
+          }
+
+          this.selectBox.nativeElement.focus();
         }
         break;
       case 39: // right
         if (this.main.col < this.columns.length - 1) {
           this.main.col = this.renderingService.getNextColumnEditable(this.columns, true, this.main.col, this.main.col);
-          this.edited.setCoord(this.main.row, this.main.col);
+          if (this.columns[this.main.col].autoOpen) {
+            this.edited.setCoord(this.main.row, this.main.col);
+          } else {
+            this.edited.empty();
+          }
+
+          this.selectBox.nativeElement.focus();
         }
         break;
       case 38: // up
       case 40: // down
         this.onKeyDown(event);
-        this.edited.setCoord(this.main.row, this.main.col);
+        if (this.columns[this.main.col].autoOpen) {
+          this.edited.setCoord(this.main.row, this.main.col);
+        } else {
+          this.edited.empty();
+        }
+
+        this.selectBox.nativeElement.focus();
     }
   }
 
@@ -518,7 +539,7 @@ export class NgDatasheetComponent implements OnInit {
             break;
           default:
             if (this.columns[this.main.col].editable) {
-              this.columns[this.main.col].componentParam = 'byKey';
+              this.columns[this.main.col].componentParam['type'] = 'byKey';
               this.edited.setCoord(this.main.row, this.main.col);
 
             }

@@ -1,6 +1,6 @@
 import { ItemEvent } from './item-event';
 import { EventEmitter } from '@angular/core';
-import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
+import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Options } from './options';
 
 export class Column {
@@ -20,5 +20,5 @@ export class Column {
     cellEdit: CellDynamicInterface;
     itemEvent: EventEmitter<ItemEvent> = new EventEmitter<ItemEvent>();
 
-    componentParam: Object;
+    componentParam: Object = {};
 }

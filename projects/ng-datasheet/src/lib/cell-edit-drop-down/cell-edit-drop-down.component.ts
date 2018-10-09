@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CellDynamicComponent } from '../Cell/cell-dynamic-component';
-import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
+import { CellDynamicComponent } from '../cell/cell-dynamic-component';
+import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 
 @Component({
   selector: 'ds-cell-edit-drop-down',

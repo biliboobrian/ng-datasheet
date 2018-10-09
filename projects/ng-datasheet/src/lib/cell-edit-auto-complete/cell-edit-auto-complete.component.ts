@@ -1,8 +1,8 @@
 import { ItemEvent } from './../models/item-event';
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
-import { CellDynamicComponent } from '../Cell/cell-dynamic-component';
+import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
+import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

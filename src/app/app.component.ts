@@ -16,7 +16,9 @@ import {
   CellEditAutoCompleteComponent,
   CellViewLinkComponent,
   ItemEvent,
-  DefaultTranslation
+  DefaultTranslation,
+  CellEditNumberComponent,
+  CellViewNumberComponent
 } from 'ng-datasheet';
 import * as moment_ from 'moment';
 import { Person } from './models/person';
@@ -56,7 +58,7 @@ export class AppComponent implements OnInit {
     ];
 
     this.staticDataSet = [];
-    const p = new Person();
+    let p = new Person();
     p.id = 1;
     p.lastname = 'DOE';
     p.firstname = 'John';
@@ -67,7 +69,39 @@ export class AppComponent implements OnInit {
       link: 'https://en.wikipedia.org/wiki/Poilu'
     };
     this.staticDataSet.push(p);
-
+    p = new Person();
+    p.id = 1;
+    p.lastname = 'DOE';
+    p.firstname = 'John';
+    p.hobby = 0;
+    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.wiki = {
+      name: 'Poilu',
+      link: 'https://en.wikipedia.org/wiki/Poilu'
+    };
+    this.staticDataSet.push(p);
+    p = new Person();
+    p.id = 1;
+    p.lastname = 'DOE';
+    p.firstname = 'John';
+    p.hobby = 0;
+    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.wiki = {
+      name: 'Poilu',
+      link: 'https://en.wikipedia.org/wiki/Poilu'
+    };
+    this.staticDataSet.push(p);
+    p = new Person();
+    p.id = 1;
+    p.lastname = 'DOE';
+    p.firstname = 'John';
+    p.hobby = 0;
+    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.wiki = {
+      name: 'Poilu',
+      link: 'https://en.wikipedia.org/wiki/Poilu'
+    };
+    this.staticDataSet.push(p);
     /*  {
         id: 1,
         lastname: 'DOE',
@@ -134,13 +168,20 @@ export class AppComponent implements OnInit {
     col.title = 'Hobby';
     col.data = 'hobby';
     col.options = new Options();
-    col.options.dataSet = this.hobbiesDataSet;
+    /* col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
     col.options.format = 'string';
     col.autoOpen = true;
     col.cellView = CellViewObjectComponent;
-    col.cellEdit = CellEditDropDownComponent;
+    col.cellEdit = CellEditDropDownComponent; */
+    col.componentParam = {
+      step: 2
+    };
+    col.cellView = CellViewNumberComponent;
+    col.cellEdit = CellEditNumberComponent;
+
+
     this.staticColumns.push(col);
 
     col = new Column();

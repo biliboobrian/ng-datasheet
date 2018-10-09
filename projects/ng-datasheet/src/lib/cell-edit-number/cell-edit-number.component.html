@@ -1,0 +1,7 @@
+<input [(ngModel)]="model" type="number"  class="form-control edit-basic" #container 
+min="{{ (column.componentParam['min'])?column.componentParam['min']:null }}"
+max="{{ (column.componentParam['max'])?column.componentParam['max']:null }}"
+step="{{ (column.componentParam['step'])?getStep():null }}"
+(keydown)="onKeyDown($event)"
+(blur)="onBlur($event)"
+/>

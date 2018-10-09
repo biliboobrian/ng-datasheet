@@ -21,6 +21,8 @@ import { GlobalMenuComponent } from './global-menu/global-menu.component';
 import { ColumnComponent } from './column/column.component';
 import { FilterComponent } from './filter/filter.component';
 import { RowComponent } from './row/row.component';
+import { CellEditNumberComponent } from './cell-edit-number/cell-edit-number.component';
+import { CellViewNumberComponent } from './cell-view-number/cell-view-number.component';
 
 @NgModule({
   imports: [
@@ -47,7 +49,9 @@ import { RowComponent } from './row/row.component';
     GlobalMenuComponent,
     ColumnComponent,
     FilterComponent,
-    RowComponent
+    RowComponent,
+    CellEditNumberComponent,
+    CellViewNumberComponent
   ],
   entryComponents: [
     CellViewBasicComponent,
@@ -58,7 +62,9 @@ import { RowComponent } from './row/row.component';
     CellEditBasicComponent,
     CellEditAutoCompleteComponent,
     CellEditDropDownComponent,
-    CellEditDateComponent
+    CellEditDateComponent,
+    CellEditNumberComponent,
+    CellViewNumberComponent
   ],
   exports: [
     NgDatasheetComponent

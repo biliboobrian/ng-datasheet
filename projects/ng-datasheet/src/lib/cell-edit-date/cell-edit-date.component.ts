@@ -1,7 +1,7 @@
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CellDynamicComponent } from '../Cell/cell-dynamic-component';
-import { CellDynamicInterface } from '../Cell/cell-dynamic-interface';
+import { CellDynamicComponent } from '../cell/cell-dynamic-component';
+import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import * as moment_ from 'moment'; const moment = moment_;
 
 
