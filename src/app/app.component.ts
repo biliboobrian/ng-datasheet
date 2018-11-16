@@ -18,11 +18,12 @@ import {
   ItemEvent,
   DefaultTranslation,
   CellEditNumberComponent,
-  CellViewNumberComponent
+  CellViewNumberComponent,
+  RenderEvent
 } from 'ng-datasheet';
 import * as moment_ from 'moment';
 import { Person } from './models/person';
- const moment = moment_;
+const moment = moment_;
 
 @Component({
   selector: 'app-root',
@@ -33,9 +34,13 @@ export class AppComponent implements OnInit {
 
   staticColumns: Array<Column>;
   paginatedColumns: Array<Column>;
+  restColumns: Array<Column>;
+
   staticDataSet: Array<Person> = [];
   paginatedDataSet: Array<Object> = [];
+  restDataSet: Array<Object> = [];
   hobbiesDataSet: Array<Object>;
+
   defaultTranslation: DefaultTranslation;
 
   searching = false;
@@ -63,7 +68,8 @@ export class AppComponent implements OnInit {
     p.lastname = 'DOE';
     p.firstname = 'John';
     p.hobby = 0;
-    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.age = 13;
+    p.birthdate = moment_(new Date(1983, 2, 27));
     p.wiki = {
       name: 'Poilu',
       link: 'https://en.wikipedia.org/wiki/Poilu'
@@ -74,7 +80,8 @@ export class AppComponent implements OnInit {
     p.lastname = 'DOE';
     p.firstname = 'John';
     p.hobby = 0;
-    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.age = 12;
+    p.birthdate = moment_(new Date(1983, 2, 27));
     p.wiki = {
       name: 'Poilu',
       link: 'https://en.wikipedia.org/wiki/Poilu'
@@ -85,7 +92,8 @@ export class AppComponent implements OnInit {
     p.lastname = 'DOE';
     p.firstname = 'John';
     p.hobby = 0;
-    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.age = 11;
+    p.birthdate = moment_(new Date(1983, 2, 27));
     p.wiki = {
       name: 'Poilu',
       link: 'https://en.wikipedia.org/wiki/Poilu'
@@ -96,35 +104,13 @@ export class AppComponent implements OnInit {
     p.lastname = 'DOE';
     p.firstname = 'John';
     p.hobby = 0;
-    p.birthdate =  moment_(new Date(1983, 2, 27));
+    p.age = 100;
+    p.birthdate = moment_(new Date(1983, 2, 27));
     p.wiki = {
       name: 'Poilu',
       link: 'https://en.wikipedia.org/wiki/Poilu'
     };
     this.staticDataSet.push(p);
-    /*  {
-        id: 1,
-        lastname: 'DOE',
-        firstname: 'John',
-        hobby: 0,
-        birthdate: moment_(new Date(1983, 2, 27)),
-        wiki: {
-          name: 'Poilu',
-          link: 'https://en.wikipedia.org/wiki/Poilu'
-        }
-      },
-      {
-        id: 2,
-        lastname: 'FOE',
-        firstname: 'Paul',
-        hobby: 1,
-        birthdate: moment_(new Date(1983, 2, 27)),
-        wiki: {
-          name: 'Poil de carotte',
-          link: 'https://en.wikipedia.org/wiki/Poil_de_carotte'
-        }
-      }
-    ];*/
 
     this.staticColumns = new Array<Column>();
 
@@ -154,6 +140,15 @@ export class AppComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column();
+    col.title = 'age';
+    col.data = 'age';
+    col.width = 150;
+    col.type = 'number';
+    col.cellView = CellViewNumberComponent;
+    col.cellEdit = CellEditNumberComponent;
+    this.staticColumns.push(col);
+
+    col = new Column();
     col.title = 'Birthdate';
     col.data = 'birthdate';
     col.width = 200;
@@ -168,13 +163,6 @@ export class AppComponent implements OnInit {
     col.title = 'Hobby';
     col.data = 'hobby';
     col.options = new Options();
-    /* col.options.dataSet = this.hobbiesDataSet;
-    col.options.value = 'id';
-    col.options.label = 'name';
-    col.options.format = 'string';
-    col.autoOpen = true;
-    col.cellView = CellViewObjectComponent;
-    col.cellEdit = CellEditDropDownComponent; */
     col.componentParam = {
       step: 2
     };
@@ -242,6 +230,31 @@ export class AppComponent implements OnInit {
     col.cellView = CellViewBasicComponent;
     col.cellEdit = CellEditBasicComponent;
     this.paginatedColumns.push(col);
+
+
+    this.restColumns = new Array<Column>();
+
+    col = new Column();
+    col.title = 'Name';
+    col.data = 'name';
+    col.options = new Options();
+    col.options.label = 'name';
+    col.options.value = 'link';
+    col.options.format = '_blank';
+    col.width = 200;
+    col.editable = false;
+    col.cellView = CellViewLinkComponent;
+    col.cellEdit = CellEditBasicComponent;
+    this.restColumns.push(col);
+
+    col = new Column();
+    col.title = 'Description';
+    col.data = 'descr';
+    col.noWidth = true;
+    col.editable = false;
+    col.cellView = CellViewBasicComponent;
+    col.cellEdit = CellEditBasicComponent;
+    this.restColumns.push(col);
   }
 
   inlineSearchWiki = (text$: Observable<string>) => {
@@ -288,5 +301,9 @@ export class AppComponent implements OnInit {
       birthdate: null,
       client: null
     };
+  }
+
+  render(event: RenderEvent) {
+
   }
 }

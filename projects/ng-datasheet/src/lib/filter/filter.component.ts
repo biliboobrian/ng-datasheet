@@ -37,14 +37,16 @@ export class FilterComponent implements OnInit {
       this.pagination.currentPage = 0;
     }
 
-    this.filterList = this.dataService.filterDataSet(
-      this.dataSet,
-      this.filterList,
-      this.filters,
-      this.withPagination,
-      this.staticDs,
-      this.pagination
-    );
+    if (this.staticDs) {
+      this.filterList = this.dataService.filterDataSet(
+        this.dataSet,
+        this.filterList,
+        this.filters,
+        this.withPagination,
+        this.staticDs,
+        this.pagination
+      );
+    }
 
     this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort, this.filterList));
   }

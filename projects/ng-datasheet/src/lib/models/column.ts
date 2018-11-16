@@ -20,5 +20,6 @@ export class Column {
     cellEdit: CellDynamicInterface;
     itemEvent: EventEmitter<ItemEvent> = new EventEmitter<ItemEvent>();
 
+    type = 'string';
     componentParam: Object = {};
 }

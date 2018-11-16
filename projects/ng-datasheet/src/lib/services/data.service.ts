@@ -25,16 +25,38 @@ export class DataService {
           || this.copyType(b[sort.column.data], sort.column) === '') {
           return -1;
         }
+        if (sort.type === 'string') {
+          if (this.copyType(a[sort.column.data], sort.column).toLowerCase()
+            < this.copyType(b[sort.column.data], sort.column).toLowerCase()) {
+            return (sort.asc) ? -1 : 1;
+          }
 
-        if (this.copyType(a[sort.column.data], sort.column).toLowerCase()
-          < this.copyType(b[sort.column.data], sort.column).toLowerCase()) {
-          return (sort.asc) ? -1 : 1;
+          if (this.copyType(b[sort.column.data], sort.column).toLowerCase()
+            < this.copyType(a[sort.column.data], sort.column).toLowerCase()) {
+            return (sort.asc) ? 1 : -1;
+          }
+        } else if (sort.type === 'int') {
+          if (parseInt(this.copyType(a[sort.column.data], sort.column), 10)
+            < parseInt(this.copyType(b[sort.column.data], sort.column), 10)) {
+            return (sort.asc) ? -1 : 1;
+          }
+
+          if (parseInt(this.copyType(b[sort.column.data], sort.column), 10)
+            < parseInt(this.copyType(a[sort.column.data], sort.column), 10)) {
+            return (sort.asc) ? 1 : -1;
+          }
+        } else if (sort.type === 'number') {
+          if (parseFloat(this.copyType(a[sort.column.data], sort.column))
+            < parseFloat(this.copyType(b[sort.column.data], sort.column))) {
+            return (sort.asc) ? -1 : 1;
+          }
+
+          if (parseFloat(this.copyType(b[sort.column.data], sort.column))
+            < parseFloat(this.copyType(a[sort.column.data], sort.column))) {
+            return (sort.asc) ? 1 : -1;
+          }
         }
 
-        if (this.copyType(b[sort.column.data], sort.column).toLowerCase()
-          < this.copyType(a[sort.column.data], sort.column).toLowerCase()) {
-          return (sort.asc) ? 1 : -1;
-        }
       }
       return 0;
     });
@@ -63,8 +85,16 @@ export class DataService {
             const keywords = filters[index].value.split(' ').join('|');
             if (obj[filters[index].column.data]) {
               const txt: string = this.copyType(obj[filters[index].column.data], filters[index].column);
-              if (!txt.toString().match(new RegExp('(' + keywords + ')', 'gi'))) {
-                visible = false;
+
+              if (keywords.indexOf('*') === 0) {
+                if (!txt.toString().match(new RegExp('(' + keywords.substring(1) + ')', 'gi'))) {
+                  visible = false;
+                }
+              } else {
+
+                if (!txt.toString().match(new RegExp('^(' + keywords + ')', 'gi'))) {
+                  visible = false;
+                }
               }
             } else {
               visible = false;

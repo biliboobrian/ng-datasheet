@@ -53,16 +53,20 @@ export class ColumnComponent implements OnInit {
           this.sort.asc = true;
         }
 
-        this.dataService.sortDataSet(this.dataSet, this.sort);
+        this.sort.type = col.type;
 
-        this.filterList = this.dataService.filterDataSet(
-          this.dataSet,
-          this.filterList,
-          this.filters,
-          this.withPagination,
-          this.staticDs,
-          this.pagination
-        );
+        if (this.staticDs) {
+          this.dataService.sortDataSet(this.dataSet, this.sort);
+
+          this.filterList = this.dataService.filterDataSet(
+            this.dataSet,
+            this.filterList,
+            this.filters,
+            this.withPagination,
+            this.staticDs,
+            this.pagination
+          );
+        }
 
         this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort, this.filterList));
       }

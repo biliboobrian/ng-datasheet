@@ -1,10 +1,10 @@
 {
   "name": "@biliboobrian/ng-datasheet",
-  "version": "0.0.29",
+  "version": "0.0.32",
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "@ng-bootstrap/ng-bootstrap": "^3.0.0",
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^3.0.0 || ^4.0.0",
     "font-awesome": "^4.7.0",
     "moment": "^2.22.2",
     "moment-es6":"^1.0.0"

@@ -6,6 +6,7 @@ export class Person {
     private _hobby: number;
     private _birthdate: any;
     private _wiki: Object;
+    private _age: number;
 
     public get id() {
         return this._id;
@@ -28,6 +29,13 @@ export class Person {
 
     public set firstname(val: string) {
         this._firstname = val;
+    }
+    public get age() {
+        return this._age;
+    }
+
+    public set age(val: number) {
+        this._age = val;
     }
     public get hobby() {
         return this._hobby;
