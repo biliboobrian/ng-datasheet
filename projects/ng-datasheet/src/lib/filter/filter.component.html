@@ -1,6 +1,5 @@
 <div class="inner-addon right-addon" *ngIf="column.searchable">
-  <input [(ngModel)]="filters[col].value" 
-    [ngModelOptions]="{ updateOn: 'debounce', limit: 1000 }"
+  <input [(ngModel)]="filters[col].value"
     type="text" 
     class="form-control filter" 
     placeholder="{{ column.title }} .."

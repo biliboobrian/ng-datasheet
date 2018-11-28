@@ -33,7 +33,7 @@ export class FilterComponent implements OnInit {
   }
 
   onFilterChange(event: KeyboardEvent) {
-    if (this.withPagination && this.staticDs) {
+    if (this.withPagination) {
       this.pagination.currentPage = 0;
     }
 

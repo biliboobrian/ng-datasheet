@@ -1,4 +1,4 @@
-import { WikipediaService } from './wikipedia.service';
+import { WikipediaService } from './services/wikipedia.service';
 import { debounceTime, distinctUntilChanged, tap, switchMap, map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { OnInit } from '@angular/core';

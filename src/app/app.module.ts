@@ -6,10 +6,12 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { NgDatasheetModule } from 'ng-datasheet';
 import { AppRoutingModule } from './app-routing.module';
+import { GettingStartedComponent } from './components/getting-started/getting-started.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GettingStartedComponent
   ],
   imports: [
     BrowserModule,
