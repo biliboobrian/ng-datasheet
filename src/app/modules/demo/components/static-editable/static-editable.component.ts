@@ -7,15 +7,9 @@ import {
   Column,
   Options,
   CellEditDropDownComponent,
-  CellViewButtonComponent,
   CellViewObjectComponent,
-  CellEditAutoCompleteComponent,
-  CellViewLinkComponent,
-  ItemEvent,
-  DefaultTranslation,
   CellEditNumberComponent,
-  CellViewNumberComponent,
-  RenderEvent
+  CellViewNumberComponent
 } from 'ng-datasheet';
 
 import * as moment_ from 'moment';
