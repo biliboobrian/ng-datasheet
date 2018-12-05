@@ -23,6 +23,8 @@ import { FilterComponent } from './filter/filter.component';
 import { RowComponent } from './row/row.component';
 import { CellEditNumberComponent } from './cell-edit-number/cell-edit-number.component';
 import { CellViewNumberComponent } from './cell-view-number/cell-view-number.component';
+import { CellViewCheckboxComponent } from './cell-view-checkbox/cell-view-checkbox.component';
+import { CellEditCheckboxComponent } from './cell-edit-checkbox/cell-edit-checkbox.component';
 
 @NgModule({
   imports: [
@@ -51,7 +53,9 @@ import { CellViewNumberComponent } from './cell-view-number/cell-view-number.com
     FilterComponent,
     RowComponent,
     CellEditNumberComponent,
-    CellViewNumberComponent
+    CellViewNumberComponent,
+    CellViewCheckboxComponent,
+    CellEditCheckboxComponent
   ],
   entryComponents: [
     CellViewBasicComponent,
@@ -59,12 +63,14 @@ import { CellViewNumberComponent } from './cell-view-number/cell-view-number.com
     CellViewDateComponent,
     CellViewObjectComponent,
     CellViewLinkComponent,
+    CellViewNumberComponent,
+    CellViewCheckboxComponent,
     CellEditBasicComponent,
     CellEditAutoCompleteComponent,
     CellEditDropDownComponent,
     CellEditDateComponent,
     CellEditNumberComponent,
-    CellViewNumberComponent
+    CellEditCheckboxComponent
   ],
   exports: [
     NgDatasheetComponent

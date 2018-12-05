@@ -83,7 +83,7 @@ export class DataService {
             && filters[index].value !== '') {
 
             const keywords = filters[index].value.split(' ').join('|');
-            if (obj[filters[index].column.data]) {
+            if (obj[filters[index].column.data] !== null) {
               const txt: string = this.copyType(obj[filters[index].column.data], filters[index].column);
 
               if (keywords.indexOf('*') === 0) {

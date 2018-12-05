@@ -9,12 +9,14 @@ export * from './lib/cell-view-date/cell-view-date.component';
 export * from './lib/cell-view-object/cell-view-object.component';
 export * from './lib/cell-view-link/cell-view-link.component';
 export * from './lib/cell-view-number/cell-view-number.component';
+export * from './lib/cell-view-checkbox/cell-view-checkbox.component';
 
 export * from './lib/cell-edit-basic/cell-edit-basic.component';
 export * from './lib/cell-edit-auto-complete/cell-edit-auto-complete.component';
 export * from './lib/cell-edit-date/cell-edit-date.component';
 export * from './lib/cell-edit-drop-down/cell-edit-drop-down.component';
 export * from './lib/cell-edit-number/cell-edit-number.component';
+export * from './lib/cell-edit-checkbox/cell-edit-checkbox.component';
 
 // models
 export * from './lib/models/column';

@@ -9,7 +9,9 @@ import {
   CellEditDropDownComponent,
   CellViewObjectComponent,
   CellEditNumberComponent,
-  CellViewNumberComponent
+  CellViewNumberComponent,
+  CellViewCheckboxComponent,
+  CellEditCheckboxComponent
 } from 'ng-datasheet';
 
 import * as moment_ from 'moment';
@@ -42,8 +44,9 @@ export class StaticEditableComponent implements OnInit {
     this.staticDataSet = [];
     let p = new Person();
     p.id = 1;
-    p.lastname = 'DOE';
-    p.firstname = 'John';
+    p.lastname = 'BANNING';
+    p.firstname = 'Peter';
+    p.deleted = false;
     p.hobby = 1;
     p.age = 13;
     p.birthdate = moment_(new Date(1983, 2, 27));
@@ -57,6 +60,7 @@ export class StaticEditableComponent implements OnInit {
     p.id = 1;
     p.lastname = 'DOE';
     p.firstname = 'John';
+    p.deleted = false;
     p.hobby = 2;
     p.age = 12;
     p.birthdate = moment_(new Date(1983, 2, 27));
@@ -68,8 +72,9 @@ export class StaticEditableComponent implements OnInit {
     this.staticDataSet.push(p);
     p = new Person();
     p.id = 1;
-    p.lastname = 'DOE';
-    p.firstname = 'John';
+    p.lastname = 'ANDERSON';
+    p.firstname = 'Thomas';
+    p.deleted = false;
     p.hobby = 3;
     p.age = 11;
     p.birthdate = moment_(new Date(1983, 2, 27));
@@ -81,8 +86,9 @@ export class StaticEditableComponent implements OnInit {
     this.staticDataSet.push(p);
     p = new Person();
     p.id = 1;
-    p.lastname = 'DOE';
-    p.firstname = 'John';
+    p.lastname = 'WATSON';
+    p.firstname = 'Sherlock';
+    p.deleted = true;
     p.hobby = 4;
     p.age = 100;
     p.birthdate = moment_(new Date(1983, 2, 27));
@@ -92,8 +98,6 @@ export class StaticEditableComponent implements OnInit {
     };
 
     this.staticDataSet.push(p);
-
-
     this.staticColumns = new Array<Column>();
 
     let col: Column = new Column();
@@ -128,6 +132,16 @@ export class StaticEditableComponent implements OnInit {
     col.type = 'number';
     col.cellView = CellViewNumberComponent;
     col.cellEdit = CellEditNumberComponent;
+    this.staticColumns.push(col);
+
+    col = new Column();
+    col.title = 'is deleted?';
+    col.data = 'deleted';
+    col.width = 150;
+    col.type = 'number';
+    col.autoOpen = true;
+    col.cellView = CellViewCheckboxComponent;
+    col.cellEdit = CellEditCheckboxComponent;
     this.staticColumns.push(col);
 
     col = new Column();

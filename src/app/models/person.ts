@@ -7,6 +7,7 @@ export class Person {
     private _birthdate: any;
     private _wiki: Object;
     private _age: number;
+    private _deleted: boolean;
 
     public get id() {
         return this._id;
@@ -51,11 +52,20 @@ export class Person {
     public set birthdate(val: any) {
         this._birthdate = val;
     }
+
     public get wiki() {
         return this._wiki;
     }
 
     public set wiki(val: Object) {
         this._wiki = val;
+    }
+
+    public get deleted() {
+        return this._deleted;
+    }
+
+    public set deleted(val: boolean) {
+        this._deleted = val;
     }
 }

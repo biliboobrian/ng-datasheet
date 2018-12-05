@@ -90,6 +90,7 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public dsKey: string;
   @Input() public trBgColor: string;
   @Input() public editable = true;
+  @Input() public globalMenu = false;
 
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
 
