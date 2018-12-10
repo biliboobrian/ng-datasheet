@@ -1,4 +1,4 @@
-import { NgDatasheetModule } from 'ng-datasheet';
+import { NgDatasheetModule } from 'projects/ng-datasheet/src/public_api';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 

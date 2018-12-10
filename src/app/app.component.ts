@@ -18,7 +18,7 @@ import {
   CellEditNumberComponent,
   CellViewNumberComponent,
   RenderEvent
-} from 'ng-datasheet';
+} from 'projects/ng-datasheet/src/public_api';
 import * as moment_ from 'moment';
 import { Person } from './models/person';
 const moment = moment_;
