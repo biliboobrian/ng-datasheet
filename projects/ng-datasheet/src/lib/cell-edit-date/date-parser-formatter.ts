@@ -1,7 +1,7 @@
 
-import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment_ from 'moment';
 import { Inject } from '@angular/core';
+import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
  const moment = moment_;
 
 export class DateParserFormatter extends NgbDateParserFormatter {

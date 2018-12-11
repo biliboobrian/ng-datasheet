@@ -1,6 +1,23 @@
 {
   "name": "@biliboobrian/ng-datasheet",
-  "version": "0.0.33",
+  "author": "Pierre Hanauer <biliboobrian@yahoo.fr>",
+  "version": "0.0.36",
+  "homepage": "https://biliboobrian.github.io/ng-datasheet/",
+  "description": "Native Angular inline spreadsheet component",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/biliboobrian/ng-datasheet.git"
+  },
+  "keywords": [
+    "angular",
+    "datasheet",
+    "ng",
+    "ng2",
+    "angular2",
+    "spreadsheet",
+    "ng-datasheet"
+  ],
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
