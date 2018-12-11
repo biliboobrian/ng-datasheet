@@ -7,7 +7,11 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build_lib": "ng build ng-datasheet",
+    "build_lib_prod": "ng build ng-datasheet --prod",
+    "copy-readme": "copy .\\README.md .\\dist\\ng-datasheet",
+    "package": "npm run build_lib_prod && npm run copy-readme"
   },
   "private": true,
   "dependencies": {
