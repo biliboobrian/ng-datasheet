@@ -11,7 +11,8 @@ import {
   CellEditNumberComponent,
   CellViewNumberComponent,
   CellViewCheckboxComponent,
-  CellEditCheckboxComponent
+  CellEditCheckboxComponent,
+  CellViewButtonComponent
 } from 'ng-datasheet';
 
 import * as moment_ from 'moment';
@@ -165,9 +166,44 @@ export class StaticEditableComponent implements OnInit {
 
     col.cellView = CellViewObjectComponent;
     col.cellEdit = CellEditDropDownComponent;
-
-
     this.staticColumns.push(col);
+
+    col = new Column();
+    col.title = '';
+    col.width = 80;
+    col.data = null;
+    col.selectable = false;
+    col.searchable = false;
+    col.editable = false;
+    col.sortable = false;
+    col.neededForAdd = false;
+    col.options = new Options();
+    col.options.dataSet = [
+      {
+        icon: 'edit',
+        event: this.onEdit,
+        color: '#FFFFFF',
+        bgColor: '#00FF00',
+        borderColor: '#FFFFFF'
+      },
+      {
+        icon: 'trash',
+        event: this.onDelete,
+        color: '#FFFFFF',
+        bgColor: '#FF0000',
+        borderColor: '#FFFFFF'
+      },
+    ];
+
+    col.cellView = CellViewButtonComponent;
+    col.cellEdit = CellViewButtonComponent;
+    this.staticColumns.push(col);
+  }
+
+  onEdit = (event: MouseEvent, data: Object) => {
+  }
+
+  onDelete = (event: MouseEvent, data: Object) => {
   }
 
   createItem() {

@@ -14,5 +14,30 @@ export class CellViewButtonComponent extends CellDynamicComponent implements OnI
   }
 
   ngOnInit() {
+
+  }
+
+  getBgColor(button: Object): string {
+    if (button['bgColor']) {
+      return button['bgColor'];
+    } else {
+      return null;
+    }
+  }
+
+  getColor(button: Object): string {
+    if (button['color']) {
+      return button['color'];
+    } else {
+      return '#000000';
+    }
+  }
+
+  getBorderColor(button: Object): string {
+    if (button['borderColor']) {
+      return button['borderColor'];
+    } else {
+      return '#000000';
+    }
   }
 }

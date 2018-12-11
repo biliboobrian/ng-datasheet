@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { NgDatasheetModule } from 'ng-datasheet';
 import { AppRoutingModule } from './app-routing.module';
 import { GettingStartedComponent } from './components/getting-started/getting-started.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { GettingStartedComponent } from './components/getting-started/getting-st
     NgDatasheetModule,
     HttpClientModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot()
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

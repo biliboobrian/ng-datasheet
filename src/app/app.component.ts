@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
   paginatedDataSet: Array<Object> = [];
   restDataSet: Array<Object> = [];
   hobbiesDataSet: Array<Object>;
+  isNavbarCollapsed = true;
 
   defaultTranslation: DefaultTranslation;
 
