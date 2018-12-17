@@ -77,7 +77,6 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public parameterButtons: Array<ParameterButton>;
   @Input() public defaultTranslation: DefaultTranslation = new DefaultTranslation();
   @Input() public withFilters = true;
-  @Input() public paginated = false;
   @Input() public withAdd = true;
   @Input() public primaryKey = 'id';
   @Input() public newModelFunction: Function;
