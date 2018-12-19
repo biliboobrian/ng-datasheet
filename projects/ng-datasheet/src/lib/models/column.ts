@@ -22,4 +22,17 @@ export class Column {
 
     type = 'string';
     componentParam: Object = {};
+
+    constructor(title?: string, data?: string, cellView?: CellDynamicInterface, cellEdit?: CellDynamicInterface, width?: number) {
+        this.title = title;
+        this.data = data;
+        this.cellView = cellView;
+        this.cellEdit = cellEdit;
+
+        if (width && width === 0) {
+            this.noWidth = true;
+        } else {
+            this.width = width;
+        }
+    }
 }

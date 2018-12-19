@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
 
     this.staticColumns = new Array<Column>();
 
-    let col: Column = new Column();
+    /*let col: Column = new Column();
     col.title = 'ID';
     col.data = 'id';
     col.width = 60;
@@ -253,7 +253,7 @@ export class AppComponent implements OnInit {
     col.editable = false;
     col.cellView = CellViewBasicComponent;
     col.cellEdit = CellEditBasicComponent;
-    this.restColumns.push(col);
+    this.restColumns.push(col);*/
   }
 
   inlineSearchWiki = (text$: Observable<string>) => {

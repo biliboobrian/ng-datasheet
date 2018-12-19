@@ -101,77 +101,38 @@ export class StaticEditableComponent implements OnInit {
     this.staticDataSet.push(p);
     this.staticColumns = new Array<Column>();
 
-    let col: Column = new Column();
-    col.title = 'ID';
-    col.data = 'id';
-    col.width = 60;
-    col.editable = false;
-    col.cellView = CellViewBasicComponent;
-    col.cellEdit = CellEditBasicComponent;
+    let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
     this.staticColumns.push(col);
 
-    col = new Column();
-    col.title = 'Firstname';
-    col.data = 'firstname';
-    col.noWidth = true;
-    col.cellView = CellViewBasicComponent;
-    col.cellEdit = CellEditBasicComponent;
+    col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
     this.staticColumns.push(col);
 
-    col = new Column();
-    col.title = 'Lastname';
-    col.data = 'lastname';
-    col.width = 150;
-    col.cellView = CellViewBasicComponent;
-    col.cellEdit = CellEditBasicComponent;
+    col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
     this.staticColumns.push(col);
 
-    col = new Column();
-    col.title = 'age';
-    col.data = 'age';
-    col.width = 150;
+    col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 150);
     col.type = 'number';
-    col.cellView = CellViewNumberComponent;
-    col.cellEdit = CellEditNumberComponent;
     this.staticColumns.push(col);
 
-    col = new Column();
-    col.title = 'is deleted?';
-    col.data = 'deleted';
-    col.width = 150;
+    col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
     col.type = 'number';
     col.autoOpen = true;
-    col.cellView = CellViewCheckboxComponent;
-    col.cellEdit = CellEditCheckboxComponent;
     this.staticColumns.push(col);
 
-    col = new Column();
-    col.title = 'Birthdate';
-    col.data = 'birthdate';
-    col.width = 200;
+    col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
     col.autoOpen = true;
-    col.cellView = CellViewDateComponent;
-    col.cellEdit = CellEditDateComponent;
     this.staticColumns.push(col);
 
-    col = new Column();
-    col.title = 'Hobby';
-    col.data = 'hobby';
+    col = new Column('Hobby', 'hobby',  CellViewObjectComponent, CellEditDropDownComponent, 0);
     col.options = new Options();
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
-
-    col.cellView = CellViewObjectComponent;
-    col.cellEdit = CellEditDropDownComponent;
     this.staticColumns.push(col);
 
-    col = new Column();
-    col.title = '';
-    col.width = 80;
-    col.data = null;
+    col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 80);
     col.selectable = false;
     col.searchable = false;
     col.editable = false;
@@ -194,9 +155,6 @@ export class StaticEditableComponent implements OnInit {
         borderColor: '#FFFFFF'
       },
     ];
-
-    col.cellView = CellViewButtonComponent;
-    col.cellEdit = CellViewButtonComponent;
     this.staticColumns.push(col);
   }
 

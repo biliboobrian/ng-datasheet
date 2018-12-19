@@ -32,6 +32,20 @@ export class FilterComponent implements OnInit {
   ngOnInit() {
   }
 
+  get filterModel(): string {
+    if (this.filters && this.filters[this.col]) {
+      return this.filters[this.col].value;
+    } else {
+      return null;
+    }
+  }
+
+  set filterModel(val: string) {
+    if (this.filters && this.filters[this.col]) {
+      this.filters[this.col].value = val;
+    }
+  }
+
   onFilterChange(event: KeyboardEvent) {
     if (this.withPagination) {
       this.pagination.currentPage = 0;

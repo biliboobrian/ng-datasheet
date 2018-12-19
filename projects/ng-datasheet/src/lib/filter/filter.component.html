@@ -1,5 +1,5 @@
 <div class="inner-addon right-addon" *ngIf="column.searchable">
-  <input [(ngModel)]="filters[col].value"
+  <input [(ngModel)]="filterModel"
     type="text" 
     class="form-control filter" 
     placeholder="{{ column.title }} .."

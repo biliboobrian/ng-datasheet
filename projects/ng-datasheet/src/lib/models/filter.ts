@@ -3,7 +3,7 @@ import { Column } from './column';
 export class Filter {
 
     column: Column;
-    value: string;
+    value = '';
     useLike: Boolean = true;
 
     constructor(column: Column) {

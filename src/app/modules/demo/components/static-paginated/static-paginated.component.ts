@@ -30,27 +30,7 @@ export class StaticPaginatedComponent implements OnInit {
 
     this.paginatedColumns = new Array<Column>();
 
-    let col: Column = new Column();
-    col.title = 'Name';
-    col.data = 'name';
-    col.options = new Options();
-    col.options.label = 'name';
-    col.options.value = 'link';
-    col.options.format = '_blank';
-    col.width = 200;
-    col.editable = false;
-    col.cellView = CellViewLinkComponent;
-    col.cellEdit = CellEditBasicComponent;
-    this.paginatedColumns.push(col);
 
-    col = new Column();
-    col.title = 'Description';
-    col.data = 'descr';
-    col.noWidth = true;
-    col.editable = false;
-    col.cellView = CellViewBasicComponent;
-    col.cellEdit = CellEditBasicComponent;
-    this.paginatedColumns.push(col);
 
     this.searchWiki();
   }
@@ -75,6 +55,18 @@ export class StaticPaginatedComponent implements OnInit {
   searchWiki(event?: MouseEvent): void {
     this.wikiService.search(this.wikiSearch).subscribe(data => {
       this.paginatedDataSet = data;
+
+      let col: Column = new Column('Name', 'name', CellViewLinkComponent, CellEditBasicComponent, 200);
+      col.options = new Options();
+      col.options.label = 'name';
+      col.options.value = 'link';
+      col.options.format = '_blank';
+      col.editable = false;
+      this.paginatedColumns.push(col);
+  
+      col = new Column('Description', 'descr', CellViewBasicComponent, CellEditBasicComponent, 0);
+      col.editable = false;
+      this.paginatedColumns.push(col);
     });
   }
 }
