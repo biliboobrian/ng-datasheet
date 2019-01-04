@@ -1,7 +1,7 @@
 # ng-datasheet
 Datasheet library with or without inline modifications
 
-###Installation via NPM
+### Installation via NPM
 
 This project has been created with Angular 6+, it is compatible with Angular 7. It is using for dependencies [ng-bootstrap](https://ng-bootstrap.github.io/#/home), [font-awsome](https://fontawesome.com/) and [moment](https://momentjs.com/).
 
@@ -28,7 +28,7 @@ Import the library inside your NgModule by adding the import statment and adding
 		]
 	})
 
-###Instanciate your first Ng-DataSheet
+### Instanciate your first Ng-DataSheet
 
 In a component child of your module, add in the .html file the ng-datasheet tag.
 
