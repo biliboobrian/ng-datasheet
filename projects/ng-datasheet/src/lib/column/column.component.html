@@ -1,4 +1,4 @@
-<div (click)="onSort($event, column)">
+<div (mouseup)="onSort($event, column)">
   <div *ngIf="!column.noWidth && previousNoWidth" class="column-resize-left" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mouseMove)="onMouseMove($event)"></div>
   <span>{{ column.title }}</span>
   <div class="text-right float-right" *ngIf="column.sortable">

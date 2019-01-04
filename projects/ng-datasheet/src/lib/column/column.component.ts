@@ -74,6 +74,9 @@ export class ColumnComponent implements OnInit {
   }
 
   onMouseDown(event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
+
     this.mouseX = event.clientX;
     this.actualWidth = this.column.width;
     this.column.isResizing = true;
@@ -88,6 +91,9 @@ export class ColumnComponent implements OnInit {
 
 
   onMouseMove(event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (this.column.isResizing) {
       if (this.previousNoWidth) {
         this.column.width = this.actualWidth - event.clientX + this.mouseX;
@@ -98,6 +104,9 @@ export class ColumnComponent implements OnInit {
   }
 
   onMouseUp(event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+
     if (this.column.isResizing) {
       if (this.previousNoWidth) {
         this.column.width = this.actualWidth - event.clientX + this.mouseX;

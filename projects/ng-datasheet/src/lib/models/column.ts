@@ -29,10 +29,10 @@ export class Column {
         this.cellView = cellView;
         this.cellEdit = cellEdit;
 
-        if (width && width === 0) {
-            this.noWidth = true;
-        } else {
+        if (width && width !== 0) {
             this.width = width;
+        } else {
+            this.noWidth = true;
         }
     }
 }

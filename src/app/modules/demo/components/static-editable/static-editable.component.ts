@@ -50,89 +50,72 @@ export class StaticEditableComponent implements OnInit {
     p.deleted = false;
     p.hobby = 1;
     p.age = 13;
-    p.birthdate = moment_(new Date(1983, 2, 27));
-    p.wiki = {
-      name: 'Poilu',
-      link: 'https://en.wikipedia.org/wiki/Poilu'
-    };
+    p.birthdate = moment_(new Date(1967, 11, 12));
 
     this.staticDataSet.push(p);
     p = new Person();
-    p.id = 1;
+    p.id = 2;
     p.lastname = 'DOE';
     p.firstname = 'John';
     p.deleted = false;
     p.hobby = 2;
     p.age = 12;
     p.birthdate = moment_(new Date(1983, 2, 27));
-    p.wiki = {
-      name: 'Poilu',
-      link: 'https://en.wikipedia.org/wiki/Poilu'
-    };
 
     this.staticDataSet.push(p);
     p = new Person();
-    p.id = 1;
+    p.id = 3;
     p.lastname = 'ANDERSON';
     p.firstname = 'Thomas';
     p.deleted = false;
     p.hobby = 3;
     p.age = 11;
-    p.birthdate = moment_(new Date(1983, 2, 27));
-    p.wiki = {
-      name: 'Poilu',
-      link: 'https://en.wikipedia.org/wiki/Poilu'
-    };
+    p.birthdate = moment_(new Date(1977, 10, 2));
 
     this.staticDataSet.push(p);
     p = new Person();
-    p.id = 1;
+    p.id = 4;
     p.lastname = 'WATSON';
     p.firstname = 'Sherlock';
     p.deleted = true;
     p.hobby = 4;
     p.age = 100;
-    p.birthdate = moment_(new Date(1983, 2, 27));
-    p.wiki = {
-      name: 'Poilu',
-      link: 'https://en.wikipedia.org/wiki/Poilu'
-    };
+    p.birthdate = moment_(new Date(1990, 7, 8));
 
     this.staticDataSet.push(p);
+
     this.staticColumns = new Array<Column>();
 
     let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
     this.staticColumns.push(col);
 
-    col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
+    col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent,0);
     this.staticColumns.push(col);
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
     this.staticColumns.push(col);
 
-    col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 150);
+    col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 70);
     col.type = 'number';
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
-    col.type = 'number';
-    col.autoOpen = true;
     this.staticColumns.push(col);
 
     col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
-    col.autoOpen = true;
     this.staticColumns.push(col);
 
-    col = new Column('Hobby', 'hobby',  CellViewObjectComponent, CellEditDropDownComponent, 0);
+    col = new Column('Hobby', 'hobby',  CellViewObjectComponent, CellEditDropDownComponent, 200);
     col.options = new Options();
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
+    col.options.format = 'string';
     this.staticColumns.push(col);
 
-    col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 80);
+    col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 71);
     col.selectable = false;
     col.searchable = false;
     col.editable = false;
@@ -144,14 +127,14 @@ export class StaticEditableComponent implements OnInit {
         icon: 'edit',
         event: this.onEdit,
         color: '#FFFFFF',
-        bgColor: '#00FF00',
+        bgColor: 'rgb(0, 102, 150)',
         borderColor: '#FFFFFF'
       },
       {
         icon: 'trash',
         event: this.onDelete,
         color: '#FFFFFF',
-        bgColor: '#FF0000',
+        bgColor: 'rgb(191, 0, 0)',
         borderColor: '#FFFFFF'
       },
     ];
