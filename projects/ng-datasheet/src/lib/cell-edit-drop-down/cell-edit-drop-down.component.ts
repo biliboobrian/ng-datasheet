@@ -1,3 +1,4 @@
+import { ItemEvent } from './../models/item-event';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
@@ -53,6 +54,14 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   onSelect(option: Object): void {
     this.dataModel = option;
     this.open = false;
+
+    const ie: ItemEvent = new ItemEvent();
+    ie.item = option;
+    ie.data = this.data;
+    ie.column = this.column;
+    ie.row = this.row;
+
+    this.column.itemEvent.emit(ie);
     this.container.nativeElement.focus();
   }
 

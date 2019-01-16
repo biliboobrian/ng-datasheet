@@ -12,19 +12,19 @@ import {
   CellViewNumberComponent,
   CellViewCheckboxComponent,
   CellEditCheckboxComponent,
-  CellViewButtonComponent
+  CellViewButtonComponent,
+  ItemEvent
 } from 'projects/ng-datasheet/src/public_api';
 
 import * as moment_ from 'moment';
 import { Person } from '../../../../models/person';
 const moment = moment_;
-
 @Component({
-  selector: 'app-static-editable',
-  templateUrl: './static-editable.component.html',
-  styleUrls: ['./static-editable.component.css']
+  selector: 'app-static-with-event',
+  templateUrl: './static-with-event.component.html',
+  styleUrls: ['./static-with-event.component.css']
 })
-export class StaticEditableComponent implements OnInit {
+export class StaticWithEventComponent implements OnInit {
 
 
   staticColumns: Array<Column>;
@@ -90,6 +90,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
+    col.itemEvent.subscribe(this.onFirstnameChange);
     this.staticColumns.push(col);
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
@@ -100,6 +101,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
+    col.itemEvent.subscribe(this.onDeleteChange);
     this.staticColumns.push(col);
 
     col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
@@ -150,4 +152,13 @@ export class StaticEditableComponent implements OnInit {
   createItem() {
     return new Person();
   }
+
+  onFirstnameChange(event: ItemEvent): void {
+
+  }
+
+  onDeleteChange(event: ItemEvent): void {
+
+  }
+
 }
