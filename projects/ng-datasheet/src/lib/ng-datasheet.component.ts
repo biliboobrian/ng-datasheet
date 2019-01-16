@@ -354,6 +354,10 @@ export class NgDatasheetComponent implements OnInit {
     }
   }
 
+  updateDatasheet() {
+      this.filters = this.navigatingService.initFilters(this.columns);
+  }
+
   onKeyUp(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 9:
