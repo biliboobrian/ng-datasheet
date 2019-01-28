@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {
   CellViewBasicComponent,
   CellEditBasicComponent,
@@ -18,6 +18,7 @@ import {
 
 import * as moment_ from 'moment';
 import { Person } from '../../../../models/person';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 const moment = moment_;
 @Component({
   selector: 'app-static-with-event',
@@ -26,12 +27,14 @@ const moment = moment_;
 })
 export class StaticWithEventComponent implements OnInit {
 
-
+  @ViewChild('content') content: ElementRef;
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];
   hobbiesDataSet: Array<Object>;
 
-  constructor() { }
+  constructor(
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.hobbiesDataSet = [
@@ -102,6 +105,7 @@ export class StaticWithEventComponent implements OnInit {
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
     col.itemEvent.subscribe(this.onDeleteChange);
+    col.autoOpen = true;
     this.staticColumns.push(col);
 
     col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
@@ -157,8 +161,8 @@ export class StaticWithEventComponent implements OnInit {
 
   }
 
-  onDeleteChange(event: ItemEvent): void {
-
+  onDeleteChange = (event: ItemEvent) => {
+    const modal: NgbModalRef = this.modalService.open(this.content);
   }
 
 }

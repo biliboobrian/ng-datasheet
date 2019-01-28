@@ -30,6 +30,8 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
   }
 
   onChange(event: Event): void {
+    event.target['blur']();
+    event.preventDefault();
     const ie: ItemEvent = new ItemEvent();
     ie.item = this.container.nativeElement.checked;
     ie.data = this.data;
