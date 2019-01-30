@@ -3,35 +3,36 @@
     <div class="col-12">
       <h4>Exemple of static data with editable paginated ng-datasheet</h4>
     </div>
+    <div class="col-12">
+      This Exemple show you a datasheet getting a finish set of data from a wikipedia search with filter, sort,
+      pagination and
+      resizing capabilities. This datasheet is not editable.
+    </div>
   </div>
   <div class="row pb-5">
     <div class="col-12">
-      <div><code>Enter</code> : Switch to edition mode</div>
       <div><code>Tab</code> : Go to next column, if you reach end of table, go to next row first column</div>
       <div><code>Arrow</code> : Navigate in cells</div>
-      <div><code>Ctrl + C</code> : copy mouse selection (can be paste on spreadsheet applications)</div>
-      <div><code>Ctrl + V</code> : paste data in cell(s) (ca be copied from spreadsheet applications)</div>
+      <div><code>Ctrl + C</code> : Copy mouse selection (can be paste on spreadsheet applications)</div>
+      <div><code>Ctrl + Click</code> : Open a link on a new tab</div>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
       <div class="input-group mb-3">
-        <input [(ngModel)]="wikiSearch" type="text" class="form-control" placeholder="Wikipedia search ..." aria-label="Wikipedia search ..." aria-describedby="button-search">
+        <input [(ngModel)]="wikiSearch" type="text" class="form-control" placeholder="Wikipedia search ..." aria-label="Wikipedia search ..."
+          aria-describedby="button-search">
         <div class="input-group-append">
-          <button class="btn btn-primary btn-outline-secondary" type="button" id="button-search" (click)="searchWiki($event)">Search</button>
+          <button class="btn btn-primary btn-outline-secondary" type="button" id="button-search" (click)="searchWiki($event)">Wiki Search</button>
         </div>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <ds-datasheet 
-      [dataSet]="paginatedDataSet" 
-      [columns]="paginatedColumns" 
-      [withPagination]="true" 
-      [dateFormat]="'DD/MM/YYYY'" 
-      [trBgColor]="'#fffede'">
-    </ds-datasheet>
+      <ds-datasheet [dataSet]="paginatedDataSet" [columns]="paginatedColumns" [withPagination]="true" [dateFormat]="'DD/MM/YYYY'"
+        [trBgColor]="'#fffede'">
+      </ds-datasheet>
     </div>
   </div>
 </div>
