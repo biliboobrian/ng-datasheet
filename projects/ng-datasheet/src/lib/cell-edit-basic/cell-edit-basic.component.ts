@@ -1,3 +1,4 @@
+import { ItemEvent } from './../models/item-event';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
@@ -67,5 +68,15 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
   onBlur(event: FocusEvent): void {
     this.data[this.column.data] = this._model;
     this.blurinput.emit(event);
+  }
+
+  onChange(event: Event) {
+    const ie: ItemEvent = new ItemEvent();
+    ie.item = this.container.nativeElement.value;
+    ie.data = this.data;
+    ie.column = this.column;
+    ie.row = this.row;
+
+    this.column.itemEvent.emit(ie);
   }
 }

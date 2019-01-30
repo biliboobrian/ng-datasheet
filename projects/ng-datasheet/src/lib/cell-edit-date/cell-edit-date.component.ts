@@ -1,3 +1,4 @@
+import { ItemEvent } from './../models/item-event';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
@@ -84,6 +85,13 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
   }
 
   onDateSelect(event) {
+    const ie: ItemEvent = new ItemEvent();
+    ie.item = event;
+    ie.data = this.data;
+    ie.column = this.column;
+    ie.row = this.row;
+
+    this.column.itemEvent.emit(ie);
     this.container.nativeElement.focus();
   }
 

@@ -3,9 +3,9 @@ import { CellViewBasicComponent } from './../../../../../../projects/ng-datashee
 import { CellEditBasicComponent } from './../../../../../../projects/ng-datasheet/src/lib/cell-edit-basic/cell-edit-basic.component';
 import { CellViewLinkComponent } from './../../../../../../projects/ng-datasheet/src/lib/cell-view-link/cell-view-link.component';
 import { Column } from './../../../../../../projects/ng-datasheet/src/lib/models/column';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { WikipediaService } from 'src/app/services/wikipedia.service';
-import { Options } from 'projects/ng-datasheet/src/public_api';
+import { Options, NgDatasheetComponent } from 'projects/ng-datasheet/src/public_api';
 import { Observable, of } from 'rxjs';
 
 @Component({
@@ -14,6 +14,8 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./static-paginated.component.css']
 })
 export class StaticPaginatedComponent implements OnInit {
+
+  @ViewChild('paginatedDataSheet') paginatedDataSheet: NgDatasheetComponent;
 
   paginatedColumns: Array<Column>;
   paginatedDataSet: Array<Object> = [];
@@ -63,10 +65,12 @@ export class StaticPaginatedComponent implements OnInit {
       col.options.format = '_blank';
       col.editable = false;
       this.paginatedColumns.push(col);
-  
+
       col = new Column('Description', 'descr', CellViewBasicComponent, CellEditBasicComponent, 0);
       col.editable = false;
       this.paginatedColumns.push(col);
+
+      this.paginatedDataSheet.updateDatasheet();
     });
   }
 }

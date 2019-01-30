@@ -2,6 +2,7 @@
   <input type="checkbox" [(ngModel)]="data[column.data]" #container 
     (keydown)="onKeyDown($event)"
     (blur)="onBlur($event)"
+    (change)="onChange($event)"
   />
 </div>
 

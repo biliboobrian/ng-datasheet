@@ -45,15 +45,11 @@ export class InstallationComponent implements OnInit {
     ...
 
     ngOnInit() {
-      let col: Column = new Column();
-      col.title = 'ID';
-      col.data = 'id';
-      col.width = 60;
-      col.editable = false;
-      col.cellView = CellViewBasicComponent;
-      col.cellEdit = CellEditBasicComponent;
+      // using argument in Column constructor
+      let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent 60);
       this.columns.push(col);
 
+      // using properties
       col = new Column();
       col.title = 'Firstname';
       col.data = 'firstname';
@@ -64,6 +60,18 @@ export class InstallationComponent implements OnInit {
 
       ...
     }`;
+
+  code_fa = `
+  ...
+
+  "styles": [
+    "src/styles.css",
+    "node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css",
+    "node_modules/@fortawesome/fontawesome-free/css/all.css"
+  ],
+  
+  ...
+  `;
 
   constructor() { }
 

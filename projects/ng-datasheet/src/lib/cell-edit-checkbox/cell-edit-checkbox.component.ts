@@ -1,3 +1,4 @@
+import { ItemEvent } from './../models/item-event';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
@@ -26,6 +27,18 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
 
   onBlur(event: FocusEvent): void {
     this.blurinput.emit(event);
+  }
+
+  onChange(event: Event): void {
+    event.target['blur']();
+    event.preventDefault();
+    const ie: ItemEvent = new ItemEvent();
+    ie.item = this.container.nativeElement.checked;
+    ie.data = this.data;
+    ie.column = this.column;
+    ie.row = this.row;
+
+    this.column.itemEvent.emit(ie);
   }
 
 }

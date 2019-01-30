@@ -4,4 +4,5 @@ max="{{ (column.componentParam['max'])?column.componentParam['max']:null }}"
 step="{{ (column.componentParam['step'])?getStep():null }}"
 (keydown)="onKeyDown($event)"
 (blur)="onBlur($event)"
+(change)="onChange($event)"
 />

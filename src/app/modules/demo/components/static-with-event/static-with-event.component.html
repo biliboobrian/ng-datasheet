@@ -1,0 +1,45 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Event triggered</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="dateOfBirth">Checkbox event fired !!</label>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+  </div>
+</ng-template>
+
+<div class="container-fluid">
+  <div class="row pb-5">
+    <div class="col-12">
+      <h4>Exemple of static editable ng-datasheet with event listener</h4>
+    </div>
+  </div>
+  <div class="row pb-5">
+    <div class="col-12">
+      <div><code>Enter</code> : Switch to edition mode</div>
+      <div><code>Tab</code> : Go to next column, if you reach end of table, go to next row first column</div>
+      <div><code>Arrow</code> : Navigate in cells</div>
+      <div><code>Ctrl + C</code> : copy mouse selection (can be paste on spreadsheet applications)</div>
+      <div><code>Ctrl + V</code> : paste data in cell(s) (ca be copied from spreadsheet applications)</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <ds-datasheet 
+      [trBgColor]="'#fffede'" 
+      [dataSet]="staticDataSet" 
+      [columns]="staticColumns" 
+      [dateFormat]="'DD/MM/YYYY'"
+      [newModelFunction]="createItem"></ds-datasheet>
+    </div>
+  </div>
+</div>

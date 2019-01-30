@@ -1,7 +1,7 @@
 {
   "name": "@biliboobrian/ng-datasheet",
   "author": "Pierre Hanauer <biliboobrian@yahoo.fr>",
-  "version": "0.0.40",
+  "version": "0.0.43",
   "homepage": "https://biliboobrian.github.io/ng-datasheet/",
   "description": "Native Angular inline spreadsheet component",
   "license": "MIT",
@@ -22,7 +22,7 @@
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
     "@ng-bootstrap/ng-bootstrap": "^3.0.0 || ^4.0.0",
-    "font-awesome": "^4.7.0",
+    "@fortawesome/fontawesome-free": "^5.6.0",
     "moment": "^2.22.2",
     "moment-es6":"^1.0.0"
   }

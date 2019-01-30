@@ -1,3 +1,4 @@
+import { StaticWithEventComponent } from './components/static-with-event/static-with-event.component';
 import { DynamicComponent } from './components/dynamic/dynamic.component';
 import { DemoComponent } from './components/demo/demo.component';
 import { NgModule } from '@angular/core';
@@ -18,6 +19,10 @@ const routes: Routes = [
       {
         path: 'static-paginated',
         component: StaticPaginatedComponent
+      },
+      {
+        path: 'static-with-event',
+        component: StaticWithEventComponent
       },
       {
         path: 'dynamic',
