@@ -97,6 +97,9 @@ export class StaticEditableComponent implements OnInit {
 
     col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 70);
     col.type = 'number';
+    col.componentParam = {
+      'step': 2
+    }
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
