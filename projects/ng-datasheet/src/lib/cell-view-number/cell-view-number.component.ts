@@ -17,19 +17,20 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
   }
 
   getDisplayedLabel(): string {
-    if (this.column.componentParam['step']
-    ) {
-      const num: number = (this.data[this.column.data]) ? parseFloat(this.data[this.column.data]) : 0;
-      const precision: number = this.column.componentParam['step'];
-      if (num !== null) {
-        return num.toFixed(precision);
-      } else {
-        return '0';
-      }
-
-
+    if (this.column.options.retreiveFunction) {
+      return this.column.options.retreiveFunction(this.data);
     } else {
-      return (this.data[this.column.data]) ? this.data[this.column.data] : 0;
+      if (this.column.componentParam['step']) {
+        const num: number = (this.data[this.column.data]) ? parseFloat(this.data[this.column.data]) : 0;
+        const precision: number = this.column.componentParam['step'];
+        if (num !== null) {
+          return num.toFixed(precision);
+        } else {
+          return '0';
+        }
+      } else {
+        return (this.data[this.column.data]) ? this.data[this.column.data] : 0;
+      }
     }
   }
 }

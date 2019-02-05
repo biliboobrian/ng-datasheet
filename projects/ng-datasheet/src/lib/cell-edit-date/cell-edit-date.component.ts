@@ -85,6 +85,7 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
   }
 
   onDateSelect(event) {
+    this.data[this.column.data] = moment(new Date(event.year, event.month - 1, event.day));
     const ie: ItemEvent = new ItemEvent();
     ie.item = event;
     ie.data = this.data;
@@ -93,6 +94,16 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
 
     this.column.itemEvent.emit(ie);
     this.container.nativeElement.focus();
+  }
+
+  onChange(event: Event) {
+    const ie: ItemEvent = new ItemEvent();
+    ie.item = this.container.nativeElement.value;
+    ie.data = this.data;
+    ie.column = this.column;
+    ie.row = this.row;
+
+    this.column.itemEvent.emit(ie);
   }
 
   onBlur(event: FocusEvent): void {

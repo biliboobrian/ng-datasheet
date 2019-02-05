@@ -71,6 +71,7 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
   }
 
   onChange(event: Event) {
+    this.data[this.column.data] = this._model;
     const ie: ItemEvent = new ItemEvent();
     ie.item = this.container.nativeElement.value;
     ie.data = this.data;

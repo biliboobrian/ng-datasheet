@@ -8,6 +8,7 @@
       (keydown)="onKeyDown($event)" 
       #container 
       tabIndex="-1"
+      (change)="onChange($event)"
       (dateSelect)="onDateSelect($event)">
       <div class="input-group-append" tabIndex="-1">
         <button class="btn btn-outline-secondary edit-dp-icon" (click)="d.toggle()" type="button" tabIndex="-1">
