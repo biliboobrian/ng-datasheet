@@ -44,6 +44,16 @@ export abstract class CellDynamicComponent {
 
     }
 
+    getLastData(obj: Object, properties: Array<string>): any {
+      const property: string = properties.shift();
+
+      if (properties.length === 0) {
+        return (obj[property]) ? obj[property] : null;
+      } else {
+        return (obj[property]) ? this.getLastData(obj[property], properties) : null;
+      }
+    }
+
 
     public static pasteData(data: string, column: Column): any {
         return data;
