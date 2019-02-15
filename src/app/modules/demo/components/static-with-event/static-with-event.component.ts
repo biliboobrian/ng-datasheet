@@ -52,7 +52,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Peter';
     p.deleted = false;
     p.hobby = 1;
-    p.age = 13;
+    p.age = { 'before': 10, 'after': 12 };
     p.birthdate = moment_(new Date(1967, 11, 12));
 
     this.staticDataSet.push(p);
@@ -62,7 +62,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'John';
     p.deleted = false;
     p.hobby = 2;
-    p.age = 12;
+    p.age = { 'before': 10, 'after': 12 };
     p.birthdate = moment_(new Date(1983, 2, 27));
 
     this.staticDataSet.push(p);
@@ -72,7 +72,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Thomas';
     p.deleted = false;
     p.hobby = 3;
-    p.age = 11;
+    p.age = { 'before': 10, 'after': 12 };
     p.birthdate = moment_(new Date(1977, 10, 2));
 
     this.staticDataSet.push(p);
@@ -82,7 +82,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Sherlock';
     p.deleted = true;
     p.hobby = 4;
-    p.age = 100;
+    p.age = { 'before': 10, 'after': 12 };
     p.birthdate = moment_(new Date(1990, 7, 8));
 
     this.staticDataSet.push(p);

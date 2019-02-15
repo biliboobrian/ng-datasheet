@@ -49,7 +49,6 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
   }
 
   getDisplayedLabel(): string {
-    const properties = this.column.data.split('.');
-    return this.formatText(this.getLastData(this.data, properties));
+    return this.formatText(this.data[this.column.data]);
   }
 }

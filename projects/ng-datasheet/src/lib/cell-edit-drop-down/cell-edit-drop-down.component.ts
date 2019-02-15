@@ -74,7 +74,7 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   get dataModel(): Object {
-    if (this.column.options.format && this.column.options.format === 'string') {
+    if (this.column.type && this.column.type === 'string') {
       return this.column.options.dataSet.find(element => {
         return element[this.column.options.value] === this.data[this.column.data];
       });
@@ -84,7 +84,7 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   set dataModel(val: Object) {
-    if (this.column.options.format && this.column.options.format === 'string') {
+    if (this.column.type && this.column.type === 'string') {
       this.data[this.column.data] = val[this.column.options.value];
     } else {
       this.data[this.column.data] = val;
@@ -92,7 +92,7 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   getDisplayedLabel(): string {
-    if (this.column.options.format && this.column.options.format === 'string') {
+    if (this.column.type && this.column.type === 'string') {
       const elem: Object = this.column.options.dataSet.find(element => {
         return element[this.column.options.value] === this.data[this.column.data];
       });
