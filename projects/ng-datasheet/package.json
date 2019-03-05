@@ -1,7 +1,7 @@
 {
   "name": "@biliboobrian/ng-datasheet",
   "author": "Pierre Hanauer <biliboobrian@yahoo.fr>",
-  "version": "0.0.49",
+  "version": "0.0.52",
   "homepage": "https://biliboobrian.github.io/ng-datasheet/",
   "description": "Native Angular inline spreadsheet component",
   "license": "MIT",

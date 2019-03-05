@@ -20,7 +20,7 @@ import { NgDatasheetModule } from 'projects/ng-datasheet/src/public_api';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    NgbModule.forRoot()
+    NgbModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

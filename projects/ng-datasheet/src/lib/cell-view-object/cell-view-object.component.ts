@@ -91,9 +91,23 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
       return '';
     } else {
       if (this.column && this.column.options && obj) {
-        return obj[this.column.options.label];
+        if (Array.isArray(this.column.options.label)) {
+          return this.getLbl(obj, this.column.options.label);
+        } else {
+          return obj[this.column.options.label];
+        }
+
       }
       return '';
+    }
+  }
+
+  getLbl(obj: object, props: Array<string>) {
+    const prop: string = props.shift();
+    if (props.length === 0) {
+      return obj[prop];
+    } else {
+      return this.getLbl(obj[prop], props);
     }
   }
 

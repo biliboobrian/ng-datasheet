@@ -78,3 +78,7 @@
 .view-read-only {
     background-color: #efefef;
 }
+
+.use-pointer {
+    cursor: pointer;
+}

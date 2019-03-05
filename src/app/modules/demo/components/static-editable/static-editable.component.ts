@@ -59,7 +59,7 @@ export class StaticEditableComponent implements OnInit {
     p.firstname = 'John';
     p.deleted = false;
     p.hobby = 2;
-    p.age = { 'before': 10, 'after': moment_(new Date(1967,2, 22)) };
+    p.age = { 'before': 10, 'after': moment_(new Date(1967, 2, 22)) };
     p.birthdate = moment_(new Date(1983, 2, 27));
 
     this.staticDataSet.push(p);

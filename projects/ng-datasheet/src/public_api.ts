@@ -27,6 +27,8 @@ export * from './lib/models/item-event';
 export * from './lib/models/pagination';
 export * from './lib/models/parameter-button';
 export * from './lib/models/render-event';
+export * from './lib/models/row-event';
+export * from './lib/models/selection-event';
 export * from './lib/models/default-translation';
 
 // interface and common component

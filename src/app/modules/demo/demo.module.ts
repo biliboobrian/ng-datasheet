@@ -11,6 +11,7 @@ import { StaticEditableComponent } from './components/static-editable/static-edi
 import { DynamicComponent } from './components/dynamic/dynamic.component';
 import { DynamicWithCustomsComponent } from './components/dynamic-with-customs/dynamic-with-customs.component';
 import { StaticWithEventComponent } from './components/static-with-event/static-with-event.component';
+import { StaticNotEditableComponent } from './components/static-not-editable/static-not-editable.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { StaticWithEventComponent } from './components/static-with-event/static-
     StaticEditableComponent,
     DynamicComponent,
     DynamicWithCustomsComponent,
-    StaticWithEventComponent
+    StaticWithEventComponent,
+    StaticNotEditableComponent
   ]
 })
 export class DemoModule { }

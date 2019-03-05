@@ -1,40 +1,35 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   CellViewBasicComponent,
   CellEditBasicComponent,
-  CellViewDateComponent,
   CellEditDateComponent,
   Column,
   Options,
   CellEditDropDownComponent,
   CellViewObjectComponent,
   CellEditNumberComponent,
-  CellViewNumberComponent,
   CellViewCheckboxComponent,
   CellEditCheckboxComponent,
-  CellViewButtonComponent,
-  ItemEvent
+  CellViewButtonComponent
 } from 'projects/ng-datasheet/src/public_api';
 
 import * as moment_ from 'moment';
 import { Person } from '../../../../models/person';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 const moment = moment_;
-@Component({
-  selector: 'app-static-with-event',
-  templateUrl: './static-with-event.component.html',
-  styleUrls: ['./static-with-event.component.css']
-})
-export class StaticWithEventComponent implements OnInit {
 
-  @ViewChild('content') content: ElementRef;
+@Component({
+  selector: 'app-static-not-editable',
+  templateUrl: './static-not-editable.component.html',
+  styleUrls: ['./static-not-editable.component.css']
+})
+export class StaticNotEditableComponent implements OnInit {
+
+
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];
   hobbiesDataSet: Array<Object>;
 
-  constructor(
-    private modalService: NgbModal
-  ) { }
+  constructor() { }
 
   ngOnInit() {
     this.hobbiesDataSet = [
@@ -52,8 +47,8 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Peter';
     p.deleted = false;
     p.hobby = 1;
-    p.age = { 'before': 10, 'after': 12 };
-    p.birthdate = moment_(new Date(1967, 11, 12));
+    p.age = { 'before': 10, 'after': moment_(new Date(1967, 11, 12)) };
+    p.birthdate = moment_(new Date(1967, 2, 22));
 
     this.staticDataSet.push(p);
     p = new Person();
@@ -62,7 +57,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'John';
     p.deleted = false;
     p.hobby = 2;
-    p.age = { 'before': 10, 'after': 12 };
+    p.age = { 'before': 10, 'after': moment_(new Date(1967, 2, 22)) };
     p.birthdate = moment_(new Date(1983, 2, 27));
 
     this.staticDataSet.push(p);
@@ -72,7 +67,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Thomas';
     p.deleted = false;
     p.hobby = 3;
-    p.age = { 'before': 10, 'after': 12 };
+    p.age = { 'before': 10, 'after': moment_(new Date(1967, 11, 12)) };
     p.birthdate = moment_(new Date(1977, 10, 2));
 
     this.staticDataSet.push(p);
@@ -82,7 +77,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Sherlock';
     p.deleted = true;
     p.hobby = 4;
-    p.age = { 'before': 10, 'after': 12 };
+    p.age = { 'before': 10, 'after': moment_(new Date(1967, 11, 12)) };
     p.birthdate = moment_(new Date(1990, 7, 8));
 
     this.staticDataSet.push(p);
@@ -93,7 +88,6 @@ export class StaticWithEventComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
-    col.itemEvent.subscribe(this.onFirstnameChange);
     this.staticColumns.push(col);
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
@@ -105,13 +99,13 @@ export class StaticWithEventComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
-    col.itemEvent.subscribe(this.onDeleteChange);
-    col.autoOpen = true;
     this.staticColumns.push(col);
 
-    col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
+    col = new Column('Birthdate', 'age', CellViewObjectComponent, CellEditDateComponent, 200);
+    col.type = 'date';
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
+    col.options.label = 'after';
     this.staticColumns.push(col);
 
     col = new Column('Hobby', 'hobby', CellViewObjectComponent, CellEditDropDownComponent, 200);
@@ -119,7 +113,7 @@ export class StaticWithEventComponent implements OnInit {
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
-    col.options.format = 'string';
+    col.type = 'string';
     this.staticColumns.push(col);
 
     col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 71);
@@ -148,24 +142,14 @@ export class StaticWithEventComponent implements OnInit {
     this.staticColumns.push(col);
   }
 
+
   onEdit = (event: MouseEvent, data: Object) => {
-    alert('Edit clicked');
   }
 
   onDelete = (event: MouseEvent, data: Object) => {
-    alert('Delete clicked');
   }
 
   createItem() {
     return new Person();
   }
-
-  onFirstnameChange(event: ItemEvent): void {
-    alert('Firstname changed');
-  }
-
-  onDeleteChange = (event: ItemEvent) => {
-    const modal: NgbModalRef = this.modalService.open(this.content);
-  }
-
 }
