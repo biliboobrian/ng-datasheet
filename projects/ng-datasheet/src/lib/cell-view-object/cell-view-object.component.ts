@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Column } from '../models/column';
-import { Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
+import * as moment_ from 'moment'; const moment = moment_;
+
 
 @Component({
   selector: 'ds-cell-view-object',
@@ -16,7 +18,7 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
   }
 
   public static copyData(data: any, column: Column): string {
-    if (column.options.format && column.options.format === 'string') {
+    if (column.type && column.type === 'string') {
       const elem = column.options.dataSet.find(element => {
         return element[column.options.value] === data;
       });
@@ -30,8 +32,14 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
       } else {
         return data;
       }
+    } else if (column.type && column.type === 'date') {
+      if (data && column.options.label && column.options.format) {
+        return data[column.options.label].format(column.options.format);
+      } else {
+        return data;
+      }
     } else {
-      if ( data && column.options.label) {
+      if (data && column.options.label) {
         return data[column.options.label];
       } else {
         return data;
@@ -44,12 +52,11 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
     if (column.options.dataSet) {
       for (let i = 0; i < column.options.dataSet.length; i++) {
         if (column.options.dataSet[i][column.options.label] === data) {
-          if (column.options.format && column.options.format === 'string') {
+          if (column.type && column.type === 'string') {
             return column.options.dataSet[i][column.options.value];
           } else {
             return column.options.dataSet[i];
           }
-
         }
       }
     } else if (column.options.retreiveFunction) {
@@ -64,7 +71,7 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
   }
 
   getLabel(obj: object) {
-    if (this.column.options.format && this.column.options.format === 'string') {
+    if (this.column.type && this.column.type === 'string') {
       let elem;
       if (this.column.options.dataSet) {
         elem = this.column.options.dataSet.find(element => {
@@ -77,11 +84,38 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
       } else {
         return '';
       }
+    } else if (this.column.type && this.column.type === 'date') {
+      if (this.column && this.column.options && obj) {
+        return this.formatDate(obj[this.column.options.label], this.column.options.format);
+      }
+      return '';
     } else {
       if (this.column && this.column.options && obj) {
-        return obj[this.column.options.label];
+        if (Array.isArray(this.column.options.label)) {
+          return this.getLbl(obj, this.column.options.label);
+        } else {
+          return obj[this.column.options.label];
+        }
+
       }
       return '';
     }
+  }
+
+  getLbl(obj: object, props: Array<string>) {
+    const prop: string = props.shift();
+    if (props.length === 0) {
+      return obj[prop];
+    } else {
+      return this.getLbl(obj[prop], props);
+    }
+  }
+
+
+  formatDate(date: moment_.Moment, format): string {
+    if (date && format) {
+      return date.format(format);
+    }
+    return '';
   }
 }

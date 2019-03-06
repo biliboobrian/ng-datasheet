@@ -20,11 +20,8 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
     if (this.column.options.retreiveFunction) {
       return this.column.options.retreiveFunction(this.data);
     } else {
-      const properties = this.column.data.split('.');
-      const colData = this.getLastData(this.data, properties);
-
       if (this.column.componentParam['step']) {
-        const num: number = (colData) ? parseFloat(colData) : 0;
+        const num: number = (this.data[this.column.data]) ? parseFloat(this.data[this.column.data]) : 0;
         const precision: number = this.column.componentParam['step'];
         if (num !== null) {
           return num.toFixed(precision);
@@ -32,7 +29,7 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
           return '0';
         }
       } else {
-        return (colData) ? colData : 0;
+        return (this.data[this.column.data]) ? this.data[this.column.data] : 0;
       }
     }
   }

@@ -120,12 +120,30 @@ export class RenderingService {
     }
   }
 
-  isColumnSorted(sort: Sort, col: string): number {
-    if (sort && sort.column && sort.column.data === col) {
-      if (sort.asc) {
-        return 1;
+  isColumnSorted(sort: Sort, col: Column): number {
+    if (sort && sort.column) {
+      if (sort.column.options && sort.column.options.label
+        && col.options && col.options.label) {
+        if (sort.column.options.label === col.options.label) {
+          if (sort.asc) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          return 0;
+        }
+
       } else {
-        return -1;
+        if (sort.column.data === col.data) {
+          if (sort.asc) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          return 0;
+        }
       }
     } else {
       return 0;

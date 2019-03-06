@@ -1,4 +1,4 @@
-<table class="table table-sm table-bordered data-grid" (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)" #tbl>
+<table class="table table-sm table-bordered data-grid" (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)" (blur)="onTableBlur($event)" #tbl>
   <tr>
     <th ds-global-menu 
       *ngIf="globalMenu"
@@ -21,12 +21,15 @@
       [previousNoWidth]="renderingService.previousNoWidth(columns, col)"
       [withPagination]="withPagination"
       (renderEvent)="rendering($event)"
-      [ngStyle]="(column)?renderingService.getColumnWidth(column):''">
+      [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
+      class="use-pointer">
     </th>
   </tr>
   <tr>
     <td style="width: 26px"
-    *ngIf="globalMenu"></td>
+    *ngIf="globalMenu">
+    <input [(ngModel)]="globalSelected" type="checkbox" class="checkbox" (change)="onGlobalSelectAll($event)"/>
+  </td>
     <td ds-filter 
       *ngFor="let column of columns; let col = index"
       [dataSet]="dataSet" 
@@ -43,9 +46,9 @@
     </td>
   </tr>
   <ng-container *ngFor="let obj of dataSet; let row = index">
-    <tr *ngIf="renderingService.isVisible(filterList, row)" [style.background-color]="getBgColor(row)" (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
+    <tr *ngIf="renderingService.isVisible(filterList, row)" [style.background-color]="getBgColor(row)" [class.use-pointer]="usePointerOnLine" (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
       <td *ngIf="globalMenu">
-        <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" />
+        <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" (change)="onCheckSelection($event, row, obj)"/>
       </td>
       <ng-container *ngFor="let column of columns; let col = index">
         <td (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
@@ -60,7 +63,7 @@
       </ng-container>
     </tr>
   </ng-container>
-  <tr *ngIf="withAdd && newModelFunction && newModel && printNew" [style.background-color]="getBgColor(-1)" (mouseover)="changeTRStyle(-1)" (mouseout)="changeTRStyle()">
+  <tr *ngIf="editable && withAdd && newModelFunction && newModel && printNew" [style.background-color]="getBgColor(-1)" (mouseover)="changeTRStyle(-1)" (mouseout)="changeTRStyle()">
     <td *ngIf="globalMenu" 
     style="width: 26px"></td>
     <ng-container *ngFor="let column of columns; let col = index">

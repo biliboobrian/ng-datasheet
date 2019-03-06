@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="row pb-5">
+    <div class="col-12">
+      <h4>Exemple of static data with not editable ng-datasheet</h4>
+    </div>
+    <div class="col-12">
+      This Exemple show you a display datasheet with a finish set of data with filter, sort and resizing capabilities. 
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <ds-datasheet 
+      [trBgColor]="'#fffede'" 
+      [dataSet]="staticDataSet" 
+      [columns]="staticColumns" 
+      [dateFormat]="'DD/MM/YYYY'"
+      [editable]="false"
+      [newModelFunction]="createItem"
+      [usePointerOnLine]="true"></ds-datasheet>
+    </div>
+  </div>
+</div>

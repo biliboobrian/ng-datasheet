@@ -4,7 +4,7 @@ import { DateParserFormatter } from './cell-edit-date/date-parser-formatter';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Sort } from './models/sort';
 import { Column } from './models/column';
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output, ElementRef, HostListener } from '@angular/core';
 import { Pagination } from './models/pagination';
 import { Filter } from './models/filter';
 import { RenderEvent } from './models/render-event';
@@ -15,6 +15,8 @@ import { ResizingService } from './services/resizing.service';
 import { DataService } from './services/data.service';
 import { Coordinate } from './models/coordinate';
 import { Observable } from 'rxjs';
+import { RowEvent } from './models/row-event';
+import { SelectionEvent } from './models/selection-event';
 
 let COL_FORMAT = '';
 
@@ -89,8 +91,11 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public trBgColor: string;
   @Input() public editable = true;
   @Input() public globalMenu = false;
+  @Input() public usePointerOnLine = false;
 
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
+  @Output() public rowEvent: EventEmitter<RowEvent> = new EventEmitter<RowEvent>();
+  @Output() public selectionEvent: EventEmitter<SelectionEvent> = new EventEmitter<SelectionEvent>();
 
   @ViewChild('selectBox', { read: ElementRef }) selectBox: ElementRef;
   @ViewChild('tbl', { read: ElementRef }) tbl: ElementRef;
@@ -105,6 +110,7 @@ export class NgDatasheetComponent implements OnInit {
   public end: Coordinate = new Coordinate();
   public selected: Boolean = false;
   public colOnTab: number;
+  public globalSelected = false;
 
   private _dataSet: Array<Object>;
   private _columns: Array<Column>;
@@ -160,22 +166,44 @@ export class NgDatasheetComponent implements OnInit {
     }
   }
 
-  onMouseDown(event: MouseEvent, obj: Object, row: number, col: number) {
-    if (this.columns[col].selectable) {
-      this.main.setCoord(row, col);
-      this.colOnTab = col;
-      this.end.empty();
-
-      if (this.edited.row !== row || this.edited.col !== col) {
-        this.edited.empty();
-      }
-
-      if (row !== -1 && this.edited.isEmpty()) {
-        this.selected = false;
-        this.start.setCoord(row, col);
-      }
+  onGlobalSelectAll(event: Event) {
+    if (this.globalSelected) {
+      this._dataSet.forEach((obj, index) => {
+        this.selection[index] = obj;
+      });
+    } else {
+      this.selection = {};
     }
-    this.selectBox.nativeElement.focus();
+    this.selectionEvent.emit(new SelectionEvent(this.selection));
+  }
+
+  onCheckSelection(event: Event, row: number, obj: object) {
+    this.selection[row] = obj;
+    this.selectionEvent.emit(new SelectionEvent(this.selection));
+  }
+
+  onTableBlur(event: Event) {
+
+  }
+
+  onMouseDown(event: MouseEvent, obj: Object, row: number, col: number) {
+    if (this.editable) {
+      if (this.columns[col].selectable) {
+        this.main.setCoord(row, col);
+        this.colOnTab = col;
+        this.end.empty();
+
+        if (this.edited.row !== row || this.edited.col !== col) {
+          this.edited.empty();
+        }
+
+        if (row !== -1 && this.edited.isEmpty()) {
+          this.selected = false;
+          this.start.setCoord(row, col);
+        }
+      }
+      this.selectBox.nativeElement.focus();
+    }
   }
 
   onBlur(event: FocusEvent, newRow: boolean = false): void {
@@ -223,39 +251,42 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   onMouseOver(event: MouseEvent, obj: Object, row: number, col: number) {
-    if (!this.selected) {
+    if (this.editable && !this.selected) {
       this.end.setCoord(row, col);
     }
   }
 
   onMouseUp(event: MouseEvent, obj: Object, row: number, col: number) {
-
-    if (!this.selected) {
-      if (row !== -1) {
-        this.end.setCoord(row, col);
-      } else {
-        this.end.setCoord(this.dataSet.length - 1, col);
+    if (this.editable) {
+      if (!this.selected) {
+        if (row !== -1) {
+          this.end.setCoord(row, col);
+        } else {
+          this.end.setCoord(this.dataSet.length - 1, col);
+        }
       }
-    }
 
-    if (this.start.row === row && this.start.col === col) {
-      this.start.empty();
-      this.end.empty();
+      if (this.start.row === row && this.start.col === col) {
+        this.start.empty();
+        this.end.empty();
 
-      if (this.columns[col].autoOpen) {
-        this.edited.setCoord(row, col);
+        if (this.columns[col].autoOpen) {
+          this.edited.setCoord(row, col);
+        }
       }
-    }
 
-    this.selected = true;
+      this.selected = true;
 
-    if (this.edited.isEmpty()) {
-      this.selectBox.nativeElement.focus({ preventScroll: true });
+      if (this.edited.isEmpty()) {
+        this.selectBox.nativeElement.focus({ preventScroll: true });
+      }
+    } else {
+      this.rowEvent.emit(new RowEvent(obj, row));
     }
   }
 
   onDblClick(evnt: MouseEvent, row: number, col: number) {
-    if (this.columns[col].editable) {
+    if (this.editable && this.columns[col].editable) {
       this.edited.setCoord(row, col);
     }
   }
@@ -354,7 +385,7 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   updateDatasheet() {
-      this.filters = this.navigatingService.initFilters(this.columns);
+    this.filters = this.navigatingService.initFilters(this.columns);
   }
 
   onKeyUp(event: KeyboardEvent) {

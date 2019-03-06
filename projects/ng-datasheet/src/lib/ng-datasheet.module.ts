@@ -28,7 +28,7 @@ import { CellEditCheckboxComponent } from './cell-edit-checkbox/cell-edit-checkb
 
 @NgModule({
   imports: [
-    NgbModule.forRoot(),
+    NgbModule,
     CommonModule,
     FormsModule,
     NgbTypeaheadModule,

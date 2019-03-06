@@ -20,8 +20,7 @@ export class CellViewBasicComponent extends CellDynamicComponent implements OnIn
     if (this.column.options.retreiveFunction) {
       return this.column.options.retreiveFunction(this.data);
     } else {
-      const properties = this.column.data.split('.');
-      return this.getLastData(this.data, properties);
+      return this.data[this.column.data];
     }
   }
 }

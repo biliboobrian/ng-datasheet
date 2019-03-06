@@ -22,7 +22,7 @@ import { MainComponent } from './components/main/main.component';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    NgbModule.forRoot()
+    NgbModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]
