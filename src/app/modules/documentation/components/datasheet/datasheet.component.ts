@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-datasheet',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DatasheetComponent implements OnInit {
 
-  constructor() { }
+  nav: string = 'ng-datasheet';
+
+  constructor(
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params['nav']) {
+        this.nav = params['nav'];
+      } else {
+        this.nav = 'ng-datasheet';
+      }
+
+    });
   }
 
 }

@@ -8,11 +8,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { GettingStartedComponent } from './components/getting-started/getting-started.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgDatasheetModule } from 'projects/ng-datasheet/src/public_api';
+import { MainComponent } from './components/main/main.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GettingStartedComponent
+    GettingStartedComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,

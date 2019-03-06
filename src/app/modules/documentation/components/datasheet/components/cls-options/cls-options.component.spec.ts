@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InstallationComponent } from './installation.component';
+import { ClsOptionsComponent } from './cls-options.component';
 
-describe('InstallationComponent', () => {
-  let component: InstallationComponent;
-  let fixture: ComponentFixture<InstallationComponent>;
+describe('ClsOptionsComponent', () => {
+  let component: ClsOptionsComponent;
+  let fixture: ComponentFixture<ClsOptionsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InstallationComponent ]
+      declarations: [ ClsOptionsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InstallationComponent);
+    fixture = TestBed.createComponent(ClsOptionsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,16 +1,67 @@
 <header class="header-getting text-white">
   <div class="container text-center">
-    <h1>Welcome to Ng-DataSheet</h1>
-    <p class="lead">All-in-one Angular 6+ inline spreadsheet</p>
+    <h1>Getting started</h1>
+    <p class="lead">Installation</p>
   </div>
 </header>
 
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-6 text-center pt-5">
-        <p>Ng-DataSheet is a free project proposing an extensible datagrid with or without inline editing.</p>
-        <p>See it in action <a routerLink="/demo">here</a> and installation guide <a routerLink="/doc">here</a></p>
-    </div>
-  </div>
+<div class="container mt-4">
+    <h5>1. Installation via NPM</h5>
+    <p>
+      This project has been created with Angular 6+, it is compatible with Angular 7. It is using for dependencies
+      <a href="https://ng-bootstrap.github.io/#/home" target="_blank">ng-bootstrap</a>,
+      <a href="https://fontawesome.com/" target="_blank">font-awsome</a> and
+      <a href="https://momentjs.com/" target="_blank">moment</a>.
+    </p>
+    <p>
+      the project is available on <a href="https://github.com/biliboobrian/ng-datasheet" target="_blank">Github</a> and installation using <a href="https://www.npmjs.com/package/@biliboobrian/ng-datasheet" target="_blank">npm</a>
+    </p>
+    <pre class="language-bash">
+    npm install --save @biliboobrian/ng-datasheet @ng-bootstrap/ng-bootstrap @fortawesome/fontawesome-free moment moment-es6
+    </pre>
   
-</div>
+    <h5>2. Import inside your NgModule</h5>
+    <p>
+      Import the library inside your NgModule by adding the import statment and adding an import 'NgDatasheetModule'
+      inside your @NgModule imports object.
+    </p>
+  
+    <pre class="language-bash">
+    {{ code }}
+    </pre>
+  
+    <h5>3. Insert font Awesome inside your angular.json</h5>
+    <p>
+      Import the css from font awsome library inside you project in angular.json
+    </p>
+  
+    <pre class="language-bash">
+    {{ code_fa }}
+    </pre>
+  
+    <h5>4. Insert bootstrap in your index.html</h5>
+    <p>
+      Import the css from bootstrap in your index.html
+    </p>
+  
+    <pre class="language-bash">
+    {{ code_html }}
+    </pre>
+  
+    <h5>5. Instanciate your first Ng-DataSheet</h5>
+    <p>
+      In a component child of your module, add in the .html file the ng-datasheet tag.
+    </p>
+  
+    <pre class="language-bash">
+    {{ code_2 }}
+    </pre>
+  
+    <p>
+      And add in the .ts file the description of your columns and the dataSet Object.
+    </p>
+  
+    <pre class="language-bash">
+    {{ code_3 }}
+    </pre>
+  </div>

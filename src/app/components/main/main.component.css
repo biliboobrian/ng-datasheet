@@ -1,0 +1,17 @@
+header {
+    padding: 154px 0 100px;
+  }
+  
+  @media (min-width: 992px) {
+    header {
+      padding: 156px 0 100px;
+    }
+  }
+
+.header-getting {
+  background: #55ad16; /* Old browsers */
+  background: -moz-linear-gradient(top, #55ad16 0%, #548e54 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #55ad16 0%,#548e54 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #55ad16 0%,#548e54 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#55ad16', endColorstr='#548e54',GradientType=0 ); /* IE6-9 */
+}

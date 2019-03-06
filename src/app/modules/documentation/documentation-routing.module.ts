@@ -4,7 +4,6 @@ import { DatasheetComponent } from './components/datasheet/datasheet.component';
 import { DocumentationComponent } from './components/documentation/documentation.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InstallationComponent } from './components/installation/installation.component';
 
 const routes: Routes = [
   {
@@ -12,11 +11,11 @@ const routes: Routes = [
     component: DocumentationComponent,
     children: [
       {
-        path: 'installation',
-        component: InstallationComponent
+        path: 'datasheet',
+        component: DatasheetComponent
       },
       {
-        path: 'datasheet',
+        path: 'datasheet/:nav',
         component: DatasheetComponent
       },
       {
@@ -29,7 +28,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'installation',
+        redirectTo: 'datasheet',
         pathMatch: 'full'
       }
     ]

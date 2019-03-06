@@ -1,196 +1,29 @@
-<div class="container">
-  <div class="api-doc-component">
-    <h3 class="title"><span> NgDatasheet
-      </span></h3>
-    <h5>
-      <span class="badge badge-success">Component</span>
-    </h5>
+<div class="d-flex m-0 doc-container">
+  <div class="left-menu col-2">
 
-    <p class="lead"> The NgDatasheet is the main component to instanciate a grid.</p>
-    <section>
-      <h4>Selector <small><code class="selector">ds-datasheet</code></small></h4>
-
-      <h6>Exported as <small><code class="export-as">NgDatasheetComponent</code></small></h6>
-    </section>
-
-    <section>
-      <h4>Inputs</h4>
-      <table class="table table-sm">
-        <tbody>
-          <tr>
-            <td class="label-cell"><code>activeIds</code><br>
-
-
-            </td>
-            <td class="content-cell">
-
-              <p class="description">An array or comma separated strings of panel identifiers that
-                should be opened</p>
-              <div class="meta">
-                <div><i>Type: </i><code>string | string[]</code></div>
-
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>closeOthers</code><br>
-
-
-            </td>
-            <td class="content-cell">
-
-              <p class="description">Whether the other panels should be closed when a panel is opened</p>
-              <div class="meta">
-                <div><i>Type: </i><code>boolean</code></div>
-
-                <div><span><i>Default value: </i><code>false</code></span>
-                  <span>— initialized from NgbAccordionConfig service</span></div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>destroyOnHide</code><br>
-
-
-            </td>
-            <td class="content-cell">
-
-              <p class="description">Whether the closed panels should be hidden without destroying them</p>
-              <div class="meta">
-                <div><i>Type: </i><code>boolean</code></div>
-
-                <div><span><i>Default value: </i><code>true</code></span>
-
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>type</code><br>
-
-
-            </td>
-            <td class="content-cell">
-
-              <p class="description">Accordion's types of panels to be applied globally.
-                Bootstrap recognizes the following types: "primary", "secondary", "success", "danger", "warning",
-                "info",
-                "light"
-                and "dark</p>
-              <div class="meta">
-                <div><i>Type: </i><code>string</code></div>
-
-                <div><span><i>Default value: </i><code>-</code></span>
-                  <span>— initialized from NgbAccordionConfig service</span></div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section>
-      <h4>Outputs</h4>
-      <table class="table table-sm">
-        <tbody>
-
-          <tr>
-            <td class="label-cell"><code>panelChange</code><br>
-
-
-            </td>
-            <td class="content-cell">
-
-              <p class="description">A panel change event fired right before the panel toggle happens.
-                See NgbPanelChangeEvent for payload details</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section>
-      <h4>Methods</h4>
-      <table class="table table-sm">
-        <tbody>
-
-          <tr>
-            <td class="label-cell"><code>isExpanded</code><br>
-
-
-            </td>
-            <td class="content-cell">
-              <p class="signature"><code>isExpanded(panelId: string)</code> <small class="text-muted" title="Return type">=&gt;
-                  boolean</small></p>
-
-              <p class="description">Checks if a panel with a given id is expanded or not.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>expand</code><br>
-
-
-            </td>
-            <td class="content-cell">
-              <p class="signature"><code>expand(panelId: string)</code> <small class="text-muted" title="Return type">=&gt;
-                  void</small></p>
-
-              <p class="description">Expands a panel with a given id. Has no effect if the panel is
-                already expanded or disabled.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>expandAll</code><br>
-
-
-            </td>
-            <td class="content-cell">
-              <p class="signature"><code>expandAll()</code> <small class="text-muted" title="Return type">=&gt; void</small></p>
-
-              <p class="description">Expands all panels if [closeOthers]="false". For the
-                [closeOthers]="true" case will have no effect if there is an
-                open panel, otherwise the first panel will be expanded.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>collapse</code><br>
-
-
-            </td>
-            <td class="content-cell">
-              <p class="signature"><code>collapse(panelId: string)</code> <small class="text-muted" title="Return type">=&gt;
-                  void</small></p>
-
-              <p class="description">Collapses a panel with a given id. Has no effect if the panel is
-                already collapsed or disabled.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>collapseAll</code><br>
-
-
-            </td>
-            <td class="content-cell">
-              <p class="signature"><code>collapseAll()</code> <small class="text-muted" title="Return type">=&gt; void</small></p>
-
-              <p class="description">Collapses all open panels.</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="label-cell"><code>toggle</code><br>
-
-
-            </td>
-            <td class="content-cell">
-              <p class="signature"><code>toggle(panelId: string)</code> <small class="text-muted" title="Return type">=&gt;
-                  void</small></p>
-
-              <p class="description">Programmatically toggle a panel with a given id. Has no effect if
-                the panel is disabled.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <ul class="mt-4 pl-0 text-right">
+      <li><h5>Components</h5></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet">NgDatasheet</a></li>
+      <li class="mt-4"><h5>Class</h5></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/Column">Column</a></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/Options">Options</a></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/ParameterButton">ParameterButton</a></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/DefaultTranslation">DefaultTranslation</a></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/Filter">Filter</a></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/Pagination">Pagination</a></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/Sort">Sort</a></li>
+      <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/datasheet/RenderEvent">RenderEvent</a></li>
+    </ul>
+  </div>
+  <div class="content mt-3 offset-2">
+      <app-ng-datasheet *ngIf="nav === 'ng-datasheet'"></app-ng-datasheet>
+      <app-cls-column *ngIf="nav === 'Column'"></app-cls-column>
+      <app-cls-options *ngIf="nav === 'Options'"></app-cls-options>
+      <app-cls-parameter-button *ngIf="nav === 'ParameterButton'"></app-cls-parameter-button>
+      <app-cls-default-translation *ngIf="nav === 'DefaultTranslation'"></app-cls-default-translation>
+      <app-cls-filter *ngIf="nav === 'Filter'"></app-cls-filter>
+      <app-cls-pagination *ngIf="nav === 'Pagination'"></app-cls-pagination>
+      <app-cls-sort *ngIf="nav === 'Sort'"></app-cls-sort>
+      <app-cls-render-event *ngIf="nav === 'RenderEvent'"></app-cls-render-event>
   </div>
 </div>

@@ -78,7 +78,6 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public defaultTranslation: DefaultTranslation = new DefaultTranslation();
   @Input() public withFilters = true;
   @Input() public withAdd = true;
-  @Input() public primaryKey = 'id';
   @Input() public newModelFunction: Function;
   @Input() public dateFormat = 'MM-DD-YYYY';
   @Input() public static = true;

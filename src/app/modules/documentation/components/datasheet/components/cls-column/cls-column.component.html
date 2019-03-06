@@ -1,0 +1,229 @@
+<div class="container">
+    <div class="api-doc-component">
+      <h3 class="title"><span> Column
+        </span></h3>
+      <h5>
+        <span class="badge badge-success">Class</span>
+      </h5>
+  
+      <p class="lead"> Definition of a column in your datasheet.</p>
+  
+      <section>
+        <h4>Properties</h4>
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td class="label-cell">
+                <code>title</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Title printed has header on the column.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>String</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>data</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Property of the dataset Object to show on this column.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>String</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>width</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Defaut width of the column (overrided by user preset if dsKey is st to true on ng-datasheet component).</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Number</code></div>
+                  <div><span><i>Default value: </i><code>0</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>noWidth</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">When another column is resized, column mark as noWidth is resized to do not adapt all columns.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>false</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>options</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Set of options used to init Cell view / edit renderer.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Options</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>neededForAdd</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Column needed to add new object in dataSet.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>searchable</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Activate filter capability.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>selectable</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Activate selection capability.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>sortable</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Add sorting capability to this column.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>editable</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Activate edition capability. overrided by ng-datasheet editable property.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>autoOpen</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">On click on this column on a row, auto switch in edit mode.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>false</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>cellView</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Component used for display of the dataset object property (see Ceels section).</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>CellDynamicInterface</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>cellEdit</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Component used for edition of the dataset object property (see Ceels section).</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>CellDynamicInterface</code></div>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="label-cell">
+                <code>componentParam</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Extra parameters used to setup a column (depending of the cell view/edit selected).</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Object</code></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+  
+      <section>
+        <h4>Outputs</h4>
+        <table class="table table-sm">
+          <tbody>
+              <tr>
+                  <td class="label-cell">
+                    <code>itemEvent</code><br>
+                  </td>
+                  <td class="content-cell">
+                    <p class="description">Event fired after finnish editing of a cell of this column.</p>
+                    <div class="meta">
+                      <div><i>Type: </i><code>ItemEvent</code></div>
+                    </div>
+                  </td>
+                </tr>
+          </tbody>
+        </table>
+      </section>
+  
+      <section>
+        <h4>Methods</h4>
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td class="label-cell">
+                <code>constructor</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="signature"><code>constructor(title?: string, data?: string, cellView?: CellDynamicInterface, cellEdit?: CellDynamicInterface, width?: number)</code> <small class="text-muted" title="Return type">=&gt;
+                    void</small></p>
+  
+                <p class="description"></p>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
