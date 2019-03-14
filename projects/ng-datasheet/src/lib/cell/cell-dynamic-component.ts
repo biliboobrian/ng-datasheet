@@ -1,5 +1,5 @@
 import { Column } from '../models/column';
-import { EventEmitter, Output } from '@angular/core';
+import { EventEmitter, Output, Input } from '@angular/core';
 
 
 export abstract class CellDynamicComponent {
@@ -8,6 +8,8 @@ export abstract class CellDynamicComponent {
     protected _data: Object = {};
     protected _row = 0;
     public autoOpen = false;
+    
+    @Input() isFilter = false;
 
     @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
     @Output() blurinput: EventEmitter<FocusEvent> = new EventEmitter();

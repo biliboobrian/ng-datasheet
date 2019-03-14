@@ -1,8 +1,11 @@
 <div class="inner-addon right-addon" *ngIf="column.searchable">
-  <input [(ngModel)]="filterModel"
+  <!--<input [(ngModel)]="filterModel"
     type="text" 
     class="form-control filter" 
     placeholder="{{ column.title }} .."
-    (keyup)="onFilterChange($event)" />
+    (keyup)="onFilterChange($event)" />-->
+
+    <ds-cell [component]="column.cellEdit" (key)="onKeyEdit($event)"
+          (blurinput)="onBlur($event, true)" [column]="column" [data]="filterModel" [isFilter]="true"></ds-cell>
   <i class="fa fa-filter"></i>
 </div>

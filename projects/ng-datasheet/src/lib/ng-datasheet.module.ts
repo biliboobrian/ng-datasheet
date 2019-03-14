@@ -25,6 +25,7 @@ import { CellEditNumberComponent } from './cell-edit-number/cell-edit-number.com
 import { CellViewNumberComponent } from './cell-view-number/cell-view-number.component';
 import { CellViewCheckboxComponent } from './cell-view-checkbox/cell-view-checkbox.component';
 import { CellEditCheckboxComponent } from './cell-edit-checkbox/cell-edit-checkbox.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { CellEditCheckboxComponent } from './cell-edit-checkbox/cell-edit-checkb
     NgbTypeaheadModule,
     NgbDatepickerModule,
     NgbDropdownModule,
-    RouterModule
+    RouterModule,
+    NgSelectModule
   ],
   declarations: [
     NgDatasheetComponent,
