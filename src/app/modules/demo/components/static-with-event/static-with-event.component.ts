@@ -102,6 +102,7 @@ export class StaticWithEventComponent implements OnInit {
     col = new Column('Age', 'age', CellViewObjectComponent, CellEditNumberComponent, 70);
     col.type = 'number';
     col.options.label = 'before';
+    col.searchable = false;
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
