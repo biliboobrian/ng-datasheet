@@ -1,34 +1,33 @@
 <div class="container-fluid">
-    <div class="row pb-5">
-      <div class="col-12">
-        <h4>Exemple of static data with editable ng-datasheet</h4>
-      </div>
-      <div class="col-12">
-        This Exemple show you a editable datasheet with a finish set of data with filter, sort and resizing capabilities. 
-        You can also add new row at the end of the table.
-      </div>
+  <div class="row pb-5">
+    <div class="col-12">
+      <h4>Exemple of static data with editable ng-datasheet</h4>
     </div>
-    <div class="row pb-5">
-      <div class="col-12">
-        <div><code>Enter or Double click</code> : Switch to edition mode</div>
-        <div><code>Tab</code> : Go to next column, if you reach end of table, go to next row first column</div>
-        <div><code>Arrow</code> : Navigate in cells</div>
-        <div><code>Ctrl + C</code> : Copy mouse selection (can be paste on spreadsheet applications)</div>
-        <div><code>Ctrl + V</code> : Paste data in cell(s) (ca be copied from spreadsheet applications)</div>
-        <div><code>Esc</code> : Remove current modifications</div>
-        <div><code>Home</code> : Go to the first cell of the first row</div>
-        <div><code>End</code> : Go to the last cell of the last row</div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <ds-datasheet 
-        [trBgColor]="'#fffede'" 
-        [dataSet]="staticDataSet" 
-        [columns]="staticColumns" 
-        [dateFormat]="'DD/MM/YYYY'"
-        [newModelFunction]="createItem"
-        ></ds-datasheet>
-      </div>
+    <div class="col-12">
+      This Exemple show you a editable datasheet with a finish set of data with filter, sort and resizing capabilities.
+      You can also add new row at the end of the table.
     </div>
   </div>
+  <div class="row pb-5">
+    <div class="col-12">
+      <div><code>Enter or Double click</code> : Switch to edition mode</div>
+      <div><code>Tab</code> : Go to next column, if you reach end of table, go to next row first column</div>
+      <div><code>Arrow</code> : Navigate in cells</div>
+      <div><code>Ctrl + C</code> : Copy mouse selection (can be paste on spreadsheet applications)</div>
+      <div><code>Ctrl + V</code> : Paste data in cell(s) (ca be copied from spreadsheet applications)</div>
+      <div><code>Esc</code> : Remove current modifications</div>
+      <div><code>Home</code> : Go to the first cell of the first row</div>
+      <div><code>End</code> : Go to the last cell of the last row</div>
+    </div>
+  </div>
+  <ng-select [items]="hobbiesDataSet" bindLabel="name" autofocus>
+
+  </ng-select>
+  <div class="row">
+    <div class="col-12">
+      <ds-datasheet [trBgColor]="'#fffede'" [dataSet]="staticDataSet" [columns]="staticColumns"
+        [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem"></ds-datasheet>
+    </div>
+  </div>
+</div>
+

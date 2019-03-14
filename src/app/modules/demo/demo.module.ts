@@ -12,13 +12,15 @@ import { DynamicComponent } from './components/dynamic/dynamic.component';
 import { DynamicWithCustomsComponent } from './components/dynamic-with-customs/dynamic-with-customs.component';
 import { StaticWithEventComponent } from './components/static-with-event/static-with-event.component';
 import { StaticNotEditableComponent } from './components/static-not-editable/static-not-editable.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     DemoRoutingModule,
-    NgDatasheetModule
+    NgDatasheetModule,
+    NgSelectModule
   ],
   declarations: [
     StaticNotPaginatedComponent,

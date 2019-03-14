@@ -1,12 +1,23 @@
-<div class="lbl-dd" tabindex="-1" #container (click)="onToggle($event)" 
+<!-- <div class="lbl-dd" tabindex="-1" #container (click)="onToggle($event)" 
 (keydown)="onKeyDown($event)">
   <span></span>{{ getDisplayedLabel() }}
   <div class="text-right float-right">
     <i class="fa fa-chevron-down icon-dd"></i>
   </div>
 </div>
+
 <div class="drop-dd" tabindex="-1" [class.invisible]="!open" [style.width]="column.width + 'px'">
-  <div *ngFor="let option of column.options.dataSet" class="option-dd" [class.selected-dd]="isSelected(option)" (click)="onSelect(option)">{{
+  <div *ngFor="let option of column.options.dataSet" 
+  class="option-dd" 
+  [class.selected-dd]="isSelected(option)" (click)="onSelect(option)">{{
     option[column.options.label] }}
   </div>
-</div>
+</div> -->
+
+<ng-select autofocus 
+[items]="column.options.dataSet"
+bindLabel="{{ column.options.label }}"
+bindValue="{{ column.options.value }}"
+[(ngModel)]="dataModel"
+(keydown)="onKeyDown($event)">
+</ng-select>

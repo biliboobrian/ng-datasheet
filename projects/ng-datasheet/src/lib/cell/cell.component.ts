@@ -18,6 +18,7 @@ export class CellComponent implements OnInit, OnDestroy {
   @Input() component: any;
   @Input() column: Column;
   @Input() row: number;
+  @Input() isFilter = false;
   @Input() data: Object;
   @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
   @Output() blurinput: EventEmitter<KeyboardEvent> = new EventEmitter();
@@ -42,6 +43,7 @@ export class CellComponent implements OnInit, OnDestroy {
       instance.column = this.column;
       instance.data = this.data;
       instance.row = this.row;
+      instance.isFilter = this.isFilter;
       this.keySubscription = instance.key.subscribe(keyboardEvent => {
         this.key.emit(keyboardEvent);
       });
