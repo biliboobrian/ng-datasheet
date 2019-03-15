@@ -3,7 +3,6 @@ import { CellDynamicInterface } from './../cell/cell-dynamic-interface';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { Filter } from '../models/filter';
-import { Column } from 'ng-datasheet/public_api';
 
 @Component({
   selector: 'ds-cell-edit-number',

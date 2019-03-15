@@ -5,7 +5,7 @@ import { RenderEvent } from '../models/render-event';
 import { Filter } from '../models/filter';
 import { Pagination } from '../models/pagination';
 import { DataService } from '../services/data.service';
-import { ItemEvent } from 'ng-datasheet/public_api';
+import { ItemEvent } from '../models/item-event';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -62,7 +62,8 @@ export class FilterComponent implements OnInit {
     this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort, this.filterList));
   }
 
-  onItem(event: ItemEvent) {
+  onItem(event: object) {
+    this._filters = event as Array<Filter>;
     this.onFilterChange(null);
   }
 }
