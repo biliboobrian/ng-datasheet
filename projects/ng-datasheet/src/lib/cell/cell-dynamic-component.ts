@@ -8,11 +8,13 @@ export abstract class CellDynamicComponent {
     protected _data: Object = {};
     protected _row = 0;
     public autoOpen = false;
-    
+    public placeHolder = '';
+
     @Input() isFilter = false;
 
     @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
     @Output() blurinput: EventEmitter<FocusEvent> = new EventEmitter();
+    @Output() cellChange: EventEmitter<object> = new EventEmitter();
 
     get data(): Object {
         return this._data;
@@ -37,6 +39,18 @@ export abstract class CellDynamicComponent {
     set row(val: number) {
         this._row = val;
     }
+
+    public static filter(data: any, filterText: any, column: Column): boolean {
+        if (filterText) {
+            if (data === filterText) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static copyData(data: any, column: Column): string {
         if (data) {
             return data.toString();
@@ -46,7 +60,7 @@ export abstract class CellDynamicComponent {
 
     }
 
-    public static pasteData(data: string, column: Column): any {
+    public static pasteData(data: any, column: Column): any {
         return data;
     }
 }

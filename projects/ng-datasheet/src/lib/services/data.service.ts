@@ -79,10 +79,14 @@ export class DataService {
 
         for (const index in filters) {
           if (filters.hasOwnProperty(index)
-            && filters[index].value
+            && filters[index].hasOwnProperty('value')
             && filters[index].value !== '') {
 
-            const keywords = filters[index].value.split(' ').join('|');
+            if (!filters[index].column.cellView['filter'](obj[filters[index].column.data], filters[index].value, filters[index].column)) {
+              visible = false;
+            }
+
+            /* const keywords = filters[index].value.toString().split(' ').join('|');
             if (obj[filters[index].column.data] !== null) {
               const txt: string = this.copyType(obj[filters[index].column.data], filters[index].column);
 
@@ -98,7 +102,7 @@ export class DataService {
               }
             } else {
               visible = false;
-            }
+            } */
           }
         }
 

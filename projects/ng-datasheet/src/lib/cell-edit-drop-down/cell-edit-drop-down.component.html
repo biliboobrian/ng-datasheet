@@ -19,5 +19,8 @@
 bindLabel="{{ column.options.label }}"
 bindValue="{{ column.options.value }}"
 [(ngModel)]="dataModel"
-(keydown)="onKeyDown($event)">
+(keydown)="onKeyDown($event)"
+class="ngselect-custom"
+placeholder="{{ getPlaceHolder() }}"
+(change)="onChange($event)">
 </ng-select>

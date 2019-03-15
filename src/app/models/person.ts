@@ -6,7 +6,7 @@ export class Person {
     private _hobby: number;
     private _birthdate: any;
     private _wiki: Object;
-    private _age: object;
+    private _age: number;
     private _deleted: boolean;
 
     public get id() {
@@ -35,7 +35,7 @@ export class Person {
         return this._age;
     }
 
-    public set age(val: object) {
+    public set age(val: number) {
         this._age = val;
     }
     public get hobby() {

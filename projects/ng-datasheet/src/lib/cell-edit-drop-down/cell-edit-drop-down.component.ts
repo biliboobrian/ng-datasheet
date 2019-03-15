@@ -2,6 +2,7 @@ import { ItemEvent } from './../models/item-event';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
+import { Filter } from '../models/filter';
 
 @Component({
   selector: 'ds-cell-edit-drop-down',
@@ -10,9 +11,6 @@ import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 })
 export class CellEditDropDownComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
 
-  //@ViewChild('container', { read: ElementRef })
-  //container: ElementRef;
-
   public open = true;
 
   constructor() {
@@ -20,7 +18,6 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   ngOnInit() {
-    //this.container.nativeElement.focus();
   }
 
   onKeyDown(event: KeyboardEvent) {
@@ -31,7 +28,6 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
       case 27: // esc
       case 37: // left
       case 39: // right
-        //this.container.nativeElement.blur();
         this.key.emit(event);
         break;
     }
@@ -48,7 +44,6 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
     ie.row = this.row;
 
     this.column.itemEvent.emit(ie);
-    //this.container.nativeElement.focus();
   }
 
   onToggle(event: MouseEvent): void {
@@ -60,22 +55,44 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   get dataModel(): string {
-    if (this.column.type && this.column.type === 'string') {
-      return this.data[this.column.data];
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      return filters.find(filter => {
+        return filter.column === this.column;
+      }).value;
     } else {
-      return this.column.options.dataSet.find(element => {
-        return element[this.column.options.value] === this.data[this.column.data];
-      })[this.column.options.value];
+      if (this.column.type && this.column.type === 'string') {
+        return this.data[this.column.data];
+      } else {
+        return this.column.options.dataSet.find(element => {
+          return element[this.column.options.value] === this.data[this.column.data];
+        })[this.column.options.value];
+      }
     }
   }
 
   set dataModel(val: string) {
-    if (this.column.type && this.column.type === 'string') {
-      this.data[this.column.data] = val;
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      filters.find(filter => {
+        return filter.column === this.column;
+      }).value = val;
     } else {
-      this.data[this.column.data] = this.column.options.dataSet.find(element => {
-        return element[this.column.options.value] === this.data[this.column.data];
-      });
+      if (this.column.type && this.column.type === 'string') {
+        this.data[this.column.data] = val;
+      } else {
+        this.data[this.column.data] = this.column.options.dataSet.find(element => {
+          return element[this.column.options.value] === val;
+        });
+      }
+    }
+  }
+
+  getPlaceHolder(): string {
+    if (this.isFilter) {
+      return this.placeHolder;
+    } else {
+      return this.column.options.placeHolder;
     }
   }
 
@@ -97,5 +114,9 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
 
   getLabel(val: object) {
     return val[this.column.options.label];
+  }
+
+  onChange(event) {
+    this.cellChange.emit(this.data);
   }
 }

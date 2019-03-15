@@ -2,6 +2,7 @@ import { ItemEvent } from './../models/item-event';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
+import { Filter } from '../models/filter';
 
 @Component({
   selector: 'ds-cell-edit-basic',
@@ -28,11 +29,21 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
   }
 
   ngOnInit() {
-    this.container.nativeElement.focus();
+    if (!this.isFilter) {
+      this.container.nativeElement.focus();
+    }
+
     if (this.column.componentParam['type'] === 'byKey') {
       this._model = '';
     } else {
-      this._model = this.data[this.column.data];
+      if (this.isFilter) {
+        const filters: Array<Filter> = this.data as Array<Filter>;
+        this._model = filters.find(filter => {
+          return filter.column === this.column;
+        }).value;
+      } else {
+        this._model = this.data[this.column.data];
+      }
     }
     this.column.componentParam['type'] = '';
   }
@@ -65,8 +76,26 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
     }
   }
 
+  onKeyUp(event: KeyboardEvent): void {
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      filters.find(filter => {
+        return filter.column === this.column;
+      }).value = this._model;
+    }
+
+    this.cellChange.emit(this.data);
+  }
+
   onBlur(event: FocusEvent): void {
-    this.data[this.column.data] = this._model;
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      filters.find(filter => {
+        return filter.column === this.column;
+      }).value = this._model;
+    } else {
+      this.data[this.column.data] = this._model;
+    }
     this.blurinput.emit(event);
   }
 
@@ -79,5 +108,13 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
     ie.row = this.row;
 
     this.column.itemEvent.emit(ie);
+  }
+
+  getPlaceHolder(): string {
+    if (this.isFilter) {
+      return this.placeHolder;
+    } else {
+      return this.column.options.placeHolder;
+    }
   }
 }

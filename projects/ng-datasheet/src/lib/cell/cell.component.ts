@@ -20,6 +20,8 @@ export class CellComponent implements OnInit, OnDestroy {
   @Input() row: number;
   @Input() isFilter = false;
   @Input() data: Object;
+  @Input() placeHolder: string;
+  @Output() cellChange: EventEmitter<object> = new EventEmitter();
   @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
   @Output() blurinput: EventEmitter<KeyboardEvent> = new EventEmitter();
   @ViewChild('container', { read: ViewContainerRef })
@@ -27,6 +29,7 @@ export class CellComponent implements OnInit, OnDestroy {
 
   keySubscription: Subscription;
   focusSubscription: Subscription;
+  cellSubscription: Subscription;
 
   private componentRef: ComponentRef<{}>;
 
@@ -44,6 +47,11 @@ export class CellComponent implements OnInit, OnDestroy {
       instance.data = this.data;
       instance.row = this.row;
       instance.isFilter = this.isFilter;
+      instance.placeHolder = this.placeHolder;
+      this.cellSubscription = instance.cellChange.subscribe(data => {
+        this.cellChange.emit(data);
+      });
+
       this.keySubscription = instance.key.subscribe(keyboardEvent => {
         this.key.emit(keyboardEvent);
       });
@@ -57,6 +65,10 @@ export class CellComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.componentRef) {
 
+      if (this.cellSubscription) {
+        this.cellSubscription.unsubscribe();
+      }
+      
       if (this.keySubscription) {
         this.keySubscription.unsubscribe();
       }

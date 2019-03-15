@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
+import { Column } from '../models/column';
+
 
 @Component({
   selector: 'ds-cell-view-number',
@@ -13,8 +15,42 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
     super();
   }
 
+  public static pasteData(data: any, column: Column): any {
+    if (isNaN(data)) {
+      return 0;
+    } else {
+      return data;
+    }
+  }
+
+  public static filter(data: any, filterText: any, column: Column): boolean {
+    if (filterText) {
+      const keywords = filterText.toString().split(' ').join('|');
+      if (data !== null) {
+        if (keywords.indexOf('*') === 0) {
+          if (!data.toString().match(new RegExp('(' + keywords.substring(1) + ')', 'gi'))) {
+            return false;
+          }
+        } else {
+
+          if (!data.toString().match(new RegExp('^(' + keywords + ')', 'gi'))) {
+            return false;
+          }
+        }
+
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+
+  }
+
   ngOnInit() {
   }
+
 
   getDisplayedLabel(): string {
     if (this.column.options.retreiveFunction) {

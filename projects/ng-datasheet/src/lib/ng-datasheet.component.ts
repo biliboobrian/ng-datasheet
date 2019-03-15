@@ -202,12 +202,12 @@ export class NgDatasheetComponent implements OnInit {
           this.start.setCoord(row, col);
         }
       }
-      this.selectBox.nativeElement.focus();
+      this.selectBox.nativeElement.focus({ preventScroll: true });
     }
   }
 
   onBlur(event: FocusEvent, newRow: boolean = false): void {
-    if (newRow) {
+    /* if (newRow) {
       this.dataSet.push(this.newModel);
       this.printNew = false;
       delete (this.newModel);
@@ -227,7 +227,7 @@ export class NgDatasheetComponent implements OnInit {
       setTimeout(() => {
         this.printNew = true;
       }, 10);
-    }
+    } */
 
     if (this.selectBox.nativeElement !== event.relatedTarget) {
       this.end.empty();
@@ -408,7 +408,7 @@ export class NgDatasheetComponent implements OnInit {
           && this.main.row === this._dataSet.length - 1) {
           this.main.row = -1;
         } else if (this.main.row === -1) {
-          /* this.dataSet.push(this.newModel);
+          this.dataSet.push(this.newModel);
           this.printNew = false;
           delete (this.newModel);
           this.newModel = this.newModelFunction();
@@ -424,7 +424,7 @@ export class NgDatasheetComponent implements OnInit {
 
           setTimeout(() => {
             this.printNew = true;
-          }, 10); */
+          }, 10);
         } else if (this.main.row < this.dataSet.length - 1) {
           this.main.row++;
         }
@@ -436,7 +436,8 @@ export class NgDatasheetComponent implements OnInit {
           this.edited.empty();
         }
 
-        this.selectBox.nativeElement.focus();
+        this.selectBox.nativeElement.focus({ preventScroll: true });
+        event.preventDefault();
         break;
       case 9: // tab
         const next = this.renderingService.getNextColumnEditable(this.columns, true, this.main.col, this.main.col);
@@ -462,12 +463,12 @@ export class NgDatasheetComponent implements OnInit {
           this.edited.empty();
         }
 
-        this.selectBox.nativeElement.focus();
+        this.selectBox.nativeElement.focus({ preventScroll: true });
         event.preventDefault();
         break;
       case 27: // esc
         this.edited.empty();
-        this.selectBox.nativeElement.focus();
+        this.selectBox.nativeElement.focus({ preventScroll: true });
         break;
       case 37: // left
         if (this.main.col > 0) {
@@ -478,7 +479,7 @@ export class NgDatasheetComponent implements OnInit {
             this.edited.empty();
           }
 
-          this.selectBox.nativeElement.focus();
+          this.selectBox.nativeElement.focus({ preventScroll: true });
         }
         break;
       case 39: // right
@@ -490,7 +491,7 @@ export class NgDatasheetComponent implements OnInit {
             this.edited.empty();
           }
 
-          this.selectBox.nativeElement.focus();
+          this.selectBox.nativeElement.focus({ preventScroll: true });
         }
         break;
       case 38: // up
@@ -502,12 +503,12 @@ export class NgDatasheetComponent implements OnInit {
           this.edited.empty();
         }
 
-        this.selectBox.nativeElement.focus();
+        this.selectBox.nativeElement.focus({ preventScroll: true });
     }
   }
 
   onKeyDown(event: KeyboardEvent) {
-    if (this.main && !event.ctrlKey) {
+    if (!this.main.isEmpty() && !event.ctrlKey) {
       if (!event.shiftKey) {
         this.start.empty();
         this.end.empty();
@@ -537,9 +538,19 @@ export class NgDatasheetComponent implements OnInit {
             }
             break;
           case 32: // space
-            if (this.main) {
-              this.selection[this.main.row] = !this.selection[this.main.row];
+            if (this.globalMenu) {
+              if (!this.main.isEmpty()) {
+                this.selection[this.main.row] = !this.selection[this.main.row];
+              }
+
+            } else {
+              if (this.columns[this.main.col].editable) {
+                this.columns[this.main.col].componentParam['type'] = 'byKey';
+                this.edited.setCoord(this.main.row, this.main.col);
+
+              }
             }
+
             break;
           case 35: // end
             this.main.setCoord(this.dataSet.length - 1, this.columns.length - 1);
@@ -710,7 +721,7 @@ export class NgDatasheetComponent implements OnInit {
       const txt = this.copyFromSelectedRange(sRow, eRow, sCol, eCol, clear);
       event.clipboardData.setData('text/plain', txt);
       event.preventDefault();
-    } else if (this.main) {
+    } else if (!this.main.isEmpty()) {
       const str: string = this.dataService.copyType(
         this.dataSet[this.main.row][this.columns[this.main.col]['data']],
         this.columns[this.main.col]

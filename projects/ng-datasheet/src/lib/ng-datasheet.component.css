@@ -75,6 +75,10 @@
     padding: 0px !important;
 }
 
+.header-tr {
+    border-bottom: 3px solid #dee2e6 !important;
+}
+
 .view-read-only {
     background-color: #efefef;
 }

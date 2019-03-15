@@ -32,7 +32,7 @@ export class CellViewLinkComponent extends CellDynamicComponent implements OnIni
     }
   }
 
-  public static pasteData(data: string, column: Column): any {
+  public static pasteData(data: any, column: Column): any {
     if (column.options.dataSet) {
       for (let i = 0; i < column.options.dataSet.length; i++) {
         if (column.options.dataSet[i][column.options.label] === data) {

@@ -10,8 +10,18 @@ import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 })
 export class CellViewCheckboxComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
 
+  public static filter(data: any, filterText: any, column: Column): boolean {
+    if (filterText !== null) {
+        if (data === filterText) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
 
-  public static copyData(data: any, column: Column): string {
+public static copyData(data: any, column: Column): string {
     if (data) {
       return '1';
     } else {
@@ -20,7 +30,7 @@ export class CellViewCheckboxComponent extends CellDynamicComponent implements O
   }
 
 
-  public static pasteData(data: string, column: Column): any {
+  public static pasteData(data: any, column: Column): any {
     if (data === '1') {
       return true;
     } else if (data === '0') {

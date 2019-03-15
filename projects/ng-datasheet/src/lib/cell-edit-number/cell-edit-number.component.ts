@@ -2,6 +2,8 @@ import { ItemEvent } from './../models/item-event';
 import { CellDynamicInterface } from './../cell/cell-dynamic-interface';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
+import { Filter } from '../models/filter';
+import { Column } from 'ng-datasheet/public_api';
 
 @Component({
   selector: 'ds-cell-edit-number',
@@ -32,17 +34,34 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
   }
 
   ngOnInit() {
-    this.container.nativeElement.focus();
+    if (!this.isFilter) {
+      this.container.nativeElement.focus();
+    }
     if (this.column.componentParam['type'] === 'byKey') {
       this._model = 0;
     } else {
-      this._model = this.data[this.column.data];
+      if (this.isFilter) {
+        const filters: Array<Filter> = this.data as Array<Filter>;
+        this._model = filters.find(filter => {
+          return filter.column === this.column;
+        }).value;
+      } else {
+        this._model = this.data[this.column.data];
+      }
     }
     this.column.componentParam['type'] = '';
   }
 
   getStep(): number {
     return 1 / Math.pow(10, this.column.componentParam['step']);
+  }
+
+  getPlaceHolder(): string {
+    if (this.isFilter) {
+      return this.placeHolder;
+    } else {
+      return this.column.options.placeHolder;
+    }
   }
 
   onKeyDown(event: KeyboardEvent): void {
@@ -73,8 +92,26 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
     }
   }
 
+  onKeyUp(event: KeyboardEvent): void {
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      filters.find(filter => {
+        return filter.column === this.column;
+      }).value = this._model;
+    }
+
+    this.cellChange.emit(this.data);
+  }
+
   onBlur(event: FocusEvent): void {
-    this.data[this.column.data] = this._model;
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      filters.find(filter => {
+        return filter.column === this.column;
+      }).value = this._model;
+    } else {
+      this.data[this.column.data] = this._model;
+    }
     this.blurinput.emit(event);
   }
 

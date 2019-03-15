@@ -1,8 +1,23 @@
-<div class="text-center">
-  <input type="checkbox" [(ngModel)]="data[column.data]" #container 
-    (keydown)="onKeyDown($event)"
-    (blur)="onBlur($event)"
-    (change)="onChange($event)"
-  />
+<div *ngIf="!isFilter" class="text-center" (click)="onClick($event)">
+  <input type="checkbox" [(ngModel)]="dataModel" #container (keydown)="onKeyDown($event)" (blur)="onBlur($event)"
+    (change)="onChange($event)" />
 </div>
-
+<div  *ngIf="isFilter" class="d-flex justify-content-center">
+  <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="dataModel">
+    <label ngbButtonLabel class="btn btn-primary active py-0 px-1">
+      <input type="radio" ngbButton name="options" [value]="null" (change)="onChange($event)">
+      <i class="fas fa-times">
+      </i>
+    </label>
+    <label ngbButtonLabel class="btn btn-primary py-0 px-1">
+      <input type="radio" ngbButton name="options" [value]="false" (change)="onChange($event)">
+      <i class="far fa-square">
+      </i>
+    </label>
+    <label ngbButtonLabel class="btn btn-primary py-0 px-1">
+      <input type="radio" ngbButton name="options" [value]="true" (change)="onChange($event)">
+      <i class="far fa-check-square">
+      </i>
+    </label>
+  </div>
+</div>

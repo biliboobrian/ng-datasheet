@@ -52,7 +52,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Peter';
     p.deleted = false;
     p.hobby = 1;
-    p.age = { 'before': 10, 'after': 12 };
+    p.age = 15;
     p.birthdate = moment_(new Date(1967, 11, 12));
 
     this.staticDataSet.push(p);
@@ -62,7 +62,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'John';
     p.deleted = false;
     p.hobby = 2;
-    p.age = { 'before': 10, 'after': 12 };
+    p.age = 15;
     p.birthdate = moment_(new Date(1983, 2, 27));
 
     this.staticDataSet.push(p);
@@ -72,7 +72,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Thomas';
     p.deleted = false;
     p.hobby = 3;
-    p.age = { 'before': 10, 'after': 12 };
+    p.age = 15;
     p.birthdate = moment_(new Date(1977, 10, 2));
 
     this.staticDataSet.push(p);
@@ -82,7 +82,7 @@ export class StaticWithEventComponent implements OnInit {
     p.firstname = 'Sherlock';
     p.deleted = true;
     p.hobby = 4;
-    p.age = { 'before': 10, 'after': 12 };
+    p.age = 15;
     p.birthdate = moment_(new Date(1990, 7, 8));
 
     this.staticDataSet.push(p);
@@ -99,10 +99,7 @@ export class StaticWithEventComponent implements OnInit {
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
     this.staticColumns.push(col);
 
-    col = new Column('Age', 'age', CellViewObjectComponent, CellEditNumberComponent, 70);
-    col.type = 'number';
-    col.options.label = 'before';
-    col.searchable = false;
+    col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 70);
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);

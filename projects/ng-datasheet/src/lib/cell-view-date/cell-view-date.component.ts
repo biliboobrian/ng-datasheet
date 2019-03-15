@@ -18,6 +18,17 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
     super();
   }
 
+  public static filter(data: any, filterText: any, column: Column): boolean {
+    if (filterText && data) {
+      if (data.toString() === filterText.toString()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public static copyData(data: any, column: Column): string {
     const d: moment_.Moment = data;
     if (d) {
@@ -28,7 +39,7 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
   }
 
 
-  public static pasteData(data: string, column: Column): any {
+  public static pasteData(data: any, column: Column): any {
     const myMoment: moment_.Moment = moment(data, column.options.format);
     if (myMoment.isValid()) {
       return myMoment;

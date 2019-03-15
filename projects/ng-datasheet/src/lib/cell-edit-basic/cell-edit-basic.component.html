@@ -1,5 +1,7 @@
 <input [(ngModel)]="model" type="text" class="form-control edit-basic" #container 
 (keydown)="onKeyDown($event)"
+(keyup)="onKeyUp($event)"
+placeholder="{{ getPlaceHolder() }}"
 (blur)="onBlur($event)"
 (change)="onChange($event)"
 />

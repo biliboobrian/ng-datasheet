@@ -1,6 +1,7 @@
 import {
   NgbModule, NgbTypeaheadModule, NgbDatepickerModule,
-  NgbDropdownModule
+  NgbDropdownModule,
+  NgbButtonsModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
@@ -35,6 +36,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgbTypeaheadModule,
     NgbDatepickerModule,
     NgbDropdownModule,
+    NgbButtonsModule,
     RouterModule,
     NgSelectModule
   ],

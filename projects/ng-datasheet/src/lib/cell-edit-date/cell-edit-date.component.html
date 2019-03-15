@@ -1,7 +1,7 @@
 <div class="form-group edit-dp" tabIndex="-1">
     <div class="input-group" tabIndex="-1">
       <input class="form-control edit-dp-input" 
-      [placeholder]="column.options.format" 
+      [placeholder]="getPlaceHolder()" 
       name="dp" [(ngModel)]="dateModel" 
       ngbDatepicker 
       #d="ngbDatepicker" 

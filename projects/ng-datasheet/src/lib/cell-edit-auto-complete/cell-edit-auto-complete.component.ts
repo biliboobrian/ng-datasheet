@@ -4,6 +4,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
+import { Filter } from '../models/filter';
 
 @Component({
   selector: 'ds-cell-edit-auto-complete',
@@ -22,6 +23,29 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
     private sanitizer: DomSanitizer
   ) {
     super();
+  }
+
+
+  get dataModel(): string {
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      return filters.find(filter => {
+        return filter.column === this.column;
+      }).value;
+    } else {
+      return this.data[this.column.data];
+    }
+  }
+
+  set dataModel(val: string) {
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      filters.find(filter => {
+        return filter.column === this.column;
+      }).value = val;
+    } else {
+      this.data[this.column.data] = val;
+    }
   }
 
   formatter = (obj: Object): string => {
@@ -43,6 +67,14 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
 
   ngOnDestroy() {
 
+  }
+
+  getPlaceHolder(): string {
+    if (this.isFilter) {
+      return this.placeHolder;
+    } else {
+      return this.column.options.placeHolder;
+    }
   }
 
   onSelectItem(event: NgbTypeaheadSelectItemEvent): void {

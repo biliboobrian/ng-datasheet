@@ -3,6 +3,8 @@ min="{{ (column.componentParam['min'])?column.componentParam['min']:null }}"
 max="{{ (column.componentParam['max'])?column.componentParam['max']:null }}"
 step="{{ (column.componentParam['step'])?getStep():null }}"
 (keydown)="onKeyDown($event)"
+(keyup)="onKeyUp($event)"
 (blur)="onBlur($event)"
+placeholder="{{ getPlaceHolder() }}"
 (change)="onChange($event)"
 />

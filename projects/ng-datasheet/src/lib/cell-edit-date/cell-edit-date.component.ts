@@ -3,6 +3,7 @@ import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
+import { Filter } from '../models/filter';
 import * as moment_ from 'moment'; const moment = moment_;
 
 
@@ -28,12 +29,26 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
 
   public set dateModel(val: NgbDateStruct) {
     this._dateModel = val;
-    if (val) {
-      this.data[this.column.data] = moment(new Date(val.year, val.month - 1, val.day));
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      const f = filters.find(filter => {
+        return filter.column === this.column;
+      });
+
+      if (val) {
+        f.value = moment(new Date(val.year, val.month - 1, val.day));
+      } else {
+        f.value = null;
+      }
     } else {
-      this.data[this.column.data] = null;
+      if (val) {
+        this.data[this.column.data] = moment(new Date(val.year, val.month - 1, val.day));
+      } else {
+        this.data[this.column.data] = null;
+      }
     }
 
+    this.cellChange.emit(this.data);
   }
 
   public get dateModel(): NgbDateStruct {
@@ -41,7 +56,16 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
   }
 
   ngOnInit() {
-    const d: moment_.Moment = this.data[this.column.data];
+    let d: moment_.Moment;
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      d = filters.find(filter => {
+        return filter.column === this.column;
+      }).value;
+    } else {
+      d = this.data[this.column.data];
+    }
+
     if (d) {
       this._dateModel = {
         year: parseInt(d.format('YYYY'), 10),
@@ -52,7 +76,7 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
       this._dateModel = null;
     }
 
-    if(!this.isFilter) {
+    if (!this.isFilter) {
       this.container.nativeElement.focus();
       this.d.toggle();
     }
@@ -111,5 +135,13 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
 
   onBlur(event: FocusEvent): void {
     this.blurinput.emit(event);
+  }
+
+  getPlaceHolder(): string {
+    if (this.isFilter) {
+      return this.placeHolder;
+    } else {
+      return this.column.options.format;
+    }
   }
 }
