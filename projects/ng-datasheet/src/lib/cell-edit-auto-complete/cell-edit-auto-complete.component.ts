@@ -40,9 +40,16 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
   set dataModel(val: string) {
     if (this.isFilter) {
       const filters: Array<Filter> = this.data as Array<Filter>;
-      filters.find(filter => {
+      const f = filters.find(filter => {
         return filter.column === this.column;
-      }).value = val;
+      });
+      const oldVal = f.value;
+
+      f.value = val;
+
+      if (val === '' && oldVal !== val) {
+        this.cellChange.emit(this.data);
+      }
     } else {
       this.data[this.column.data] = val;
     }
@@ -62,7 +69,9 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
   }
 
   ngOnInit() {
-    this.container.nativeElement.focus();
+    if (!this.isFilter) {
+      this.container.nativeElement.focus();
+    }
   }
 
   ngOnDestroy() {
@@ -78,6 +87,15 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
   }
 
   onSelectItem(event: NgbTypeaheadSelectItemEvent): void {
+    if (this.isFilter) {
+      const filters: Array<Filter> = this.data as Array<Filter>;
+      filters.find(filter => {
+        return filter.column === this.column;
+      }).value = event.item;
+    }
+
+    this.cellChange.emit(this.data);
+
     const ie: ItemEvent = new ItemEvent();
     ie.item = event.item;
     ie.data = this.data;

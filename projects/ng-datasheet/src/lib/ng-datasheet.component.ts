@@ -4,7 +4,7 @@ import { DateParserFormatter } from './cell-edit-date/date-parser-formatter';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Sort } from './models/sort';
 import { Column } from './models/column';
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output, ElementRef } from '@angular/core';
 import { Pagination } from './models/pagination';
 import { Filter } from './models/filter';
 import { RenderEvent } from './models/render-event';
@@ -17,6 +17,7 @@ import { Coordinate } from './models/coordinate';
 import { Observable } from 'rxjs';
 import { RowEvent } from './models/row-event';
 import { SelectionEvent } from './models/selection-event';
+import { FormGroup } from '@angular/forms';
 
 let COL_FORMAT = '';
 
@@ -72,6 +73,8 @@ export class NgDatasheetComponent implements OnInit {
   @Input('columns') set columns(val: Array<Column>) {
     this._columns = val;
     if (this._columns && this.tbl.nativeElement) {
+      this.filters = this.navigatingService.initFilters(this._columns);
+
       this.renderingService.setNoWidthColumn(this.columns, this.tbl.nativeElement, this.dsKey);
     }
   }
@@ -92,6 +95,7 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public editable = true;
   @Input() public globalMenu = false;
   @Input() public usePointerOnLine = false;
+  @Input() public formGroup: FormGroup;
 
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
   @Output() public rowEvent: EventEmitter<RowEvent> = new EventEmitter<RowEvent>();

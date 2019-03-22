@@ -12,11 +12,13 @@ import {
   CellViewNumberComponent,
   CellViewCheckboxComponent,
   CellEditCheckboxComponent,
-  CellViewButtonComponent
+  CellViewButtonComponent,
+  ItemEvent
 } from 'projects/ng-datasheet/src/public_api';
 
 import * as moment_ from 'moment';
 import { Person } from '../../../../models/person';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 const moment = moment_;
 
 @Component({
@@ -30,8 +32,11 @@ export class StaticEditableComponent implements OnInit {
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];
   hobbiesDataSet: Array<Object>;
+  formGroup: FormGroup;
 
-  constructor() { }
+  constructor(
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.hobbiesDataSet = [
@@ -40,6 +45,16 @@ export class StaticEditableComponent implements OnInit {
       { id: 3, name: 'Foot ball' },
       { id: 4, name: 'Swimming' }
     ];
+
+    this.formGroup = this.fb.group({
+      id: [''],
+      firstname: ['', Validators.required],
+      lastname: [''],
+      deleted: [''],
+      hobby: [''],
+      age: [''],
+      birthdate: ['']
+    });
 
 
     this.staticDataSet = [];
@@ -394,6 +409,17 @@ export class StaticEditableComponent implements OnInit {
     col.options.value = 'id';
     col.options.label = 'name';
     col.type = 'string';
+    col.itemEvent.subscribe(data => {
+      this.itemEv(data);
+    })
+    this.staticColumns.push(col);
+
+    col = new Column('Hobby', 'hobby', CellViewObjectComponent, CellEditDropDownComponent, 200);
+    col.options = new Options();
+    col.options.dataSet = this.hobbiesDataSet;
+    col.options.value = 'id';
+    col.options.label = 'name';
+    col.type = 'string';
     this.staticColumns.push(col);
 
     col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 71);
@@ -430,5 +456,9 @@ export class StaticEditableComponent implements OnInit {
 
   createItem() {
     return new Person();
+  }
+
+  itemEv(event: ItemEvent) {
+    
   }
 }

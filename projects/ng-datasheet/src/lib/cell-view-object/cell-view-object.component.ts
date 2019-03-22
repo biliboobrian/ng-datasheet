@@ -3,7 +3,8 @@ import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Column } from '../models/column';
 import { Observable, of } from 'rxjs';
-import * as moment_ from 'moment'; const moment = moment_;
+import * as moment_ from 'moment';
+const moment = moment_;
 
 
 @Component({
@@ -18,14 +19,51 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
   }
 
   public static filter(data: any, filterText: any, column: Column): boolean {
-    if (filterText) {
-      if (data === filterText) {
-        return true;
+    if (filterText && data) {
+      if (column.type && column.type === 'object') {
+        let keywords = '';
+
+        if (filterText[column.options.label] !== undefined) {
+          keywords = filterText[column.options.label];
+        } else {
+          keywords = filterText.split(' ').join('|');
+        }
+
+        if (data[column.options.label] !== null) {
+          if (keywords.indexOf('*') === 0) {
+            if (!data[column.options.label].toString().match(new RegExp('(' + keywords.substring(1) + ')', 'gi'))) {
+              return false;
+            }
+          } else {
+
+            if (!data[column.options.label].toString().match(new RegExp('^(' + keywords + ')', 'gi'))) {
+              return false;
+            }
+          }
+          return true;
+        } else {
+          return false;
+        }
+      } if (column.type && column.type === 'date') {
+        if (data[column.options.label].toString() === filterText.toString()) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        if (data === filterText) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
-    return true;
+
+    if (filterText) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   public static copyData(data: any, column: Column): string {
@@ -83,7 +121,7 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
 
   getLabel(obj: object) {
     if (this.column.type && this.column.type === 'string') {
-      let elem;
+      let elem: object;
       if (this.column.options.dataSet) {
         elem = this.column.options.dataSet.find(element => {
           return element[this.column.options.value] === obj;
@@ -107,7 +145,6 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
         } else {
           return obj[this.column.options.label];
         }
-
       }
       return '';
     }

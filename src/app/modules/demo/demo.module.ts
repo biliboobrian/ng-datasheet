@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgDatasheetModule } from 'projects/ng-datasheet/src/public_api';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     DemoRoutingModule,
     NgDatasheetModule,
     NgSelectModule

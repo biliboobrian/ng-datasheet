@@ -38,9 +38,14 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
     } else {
       if (this.isFilter) {
         const filters: Array<Filter> = this.data as Array<Filter>;
-        this._model = filters.find(filter => {
+        const f = filters.find(filter => {
           return filter.column === this.column;
-        }).value;
+        });
+
+        if (f) {
+          this._model = f.value;
+        }
+
       } else {
         this._model = this.data[this.column.data];
       }

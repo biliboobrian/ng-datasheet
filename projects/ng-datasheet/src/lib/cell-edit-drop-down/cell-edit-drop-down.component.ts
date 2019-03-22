@@ -1,8 +1,9 @@
 import { ItemEvent } from './../models/item-event';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Filter } from '../models/filter';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 @Component({
   selector: 'ds-cell-edit-drop-down',
@@ -11,17 +12,20 @@ import { Filter } from '../models/filter';
 })
 export class CellEditDropDownComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
 
-  public open = true;
+  @ViewChild('container', { read: NgSelectComponent })
+  container: NgSelectComponent;
 
   constructor() {
     super();
   }
 
   ngOnInit() {
+    if (!this.isFilter) {
+      this.container.open();
+    }
   }
 
   onKeyDown(event: KeyboardEvent) {
-    let index;
     switch (event.keyCode) {
       case 9: // tab
       case 13: // enter
@@ -35,7 +39,6 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
 
   onSelect(option: Object): void {
     // this.dataModel = option;
-    this.open = false;
 
     const ie: ItemEvent = new ItemEvent();
     ie.item = option;
@@ -46,10 +49,6 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
     this.column.itemEvent.emit(ie);
   }
 
-  onToggle(event: MouseEvent): void {
-    this.open = !this.open;
-  }
-
   isSelected(option: Object): boolean {
     return option === this.dataModel;
   }
@@ -57,9 +56,10 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   get dataModel(): string {
     if (this.isFilter) {
       const filters: Array<Filter> = this.data as Array<Filter>;
-      return filters.find(filter => {
-        return filter.column === this.column;
-      }).value;
+      const filter = filters.find(f => {
+        return f.column === this.column;
+      });
+      return (filter) ? filter.value : null;
     } else {
       if (this.column.type && this.column.type === 'string') {
         return this.data[this.column.data];
@@ -117,6 +117,13 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   onChange(event) {
+    const ie: ItemEvent = new ItemEvent();
+    ie.item = event;
+    ie.data = this.data;
+    ie.column = this.column;
+    ie.row = this.row;
+
+    this.column.itemEvent.emit(ie);
     this.cellChange.emit(this.data);
   }
 }

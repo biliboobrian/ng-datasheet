@@ -3,7 +3,7 @@ import {
   NgbDropdownModule,
   NgbButtonsModule
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { NgDatasheetComponent } from './ng-datasheet.component';
 import { CellComponent } from './cell/cell.component';
@@ -33,6 +33,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     NgbModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     NgbTypeaheadModule,
     NgbDatepickerModule,
     NgbDropdownModule,
