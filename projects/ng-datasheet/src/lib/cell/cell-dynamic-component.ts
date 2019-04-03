@@ -63,4 +63,9 @@ export abstract class CellDynamicComponent {
     public static pasteData(data: any, column: Column): any {
         return data;
     }
+
+    public static escapeRegExp(text) {
+        const regexp = new RegExp('\[\\-\\[\\]\\{\\}\\(\\)\\*\\+\\?\\.\\,\\\\\/\\^\\$\\|\\#\]', 'g');
+        return text.replace(regexp, '\\$&');
+    }
 }

@@ -26,12 +26,12 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
         if (filterText[column.options.label] !== undefined) {
           keywords = filterText[column.options.label];
         } else {
-          keywords = filterText.split(' ').join('|');
+          keywords = this.escapeRegExp(filterText).split(' ').join('|');
         }
 
         if (data[column.options.label] !== null) {
-          if (keywords.indexOf('*') === 0) {
-            if (!data[column.options.label].toString().match(new RegExp('(' + keywords.substring(1) + ')', 'gi'))) {
+          if (keywords.indexOf('\\*') === 0) {
+            if (!data[column.options.label].toString().match(new RegExp('(' + keywords.substring(2) + ')', 'gi'))) {
               return false;
             }
           } else {
@@ -151,11 +151,15 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
   }
 
   getLbl(obj: object, props: Array<string>) {
-    const prop: string = props.shift();
-    if (props.length === 0) {
-      return obj[prop];
+    const prop: string = props[0];
+    if (props.length === 1) {
+      if(obj) {
+        return obj[prop];
+      } else {
+        return '';
+      }
     } else {
-      return this.getLbl(obj[prop], props);
+      return this.getLbl(obj[prop], props.slice(1));
     }
   }
 

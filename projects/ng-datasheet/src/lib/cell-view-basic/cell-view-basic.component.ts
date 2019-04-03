@@ -16,10 +16,10 @@ export class CellViewBasicComponent extends CellDynamicComponent implements OnIn
 
   public static filter(data: any, filterText: any, column: Column): boolean {
     if (filterText) {
-      const keywords = filterText.split(' ').join('|');
+      const keywords = this.escapeRegExp(filterText).split(' ').join('|');
       if (data !== null) {
-        if (keywords.indexOf('*') === 0) {
-          if (!data.toString().match(new RegExp('(' + keywords.substring(1) + ')', 'gi'))) {
+        if (keywords.indexOf('\\*') === 0) {
+          if (!data.toString().match(new RegExp('(' + keywords.substring(2) + ')', 'gi'))) {
             return false;
           }
         } else {

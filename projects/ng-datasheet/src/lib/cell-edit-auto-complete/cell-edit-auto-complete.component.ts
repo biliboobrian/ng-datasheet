@@ -64,8 +64,12 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
   }
 
   formatText(value: string, term: string): SafeHtml {
-    const keywords = term.split(' ').join('|');
-    return this.sanitizer.bypassSecurityTrustHtml(value.replace(new RegExp('(' + keywords + ')', 'gi'), '<b>$1</b>'));
+    const keywords = CellDynamicComponent.escapeRegExp(term).split(' ').join('|');
+    if (keywords.indexOf('\\*') === 0) {
+      return this.sanitizer.bypassSecurityTrustHtml(value.replace(new RegExp('(' + keywords.substring(2) + ')', 'gi'), '<b>$1</b>'));
+    } else {
+      return this.sanitizer.bypassSecurityTrustHtml(value.replace(new RegExp('(' + keywords + ')', 'gi'), '<b>$1</b>'));
+    }
   }
 
   ngOnInit() {

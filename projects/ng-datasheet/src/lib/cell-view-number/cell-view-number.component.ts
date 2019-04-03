@@ -25,10 +25,10 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
 
   public static filter(data: any, filterText: any, column: Column): boolean {
     if (filterText) {
-      const keywords = filterText.toString().split(' ').join('|');
+      const keywords = this.escapeRegExp(filterText.toString()).split(' ').join('|');
       if (data !== null) {
-        if (keywords.indexOf('*') === 0) {
-          if (!data.toString().match(new RegExp('(' + keywords.substring(1) + ')', 'gi'))) {
+        if (keywords.indexOf('\\*') === 0) {
+          if (!data.toString().match(new RegExp('(' + keywords.substring(2) + ')', 'gi'))) {
             return false;
           }
         } else {
