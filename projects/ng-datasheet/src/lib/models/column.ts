@@ -16,6 +16,7 @@ export class Column {
     editable = true;
     isResizing = false;
     autoOpen = false;
+    backgroundColor: string;
     cellView: CellDynamicInterface;
     cellEdit: CellDynamicInterface;
     itemEvent: EventEmitter<ItemEvent> = new EventEmitter<ItemEvent>();

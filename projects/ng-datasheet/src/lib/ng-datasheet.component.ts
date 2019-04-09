@@ -242,11 +242,13 @@ export class NgDatasheetComponent implements OnInit {
 
   }
 
-  getBgColor(row: number = null): string {
+  getBgColor(row: number = null, column: Column): string {
     if (this._actualRow === row && this.trBgColor) {
       return this.trBgColor;
+    } else if (column.backgroundColor){
+      return column.backgroundColor;
     } else {
-      return '';
+      return ''
     }
   }
 

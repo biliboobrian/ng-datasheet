@@ -409,6 +409,7 @@ export class StaticEditableComponent implements OnInit {
     col.options.value = 'id';
     col.options.label = 'name';
     col.type = 'string';
+    col.backgroundColor = '#FF0000'
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
     })

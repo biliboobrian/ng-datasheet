@@ -14,6 +14,22 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
+  items: Array<object> = [
+    {
+      label: 'All',
+      value: null
+    },
+    {
+      label: 'No',
+      value: false
+    },
+    {
+      label: 'Yes',
+      value: true
+    },
+    
+  ];
+
   constructor() {
     super();
   }
@@ -79,6 +95,14 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
     }
 
     this.cellChange.emit(this.data);
+  }
+
+  getPlaceHolder(): string {
+    if (this.isFilter) {
+      return this.placeHolder;
+    } else {
+      return this.column.options.placeHolder;
+    }
   }
 
 }

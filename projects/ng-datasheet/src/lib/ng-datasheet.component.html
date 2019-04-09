@@ -46,12 +46,12 @@
     </td>
   </tr>
   <ng-container *ngFor="let obj of dataSet; let row = index">
-    <tr *ngIf="renderingService.isVisible(filterList, row)" [style.background-color]="getBgColor(row)" [class.use-pointer]="usePointerOnLine" (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
+    <tr *ngIf="renderingService.isVisible(filterList, row)" [class.use-pointer]="usePointerOnLine" (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
       <td *ngIf="globalMenu">
         <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" (change)="onCheckSelection($event, row, obj)"/>
       </td>
       <ng-container *ngFor="let column of columns; let col = index">
-        <td (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
+        <td  [style.background-color]="getBgColor(row, column)" (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
           (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
           [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)" [class.cell-selected-down]="isSelected(row, col, 3)"
           [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)" [class.view-read-only]="!columns[col].editable">

@@ -3,7 +3,17 @@
     (change)="onChange($event)" />
 </div>
 <div  *ngIf="isFilter" class="d-flex justify-content-center">
-  <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="dataModel">
+    <ng-select #container
+    [items]="items"
+    bindLabel="label"
+    bindValue="value"
+    [(ngModel)]="dataModel"
+    (keydown)="onKeyDown($event)"
+    class="ngselect-custom w-100"
+    placeholder="{{ getPlaceHolder() }}"
+    (change)="onChange($event)">
+    </ng-select>
+  <!-- <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="dataModel">
     <label ngbButtonLabel class="btn btn-primary active py-0 px-1">
       <input type="radio" ngbButton name="options" [value]="null" (change)="onChange($event)">
       <i class="fas fa-times">
@@ -19,5 +29,5 @@
       <i class="far fa-check-square">
       </i>
     </label>
-  </div>
+  </div>-->
 </div>
