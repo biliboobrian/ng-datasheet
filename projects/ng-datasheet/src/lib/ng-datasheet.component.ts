@@ -92,6 +92,7 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public sort: Sort;
   @Input() public dsKey: string;
   @Input() public trBgColor: string;
+  @Input() public trBgColorFunction: Function;
   @Input() public editable = true;
   @Input() public globalMenu = false;
   @Input() public usePointerOnLine = false;
@@ -255,8 +256,12 @@ export class NgDatasheetComponent implements OnInit {
   getBgColor(row: number = null, column?: Column): string {
 
     if (column) {
-      if (this._actualRow === row && this.trBgColor) {
-        return this.trBgColor;
+      if (this._actualRow === row) {
+        if (this.trBgColor) {
+          return this.trBgColor;
+        } else if (this.trBgColorFunction && column) {
+          return this.trBgColorFunction(this._actualRow, row, column);
+        }
       } else if (column.backgroundColor) {
         return column.backgroundColor;
       }
@@ -299,6 +304,7 @@ export class NgDatasheetComponent implements OnInit {
       if (this.edited.isEmpty()) {
         this.selectBox.nativeElement.focus({ preventScroll: true });
       }
+      this.rowEvent.emit(new RowEvent(obj, row));
     } else {
       this.rowEvent.emit(new RowEvent(obj, row));
     }
