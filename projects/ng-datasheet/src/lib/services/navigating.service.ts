@@ -10,12 +10,15 @@ export class NavigatingService {
   constructor() { }
 
   initFilters(columns: Array<Column>) {
-    const filters:Array<Filter> = new Array<Filter>();
+    const filters: Array<Filter> = new Array<Filter>();
 
-    for (let i = 0; i < columns.length; i++) {
-      const filter: Filter = new Filter(columns[i]);
-      filters.push(filter);
+    if (columns) {
+      for (let i = 0; i < columns.length; i++) {
+        const filter: Filter = new Filter(columns[i]);
+        filters.push(filter);
+      }
     }
+
 
     return filters;
   }
