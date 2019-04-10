@@ -4,7 +4,7 @@ import { DateParserFormatter } from './cell-edit-date/date-parser-formatter';
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Sort } from './models/sort';
 import { Column } from './models/column';
-import { Component, OnInit, Input, ViewChild, EventEmitter, Output, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output, ElementRef, HostListener } from '@angular/core';
 import { Pagination } from './models/pagination';
 import { Filter } from './models/filter';
 import { RenderEvent } from './models/render-event';
@@ -40,6 +40,10 @@ export function dateParseFactory() {
 
 export class NgDatasheetComponent implements OnInit {
 
+  get columns(): Array<Column> {
+    return this._columns;
+  }
+
   get dataSet(): Array<Object> {
     return this._dataSet;
   }
@@ -64,10 +68,6 @@ export class NgDatasheetComponent implements OnInit {
       this.static,
       this.pagination
     );
-  }
-
-  get columns(): Array<Column> {
-    return this._columns;
   }
 
   @Input('columns') set columns(val: Array<Column>) {
@@ -125,8 +125,18 @@ export class NgDatasheetComponent implements OnInit {
     public navigatingService: NavigatingService,
     public renderingService: RenderingService,
     public resizingService: ResizingService,
-    public dataService: DataService
+    public dataService: DataService,
+    private eRef: ElementRef
   ) { }
+
+  @HostListener('document:click', ['$event']) clickout(event) {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.end.empty();
+      this.start.empty();
+      this.edited.empty();
+      this.main.empty();
+    }
+  }
 
   ngOnInit() {
     if (this.columns) {
@@ -242,12 +252,17 @@ export class NgDatasheetComponent implements OnInit {
 
   }
 
-  getBgColor(row: number = null): string {
-    if (this._actualRow === row && this.trBgColor) {
-      return this.trBgColor;
-    } else {
-      return '';
+  getBgColor(row: number = null, column?: Column): string {
+
+    if (column) {
+      if (this._actualRow === row && this.trBgColor) {
+        return this.trBgColor;
+      } else if (column.backgroundColor) {
+        return column.backgroundColor;
+      }
     }
+
+    return '';
   }
 
   changeTRStyle(row: number = null): void {
@@ -513,7 +528,8 @@ export class NgDatasheetComponent implements OnInit {
 
   onKeyDown(event: KeyboardEvent) {
     if (!this.main.isEmpty() && !event.ctrlKey) {
-      if (!event.shiftKey) {
+      if (!event.shiftKey || (event.shiftKey
+        && [9, 13, 32, 37, 38, 39, 40].indexOf(event.keyCode) === -1)) {
         this.start.empty();
         this.end.empty();
         switch (event.keyCode) {
@@ -587,7 +603,7 @@ export class NgDatasheetComponent implements OnInit {
             }
             break;
           default:
-            if (this.columns[this.main.col].editable) {
+            if (this.columns[this.main.col].editable && event.keyCode !== 16) {
               this.columns[this.main.col].componentParam['type'] = 'byKey';
               this.edited.setCoord(this.main.row, this.main.col);
 
@@ -623,6 +639,13 @@ export class NgDatasheetComponent implements OnInit {
         }
       }
     }
+  }
+
+  onFilterClick(event: MouseEvent) {
+    this.end.empty();
+    this.start.empty();
+    this.edited.empty();
+    this.main.empty();
   }
 
   onSelectAll(event: MouseEvent) {

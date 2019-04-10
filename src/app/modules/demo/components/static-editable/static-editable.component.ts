@@ -59,13 +59,9 @@ export class StaticEditableComponent implements OnInit {
 
     this.staticDataSet = [];
     let p = new Person();
-    p.id = 1;
-    p.lastname = 'BANNING';
-    p.firstname = 'Peter';
-    p.deleted = false;
-    p.hobby = 1;
-    p.age = 10;
-    p.birthdate = moment_(new Date(1967, 2, 22));
+    let parentp = new Person();
+    
+    
 
     this.staticDataSet.push(p);
     p = new Person();
@@ -76,6 +72,14 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 2;
     p.age = 20;
     p.birthdate = moment_(new Date(1983, 2, 27));
+    parentp.id = 1;
+    parentp.lastname = 'BANNING';
+    parentp.firstname = 'Peter';
+    parentp.deleted = false;
+    parentp.hobby = 1;
+    parentp.age = 10;
+    parentp.birthdate = moment_(new Date(1967, 2, 22));
+    p.parent = parentp;
 
     this.staticDataSet.push(p);
     p = new Person();
@@ -403,12 +407,26 @@ export class StaticEditableComponent implements OnInit {
     col.options.format = 'DD/MM/YYYY';
     this.staticColumns.push(col);
 
+    col = new Column('Parent Deleted?', 'parent', CellViewObjectComponent, CellEditDropDownComponent, 200);
+    col.options = new Options();
+
+    col.options.value = 'id';
+    col.options.label = 'deleted';
+    col.type = Column.BOOLEAN;
+    col.backgroundColor = '#b9ffc9';
+
+    col.itemEvent.subscribe(data => {
+      this.itemEv(data);
+    });
+    this.staticColumns.push(col);
+
     col = new Column('Hobby', 'hobby', CellViewObjectComponent, CellEditDropDownComponent, 200);
     col.options = new Options();
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
-    col.type = 'string';
+    col.type = Column.STRING;
+    col.backgroundColor = '#b9ffc9';
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
     })

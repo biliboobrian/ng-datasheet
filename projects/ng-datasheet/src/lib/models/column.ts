@@ -4,6 +4,12 @@ import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Options } from './options';
 
 export class Column {
+
+    static STRING = 'string';
+    static NUMBER = 'number';
+    static DATE = 'date';
+    static BOOLEAN = 'boolean';
+
     title: string; // title of the TH header
     data: string; // field in the model representing data to give to the component
     width = 0; // expected fix width for this column, by default it will affect for the width > width_of_table / number_of_column
@@ -16,6 +22,7 @@ export class Column {
     editable = true;
     isResizing = false;
     autoOpen = false;
+    backgroundColor: string;
     cellView: CellDynamicInterface;
     cellEdit: CellDynamicInterface;
     itemEvent: EventEmitter<ItemEvent> = new EventEmitter<ItemEvent>();

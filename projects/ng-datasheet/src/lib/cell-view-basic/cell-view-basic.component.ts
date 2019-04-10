@@ -17,7 +17,7 @@ export class CellViewBasicComponent extends CellDynamicComponent implements OnIn
   public static filter(data: any, filterText: any, column: Column): boolean {
     if (filterText) {
       const keywords = this.escapeRegExp(filterText).split(' ').join('|');
-      if (data !== null) {
+      if (data !== null && data !== undefined) {
         if (keywords.indexOf('\\*') === 0) {
           if (!data.toString().match(new RegExp('(' + keywords.substring(2) + ')', 'gi'))) {
             return false;

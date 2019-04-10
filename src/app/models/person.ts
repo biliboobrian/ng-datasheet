@@ -8,6 +8,15 @@ export class Person {
     private _wiki: Object;
     private _age: number;
     private _deleted: boolean;
+    private _parent: Person;
+
+    public get parent() {
+        return this._parent;
+    }
+
+    public set parent(val: Person) {
+        this._parent = val;
+    }
 
     public get id() {
         return this._id;
