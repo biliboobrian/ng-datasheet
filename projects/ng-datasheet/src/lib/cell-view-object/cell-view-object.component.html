@@ -1,7 +1,1 @@
-<span *ngIf="column.type !== 'boolean'">{{ getLabel(data[column.data]) }}</span>
-<div *ngIf="column.type === 'boolean'" class="text-center">
-    <i class="far" 
-        [class.fa-square]="getLabel(data[column.data]) === false" 
-        [class.fa-check-square]="getLabel(data[column.data]) === true">
-    </i>
-</div>
+<span>{{ getLabel(column.getColumnData(data)) }}</span>

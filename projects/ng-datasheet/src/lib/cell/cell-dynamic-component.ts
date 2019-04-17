@@ -40,6 +40,20 @@ export abstract class CellDynamicComponent {
         this._row = val;
     }
 
+    get columnData(): any {
+        if (this.column && this.data) {
+            return this.column.getColumnData(this.data);
+        }
+        return null;
+    }
+
+    set columnData(val: any) {
+        if (this.column && this.data) {
+            this.column.setColumnData(this.data, val);
+        }
+    }
+
+
     public static filter(data: any, filterText: any, column: Column): boolean {
         if (filterText) {
             if (data === filterText) {

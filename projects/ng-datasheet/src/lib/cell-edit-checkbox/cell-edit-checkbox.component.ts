@@ -16,10 +16,6 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
 
   items: Array<object> = [
     {
-      label: 'All',
-      value: null
-    },
-    {
       label: 'No',
       value: false
     },
@@ -27,7 +23,7 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
       label: 'Yes',
       value: true
     },
-    
+
   ];
 
   constructor() {
@@ -41,7 +37,7 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
         return filter.column === this.column;
       }).value;
     } else {
-      return this.data[this.column.data];
+      return this.columnData;
     }
   }
 
@@ -52,7 +48,7 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
         return filter.column === this.column;
       }).value = val;
     } else {
-      this.data[this.column.data] = val;
+      this.columnData = val;
     }
   }
 
@@ -82,8 +78,8 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
   }
 
   onChange(event: Event): void {
-    //event.target['blur']();
-    //event.preventDefault();
+    // event.target['blur']();
+    // event.preventDefault();
 
     if (!this.isFilter) {
       const ie: ItemEvent = new ItemEvent();

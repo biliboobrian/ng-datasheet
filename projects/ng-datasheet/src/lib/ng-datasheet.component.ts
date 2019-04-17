@@ -365,7 +365,7 @@ export class NgDatasheetComponent implements OnInit {
                 if (dataItem && dataItem.length !== 0) {
                   newData = dataItem[0];
                 }
-                this.dataSet[rowItemPasted][columnItemPasted.data] = newData;
+                columnItemPasted.setColumnData(this.dataSet[rowItemPasted], newData);
 
                 const ie = new ItemEvent();
                 ie.column = columnItemPasted;
@@ -377,9 +377,9 @@ export class NgDatasheetComponent implements OnInit {
               }.bind(this, rowItem, columnItem));
             } else {
               if (row === -1) {
-                this.dataSet[this.dataSet.length - 1][this.columns[col].data] = data;
+                this.columns[col].setColumnData(this.dataSet[this.dataSet.length - 1], data);
               } else {
-                this.dataSet[row][this.columns[col].data] = data;
+                this.columns[col].setColumnData(this.dataSet[row], data);
               }
             }
           }
@@ -697,11 +697,11 @@ export class NgDatasheetComponent implements OnInit {
 
     for (let i = sRow; i <= eRow; i++) {
       for (let j = sCol; j <= eCol; j++) {
-        const str: string = this.dataService.copyType(this.dataSet[i][this.columns[j]['data']], this.columns[j]);
+        const str: string = this.dataService.copyType(this.columns[j].getColumnData(this.dataSet[i]), this.columns[j]);
         txt += str;
 
         if (clear) {
-          this.dataSet[i][this.columns[j]['data']] = null;
+          this.columns[j].setColumnData(this.dataSet[i], null);
         }
 
         if (j < eCol) {
@@ -756,13 +756,13 @@ export class NgDatasheetComponent implements OnInit {
       event.preventDefault();
     } else if (!this.main.isEmpty()) {
       const str: string = this.dataService.copyType(
-        this.dataSet[this.main.row][this.columns[this.main.col]['data']],
+        this.columns[this.main.col].getColumnData(this.dataSet[this.main.row]),
         this.columns[this.main.col]
       );
 
       event.clipboardData.setData('text/plain', str);
       if (clear) {
-        this.dataSet[this.main.row][this.columns[this.main.col]['data']] = null;
+        this.columns[this.main.col].setColumnData(this.dataSet[this.main.row], null);
       }
       event.preventDefault();
     }

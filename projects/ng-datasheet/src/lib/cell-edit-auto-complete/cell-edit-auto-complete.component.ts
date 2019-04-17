@@ -33,7 +33,7 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
         return filter.column === this.column;
       }).value;
     } else {
-      return this.data[this.column.data];
+      return this.columnData;
     }
   }
 
@@ -51,7 +51,7 @@ export class CellEditAutoCompleteComponent extends CellDynamicComponent implemen
         this.cellChange.emit(this.data);
       }
     } else {
-      this.data[this.column.data] = val;
+      this.columnData = val;
     }
   }
 

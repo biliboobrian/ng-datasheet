@@ -20,43 +20,11 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
 
   public static filter(data: any, filterText: any, column: Column): boolean {
     if (filterText && data) {
-      if (column.type && column.type === 'object') {
-        let keywords = '';
-
-        if (filterText[column.options.label] !== undefined) {
-          keywords = filterText[column.options.label];
-        } else {
-          keywords = this.escapeRegExp(filterText).split(' ').join('|');
-        }
-
-        if (data[column.options.label] !== null) {
-          if (keywords.indexOf('\\*') === 0) {
-            if (!data[column.options.label].toString().match(new RegExp('(' + keywords.substring(2) + ')', 'gi'))) {
-              return false;
-            }
-          } else {
-
-            if (!data[column.options.label].toString().match(new RegExp('^(' + keywords + ')', 'gi'))) {
-              return false;
-            }
-          }
-          return true;
-        } else {
-          return false;
-        }
-      } if (column.type && column.type === 'date') {
-        if (data[column.options.label].toString() === filterText.toString()) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
         if (data === filterText) {
           return true;
         } else {
           return false;
         }
-      }
     }
 
     if (filterText) {
@@ -67,7 +35,7 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
   }
 
   public static copyData(data: any, column: Column): string {
-    if (column.type && column.type === 'string') {
+    if (!column.options.value) {
       const elem = column.options.dataSet.find(element => {
         return element[column.options.value] === data;
       });
@@ -78,12 +46,6 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
         } else {
           return '';
         }
-      } else {
-        return data;
-      }
-    } else if (column.type && column.type === 'date') {
-      if (data && column.options.label && column.options.format) {
-        return data[column.options.label].format(column.options.format);
       } else {
         return data;
       }
@@ -101,73 +63,41 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
     if (column.options.dataSet) {
       for (let i = 0; i < column.options.dataSet.length; i++) {
         if (column.options.dataSet[i][column.options.label] === data) {
-          if (column.type && column.type === 'string') {
-            return column.options.dataSet[i][column.options.value];
-          } else {
+          if (!column.options.value) {
             return column.options.dataSet[i];
+          } else {
+            return column.options.dataSet[i][column.options.value];
           }
         }
       }
-    } else if (column.options.retreiveFunction) {
-      return column.options.retreiveFunction(of(data)) as Observable<any>;
+    } else if (column.options.retrieveFunction) {
+      return column.options.retrieveFunction(of(data)) as Observable<any>;
     }
     return null;
   }
 
   ngOnInit() {
 
-
   }
 
   getLabel(obj: object) {
-    if (this.column.type && this.column.type === 'string') {
+    if (!this.column.options.value) {
+      if(obj) {
+        return obj[this.column.options.label];
+      }
+      return '';
+    } else {
       let elem: object;
       if (this.column.options.dataSet) {
         elem = this.column.options.dataSet.find(element => {
           return element[this.column.options.value] === obj;
         });
       }
-
       if (elem) {
         return elem[this.column.options.label];
       } else {
         return '';
       }
-    } else if (this.column.type && this.column.type === 'date') {
-      if (this.column && this.column.options && obj) {
-        return this.formatDate(obj[this.column.options.label], this.column.options.format);
-      }
-      return '';
-    } else {
-      if (this.column && this.column.options && obj) {
-        if (Array.isArray(this.column.options.label)) {
-          return this.getLbl(obj, this.column.options.label);
-        } else {
-          return obj[this.column.options.label];
-        }
-      }
-      return '';
     }
-  }
-
-  getLbl(obj: object, props: Array<string>) {
-    const prop: string = props[0];
-    if (props.length === 1) {
-      if(obj) {
-        return obj[prop];
-      } else {
-        return '';
-      }
-    } else {
-      return this.getLbl(obj[prop], props.slice(1));
-    }
-  }
-
-
-  formatDate(date: moment_.Moment, format): string {
-    if (date && format) {
-      return date.format(format);
-    }
-    return '';
   }
 }

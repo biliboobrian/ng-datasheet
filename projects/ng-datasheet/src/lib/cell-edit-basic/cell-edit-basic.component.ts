@@ -47,7 +47,7 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
         }
 
       } else {
-        this._model = this.data[this.column.data];
+        this._model = this.columnData;
       }
     }
     this.column.componentParam['type'] = '';
@@ -69,7 +69,7 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
         }
         break;
       case 27: // esc
-        this._model = this.data[this.column.data];
+        this._model = this.columnData;
         this.key.emit(event);
         break;
       case 9: // tab
@@ -99,13 +99,13 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
         return filter.column === this.column;
       }).value = this._model;
     } else {
-      this.data[this.column.data] = this._model;
+      this.columnData = this._model;
     }
     this.blurinput.emit(event);
   }
 
   onChange(event: Event) {
-    this.data[this.column.data] = this._model;
+    this.columnData = this._model;
     const ie: ItemEvent = new ItemEvent();
     ie.item = this.container.nativeElement.value;
     ie.data = this.data;

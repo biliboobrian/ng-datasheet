@@ -11,7 +11,7 @@ import { RenderingService } from '../services/rendering.service';
 })
 export class RowComponent implements OnInit {
 
-  @Input() public obj: Object;
+  @Input() public obj: object;
   @Input() public row: number;
   @Input() public col: number;
   @Input() public dataSet: Array<Object>;

@@ -39,8 +39,8 @@ export class CellViewLinkComponent extends CellDynamicComponent implements OnIni
           return column.options.dataSet[i];
         }
       }
-    } else if (column.options.retreiveFunction) {
-      return column.options.retreiveFunction(of(data)) as Observable<any>;
+    } else if (column.options.retrieveFunction) {
+      return column.options.retrieveFunction(of(data)) as Observable<any>;
     }
     return null;
   }
@@ -51,14 +51,14 @@ export class CellViewLinkComponent extends CellDynamicComponent implements OnIni
   onClick(event: MouseEvent): void {
     if (event.ctrlKey) {
       if (this.column.options.format === 'routerLink') {
-        if (this.data[this.column.data] instanceof Object) {
-          this.router.navigateByUrl(this.data[this.column.data][this.column.options.value]);
+        if (this.columnData instanceof Object) {
+          this.router.navigateByUrl(this.columnData[this.column.options.value]);
         } else {
           this.router.navigateByUrl(this.data[this.column.options.value]);
         }
       } else {
-        if (this.data[this.column.data] instanceof Object) {
-          window.open(this.data[this.column.data][this.column.options.value], this.column.options.format);
+        if (this.columnData instanceof Object) {
+          window.open(this.columnData[this.column.options.value], this.column.options.format);
         } else {
           window.open(this.data[this.column.options.value], this.column.options.format);
         }
@@ -68,8 +68,8 @@ export class CellViewLinkComponent extends CellDynamicComponent implements OnIni
 
   getLabel(): string {
     if (this.column && this.column.options) {
-      if (this.data[this.column.data] instanceof Object) {
-        return this.data[this.column.data][this.column.options.label];
+      if (this.columnData instanceof Object) {
+        return this.columnData[this.column.options.label];
       } else {
         return this.data[this.column.options.label];
       }

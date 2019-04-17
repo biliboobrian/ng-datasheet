@@ -41,10 +41,10 @@ export class CellViewBasicComponent extends CellDynamicComponent implements OnIn
   }
 
   getDisplayedLabel(): string {
-    if (this.column.options.retreiveFunction) {
-      return this.column.options.retreiveFunction(this.data);
+    if (this.column.options.retrieveFunction) {
+      return this.column.options.retrieveFunction(this.data);
     } else {
-      return this.data[this.column.data];
+      return this.columnData;
     }
   }
 }

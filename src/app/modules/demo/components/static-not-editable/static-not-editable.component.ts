@@ -111,7 +111,6 @@ export class StaticNotEditableComponent implements OnInit {
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
-    col.type = 'string';
     this.staticColumns.push(col);
   }
 

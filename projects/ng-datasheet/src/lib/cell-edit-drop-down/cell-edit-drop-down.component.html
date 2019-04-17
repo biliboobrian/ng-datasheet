@@ -15,12 +15,12 @@
 </div> -->
 
 <ng-select #container
-[items]="column.options.dataSet"
-bindLabel="{{ column.options.label }}"
-bindValue="{{ column.options.value }}"
-[(ngModel)]="dataModel"
-(keydown)="onKeyDown($event)"
 class="ngselect-custom"
 placeholder="{{ getPlaceHolder() }}"
+bindLabel="{{ column.options.label }}"
+bindValue="{{ column.options.value }}"
+[items]="column.options.dataSet"
+[(ngModel)]="dataModel"
+(keydown)="onKeyDown($event)"
 (change)="onChange($event)">
 </ng-select>

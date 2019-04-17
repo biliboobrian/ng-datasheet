@@ -53,8 +53,6 @@ export class ColumnComponent implements OnInit {
           this.sort.asc = true;
         }
 
-        this.sort.type = col.type;
-
         if (this.staticDs) {
           this.dataService.sortDataSet(this.dataSet, this.sort);
 

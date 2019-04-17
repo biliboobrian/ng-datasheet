@@ -68,7 +68,7 @@ export class CellComponent implements OnInit, OnDestroy {
       if (this.cellSubscription) {
         this.cellSubscription.unsubscribe();
       }
-      
+
       if (this.keySubscription) {
         this.keySubscription.unsubscribe();
       }

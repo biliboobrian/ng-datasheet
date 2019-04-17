@@ -19,14 +19,19 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
   }
 
   public static filter(data: any, filterText: any, column: Column): boolean {
-    if (filterText && data) {
-      if (data.toString() === filterText.toString()) {
-        return true;
+    if (filterText) {
+      if (data !== null && data !== undefined) {
+        if (data.toString() === filterText.toString()) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
+    } else {
+      return true;
     }
-    return true;
   }
 
   public static copyData(data: any, column: Column): string {
@@ -60,6 +65,10 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
   }
 
   getDisplayedLabel(): string {
-    return this.formatText(this.data[this.column.data]);
+    if (this.column.options.retrieveFunction) {
+      return this.formatText(this.column.options.retrieveFunction(this.data));
+    } else {
+      return this.formatText(this.columnData);
+    }
   }
 }

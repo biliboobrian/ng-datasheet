@@ -14,45 +14,45 @@ export class DataService {
   sortDataSet(dataSet: Array<Object>, sort: Sort): void {
     dataSet.sort((a, b) => {
       if (sort) {
-        if (!a[sort.column.data]
-          || !this.copyType(a[sort.column.data], sort.column)
-          || this.copyType(a[sort.column.data], sort.column) === '') {
+        if (!sort.column.getColumnData(a)
+          || !this.copyType(sort.column.getColumnData(a), sort.column)
+          || this.copyType(sort.column.getColumnData(a), sort.column) === '') {
           return 1;
         }
 
-        if (!b[sort.column.data]
-          || !this.copyType(b[sort.column.data], sort.column)
-          || this.copyType(b[sort.column.data], sort.column) === '') {
+        if (!sort.column.getColumnData(b)
+          || !this.copyType(sort.column.getColumnData(b), sort.column)
+          || this.copyType(sort.column.getColumnData(b), sort.column) === '') {
           return -1;
         }
         if (sort.type === 'string') {
-          if (this.copyType(a[sort.column.data], sort.column).toLowerCase()
-            < this.copyType(b[sort.column.data], sort.column).toLowerCase()) {
+          if (this.copyType(sort.column.getColumnData(a), sort.column).toLowerCase()
+            < this.copyType(sort.column.getColumnData(b), sort.column).toLowerCase()) {
             return (sort.asc) ? -1 : 1;
           }
 
-          if (this.copyType(b[sort.column.data], sort.column).toLowerCase()
-            < this.copyType(a[sort.column.data], sort.column).toLowerCase()) {
+          if (this.copyType(sort.column.getColumnData(b), sort.column).toLowerCase()
+            < this.copyType(sort.column.getColumnData(a), sort.column).toLowerCase()) {
             return (sort.asc) ? 1 : -1;
           }
         } else if (sort.type === 'int') {
-          if (parseInt(this.copyType(a[sort.column.data], sort.column), 10)
-            < parseInt(this.copyType(b[sort.column.data], sort.column), 10)) {
+          if (parseInt(this.copyType(sort.column.getColumnData(a), sort.column), 10)
+            < parseInt(this.copyType(sort.column.getColumnData(b), sort.column), 10)) {
             return (sort.asc) ? -1 : 1;
           }
 
-          if (parseInt(this.copyType(b[sort.column.data], sort.column), 10)
-            < parseInt(this.copyType(a[sort.column.data], sort.column), 10)) {
+          if (parseInt(this.copyType(sort.column.getColumnData(b), sort.column), 10)
+            < parseInt(this.copyType(sort.column.getColumnData(a), sort.column), 10)) {
             return (sort.asc) ? 1 : -1;
           }
         } else if (sort.type === 'number') {
-          if (parseFloat(this.copyType(a[sort.column.data], sort.column))
-            < parseFloat(this.copyType(b[sort.column.data], sort.column))) {
+          if (parseFloat(this.copyType(sort.column.getColumnData(a), sort.column))
+            < parseFloat(this.copyType(sort.column.getColumnData(b), sort.column))) {
             return (sort.asc) ? -1 : 1;
           }
 
-          if (parseFloat(this.copyType(b[sort.column.data], sort.column))
-            < parseFloat(this.copyType(a[sort.column.data], sort.column))) {
+          if (parseFloat(this.copyType(sort.column.getColumnData(b), sort.column))
+            < parseFloat(this.copyType(sort.column.getColumnData(a), sort.column))) {
             return (sort.asc) ? 1 : -1;
           }
         }
@@ -82,7 +82,10 @@ export class DataService {
             && filters[index].hasOwnProperty('value')
             && filters[index].value !== '') {
 
-            if (!filters[index].column.cellView['filter'](obj[filters[index].column.data], filters[index].value, filters[index].column)) {
+            if (!filters[index].column.cellView['filter'](
+              filters[index].column.getColumnData(obj),
+              filters[index].value,
+              filters[index].column)) {
               visible = false;
             }
 

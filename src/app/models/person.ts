@@ -3,7 +3,7 @@ export class Person {
     private _id: number;
     private _lastname: string;
     private _firstname: string;
-    private _hobby: number;
+    private _hobby: any;
     private _birthdate: any;
     private _wiki: Object;
     private _age: number;
@@ -51,7 +51,7 @@ export class Person {
         return this._hobby;
     }
 
-    public set hobby(val: number) {
+    public set hobby(val: any) {
         this._hobby = val;
     }
     public get birthdate() {

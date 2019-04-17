@@ -53,11 +53,11 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
 
 
   getDisplayedLabel(): string {
-    if (this.column.options.retreiveFunction) {
-      return this.column.options.retreiveFunction(this.data);
+    if (this.column.options.retrieveFunction) {
+      return this.column.options.retrieveFunction(this.data);
     } else {
       if (this.column.componentParam['step']) {
-        const num: number = (this.data[this.column.data]) ? parseFloat(this.data[this.column.data]) : 0;
+        const num: number = (this.columnData) ? parseFloat(this.columnData) : 0;
         const precision: number = this.column.componentParam['step'];
         if (num !== null) {
           return num.toFixed(precision);
@@ -65,7 +65,7 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
           return '0';
         }
       } else {
-        return (this.data[this.column.data]) ? this.data[this.column.data] : 0;
+        return (this.columnData) ? this.columnData : 0;
       }
     }
   }

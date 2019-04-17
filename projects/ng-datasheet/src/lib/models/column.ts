@@ -5,13 +5,8 @@ import { Options } from './options';
 
 export class Column {
 
-    static STRING = 'string';
-    static NUMBER = 'number';
-    static DATE = 'date';
-    static BOOLEAN = 'boolean';
-
     title: string; // title of the TH header
-    data: string; // field in the model representing data to give to the component
+    data: string | Array<string>; // field in the model representing data to give to the component
     width = 0; // expected fix width for this column, by default it will affect for the width > width_of_table / number_of_column
     noWidth = false; // set the column as a extensible colmun !!! YOU NEED AT LEAST ONE !!!
     options: Options = new Options(); // options gives to the view/edit component acording to his requirements
@@ -26,11 +21,15 @@ export class Column {
     cellView: CellDynamicInterface;
     cellEdit: CellDynamicInterface;
     itemEvent: EventEmitter<ItemEvent> = new EventEmitter<ItemEvent>();
-
-    type = 'string';
     componentParam: Object = {};
 
-    constructor(title?: string, data?: string, cellView?: CellDynamicInterface, cellEdit?: CellDynamicInterface, width?: number) {
+    constructor(
+        title?: string,
+        data?: string | Array<string>,
+        cellView?: CellDynamicInterface,
+        cellEdit?: CellDynamicInterface,
+        width?: number
+    ) {
         this.title = title;
         this.data = data;
         this.cellView = cellView;
@@ -40,6 +39,56 @@ export class Column {
             this.width = width;
         } else {
             this.noWidth = true;
+        }
+    }
+
+    getColumnData(data: any): any {
+        if (data) {
+            if (typeof this.data === 'string') {
+                return data[this.data];
+            } else {
+                return this.getLastData(data, this.data);
+            }
+        }
+
+        return null;
+    }
+
+    setColumnData(data: any, val: any) {
+        if (data) {
+            if (typeof this.data === 'string') {
+                data[this.data] = val;
+            } else {
+                this.setLastData(data, this.data, val);
+            }
+        }
+    }
+
+    getLastData(data: object, columns: Array<string>): any {
+        const column = columns[0];
+
+        if (data && data[column] !== undefined) {
+            if (columns.length > 1) {
+                return this.getLastData(data[column], columns.slice(1));
+            } else {
+                return data[column];
+            }
+        }
+
+        return null;
+    }
+
+    setLastData(data: object, columns: Array<string>, val: any) {
+        const column = columns[0];
+
+        if (data) {
+            if (columns.length > 1) {
+                if (data[column] !== undefined) {
+                    this.setLastData(data[column], columns.slice(1), val);
+                }
+            } else {
+                data[column] = val;
+            }
         }
     }
 }

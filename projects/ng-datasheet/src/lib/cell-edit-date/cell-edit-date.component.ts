@@ -42,9 +42,9 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
       }
     } else {
       if (val) {
-        this.data[this.column.data] = moment(new Date(val.year, val.month - 1, val.day));
+        this.columnData = moment(new Date(val.year, val.month - 1, val.day));
       } else {
-        this.data[this.column.data] = null;
+        this.columnData = null;
       }
     }
 
@@ -63,7 +63,7 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
         return filter.column === this.column;
       }).value;
     } else {
-      d = this.data[this.column.data];
+      d = this.columnData;
     }
 
     if (d) {
@@ -112,7 +112,7 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
   }
 
   onDateSelect(event) {
-    this.data[this.column.data] = moment(new Date(event.year, event.month - 1, event.day));
+    this.columnData = moment(new Date(event.year, event.month - 1, event.day));
     const ie: ItemEvent = new ItemEvent();
     ie.item = event;
     ie.data = this.data;

@@ -59,23 +59,22 @@ export class StaticEditableComponent implements OnInit {
 
     this.staticDataSet = [];
     let p = new Person();
-    let parentp = new Person();
-    
-    
+    const parentp = new Person();
 
-    this.staticDataSet.push(p);
+
     p = new Person();
     p.id = 2;
     p.lastname = 'DOE';
     p.firstname = 'John';
     p.deleted = false;
-    p.hobby = 2;
+    p.hobby = { id: 1, name: 'Basket ball' };
     p.age = 20;
     p.birthdate = moment_(new Date(1983, 2, 27));
+
     parentp.id = 1;
     parentp.lastname = 'BANNING';
     parentp.firstname = 'Peter';
-    parentp.deleted = false;
+    parentp.deleted = true;
     parentp.hobby = 1;
     parentp.age = 10;
     parentp.birthdate = moment_(new Date(1967, 2, 22));
@@ -100,7 +99,7 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 4;
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
-    
+
     p = new Person();
     p.id = 1;
     p.lastname = 'BANNING';
@@ -139,7 +138,7 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 4;
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
-    
+
     p = new Person();
     p.id = 1;
     p.lastname = 'BANNING';
@@ -178,7 +177,7 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 4;
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
-    
+
     p = new Person();
     p.id = 1;
     p.lastname = 'BANNING';
@@ -217,7 +216,7 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 4;
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
-    
+
     p = new Person();
     p.id = 1;
     p.lastname = 'BANNING';
@@ -266,7 +265,7 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 4;
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
-    
+
     p = new Person();
     p.id = 1;
     p.lastname = 'BANNING';
@@ -305,7 +304,7 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 4;
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
-    
+
     p = new Person();
     p.id = 1;
     p.lastname = 'BANNING';
@@ -344,7 +343,7 @@ export class StaticEditableComponent implements OnInit {
     p.hobby = 4;
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
-    
+
     p = new Person();
     p.id = 1;
     p.lastname = 'BANNING';
@@ -390,7 +389,7 @@ export class StaticEditableComponent implements OnInit {
     let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
     this.staticColumns.push(col);
 
-    col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
+    col = new Column('Firstname', ['parent', 'firstname'], CellViewBasicComponent, CellEditBasicComponent, 0);
     this.staticColumns.push(col);
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
@@ -402,42 +401,26 @@ export class StaticEditableComponent implements OnInit {
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
     this.staticColumns.push(col);
 
-    col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
+    col = new Column('Birthdate', ['parent', 'birthdate'], CellViewDateComponent, CellEditDateComponent, 200);
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
     this.staticColumns.push(col);
 
-    col = new Column('Parent Deleted?', 'parent', CellViewObjectComponent, CellEditDropDownComponent, 200);
-    col.options = new Options();
-
-    col.options.value = 'id';
-    col.options.label = 'deleted';
-    col.type = Column.BOOLEAN;
-    col.backgroundColor = '#b9ffc9';
-
+    col = new Column('Parent Deleted?', ['parent', 'deleted'], CellViewCheckboxComponent, CellEditCheckboxComponent, 200);
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
     });
     this.staticColumns.push(col);
 
-    col = new Column('Hobby', 'hobby', CellViewObjectComponent, CellEditDropDownComponent, 200);
+    col = new Column('Hobby', ['parent', 'hobby'], CellViewObjectComponent, CellEditDropDownComponent, 200);
     col.options = new Options();
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
-    col.type = Column.STRING;
     col.backgroundColor = '#b9ffc9';
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
     })
-    this.staticColumns.push(col);
-
-    col = new Column('Hobby', 'hobby', CellViewObjectComponent, CellEditDropDownComponent, 200);
-    col.options = new Options();
-    col.options.dataSet = this.hobbiesDataSet;
-    col.options.value = 'id';
-    col.options.label = 'name';
-    col.type = 'string';
     this.staticColumns.push(col);
 
     col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 71);
@@ -470,6 +453,7 @@ export class StaticEditableComponent implements OnInit {
   }
 
   onDelete = (event: MouseEvent, data: Object) => {
+    alert('polp');
   }
 
   createItem() {
@@ -477,6 +461,10 @@ export class StaticEditableComponent implements OnInit {
   }
 
   itemEv(event: ItemEvent) {
-    
+
+  }
+
+  onRowEvent(actualRow, row, column) {
+
   }
 }
