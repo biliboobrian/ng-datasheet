@@ -29,6 +29,7 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
 
   public set dateModel(val: NgbDateStruct) {
     this._dateModel = val;
+
     if (this.isFilter) {
       const filters: Array<Filter> = this.data as Array<Filter>;
       const f = filters.find(filter => {
@@ -36,19 +37,27 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
       });
 
       if (val) {
-        f.value = moment(new Date(val.year, val.month - 1, val.day));
+        const mom = moment(new Date(val.year, val.month - 1, val.day));
+        if (mom.isValid()) {
+          f.value = mom;
+        } else {
+          f.value = null;
+        }
       } else {
         f.value = null;
       }
+
+      this.cellChange.emit(this.data);
     } else {
       if (val) {
         this.columnData = moment(new Date(val.year, val.month - 1, val.day));
       } else {
         this.columnData = null;
       }
+      this.cellChange.emit(this.data);
     }
 
-    this.cellChange.emit(this.data);
+
   }
 
   public get dateModel(): NgbDateStruct {

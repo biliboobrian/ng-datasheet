@@ -413,6 +413,17 @@ export class NgDatasheetComponent implements OnInit {
     this.filters = this.navigatingService.initFilters(this.columns);
   }
 
+  filterDataSet() {
+    this.filterList = this.dataService.filterDataSet(
+      this.dataSet,
+      this.filterList,
+      this.filters,
+      this.withPagination,
+      this.static,
+      this.pagination
+    );
+  }
+
   onKeyUp(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 9:
