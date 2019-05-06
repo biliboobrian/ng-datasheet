@@ -13,12 +13,13 @@ import {
   CellViewCheckboxComponent,
   CellEditCheckboxComponent,
   CellViewButtonComponent,
-  ItemEvent
+  ItemEvent,
+  ColumnValidator
 } from 'projects/ng-datasheet/src/public_api';
 
 import * as moment_ from 'moment';
 import { Person } from '../../../../models/person';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 const moment = moment_;
 
 @Component({
@@ -217,185 +218,49 @@ export class StaticEditableComponent implements OnInit {
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
 
-    p = new Person();
-    p.id = 1;
-    p.lastname = 'BANNING';
-    p.firstname = 'Peter';
-    p.deleted = false;
-    p.hobby = 1;
-    p.age = 10;
-    p.birthdate = moment_(new Date(1967, 2, 22));
 
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 2;
-    p.lastname = 'DOE';
-    p.firstname = 'John';
-    p.deleted = false;
-    p.hobby = 2;
-    p.age = 20;
-    p.birthdate = moment_(new Date(1983, 2, 27));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 3;
-    p.lastname = 'ANDERSON';
-    p.firstname = 'Thomas';
-    p.deleted = false;
-    p.hobby = 3;
-    p.age = 50;
-    p.birthdate = moment_(new Date(1977, 10, 2));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 4;
-    p.lastname = 'WATSON';
-    p.firstname = 'Sherlock';
-    p.deleted = true;
-    p.hobby = 4;
-    p.age = 19;
-    p.birthdate = moment_(new Date(1990, 7, 8));
-    this.staticDataSet.push(p);
-
-    p = new Person();
-    p.id = 4;
-    p.lastname = 'WATSON';
-    p.firstname = 'Sherlock';
-    p.deleted = true;
-    p.hobby = 4;
-    p.age = 19;
-    p.birthdate = moment_(new Date(1990, 7, 8));
-
-    p = new Person();
-    p.id = 1;
-    p.lastname = 'BANNING';
-    p.firstname = 'Peter';
-    p.deleted = false;
-    p.hobby = 1;
-    p.age = 10;
-    p.birthdate = moment_(new Date(1967, 2, 22));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 2;
-    p.lastname = 'DOE';
-    p.firstname = 'John';
-    p.deleted = false;
-    p.hobby = 2;
-    p.age = 20;
-    p.birthdate = moment_(new Date(1983, 2, 27));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 3;
-    p.lastname = 'ANDERSON';
-    p.firstname = 'Thomas';
-    p.deleted = false;
-    p.hobby = 3;
-    p.age = 50;
-    p.birthdate = moment_(new Date(1977, 10, 2));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 4;
-    p.lastname = 'WATSON';
-    p.firstname = 'Sherlock';
-    p.deleted = true;
-    p.hobby = 4;
-    p.age = 19;
-    p.birthdate = moment_(new Date(1990, 7, 8));
-
-    p = new Person();
-    p.id = 1;
-    p.lastname = 'BANNING';
-    p.firstname = 'Peter';
-    p.deleted = false;
-    p.hobby = 1;
-    p.age = 10;
-    p.birthdate = moment_(new Date(1967, 2, 22));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 2;
-    p.lastname = 'DOE';
-    p.firstname = 'John';
-    p.deleted = false;
-    p.hobby = 2;
-    p.age = 20;
-    p.birthdate = moment_(new Date(1983, 2, 27));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 3;
-    p.lastname = 'ANDERSON';
-    p.firstname = 'Thomas';
-    p.deleted = false;
-    p.hobby = 3;
-    p.age = 50;
-    p.birthdate = moment_(new Date(1977, 10, 2));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 4;
-    p.lastname = 'WATSON';
-    p.firstname = 'Sherlock';
-    p.deleted = true;
-    p.hobby = 4;
-    p.age = 19;
-    p.birthdate = moment_(new Date(1990, 7, 8));
-
-    p = new Person();
-    p.id = 1;
-    p.lastname = 'BANNING';
-    p.firstname = 'Peter';
-    p.deleted = false;
-    p.hobby = 1;
-    p.age = 10;
-    p.birthdate = moment_(new Date(1967, 2, 22));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 2;
-    p.lastname = 'DOE';
-    p.firstname = 'John';
-    p.deleted = false;
-    p.hobby = 2;
-    p.age = 20;
-    p.birthdate = moment_(new Date(1983, 2, 27));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 3;
-    p.lastname = 'ANDERSON';
-    p.firstname = 'Thomas';
-    p.deleted = false;
-    p.hobby = 3;
-    p.age = 50;
-    p.birthdate = moment_(new Date(1977, 10, 2));
-
-    this.staticDataSet.push(p);
-    p = new Person();
-    p.id = 4;
-    p.lastname = 'WATSON';
-    p.firstname = 'Sherlock';
-    p.deleted = true;
-    p.hobby = 4;
-    p.age = 19;
-    p.birthdate = moment_(new Date(1990, 7, 8));
-    this.staticDataSet.push(p);
 
     this.staticColumns = new Array<Column>();
 
     let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
     this.staticColumns.push(col);
 
-    col = new Column('Firstname', ['parent', 'firstname'], CellViewBasicComponent, CellEditBasicComponent, 0);
+    col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
+    col.columnValidators = [
+      new ColumnValidator(
+        Validators.required,
+        'Lastname is required.'
+      )
+    ];
+    col.autoOpen = true;
     this.staticColumns.push(col);
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
+    col.columnValidators = [
+      new ColumnValidator(
+        Validators.required,
+        'Lastname is required.'
+      ),
+      new ColumnValidator(
+        Validators.minLength(4),
+        'Lastname must have more than 3 chars.'
+      ),
+      new ColumnValidator(
+        Validators.maxLength(5),
+        'Lastname must have less than 6 chars.'
+      )
+    ];
+    col.cellClassFunction = this.getClassHobby;
+
     this.staticColumns.push(col);
 
     col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 70);
+    col.columnValidators = [
+      new ColumnValidator(
+        Validators.max(18),
+        'Person must be less than 18yo'
+      )
+    ];
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
@@ -420,10 +285,11 @@ export class StaticEditableComponent implements OnInit {
     col.backgroundColor = '#b9ffc9';
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
-    })
+    });
+    col.cellClassFunction = this.getClassHobby;
     this.staticColumns.push(col);
 
-    col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 71);
+    col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 30);
     col.selectable = false;
     col.searchable = false;
     col.editable = false;
@@ -437,22 +303,27 @@ export class StaticEditableComponent implements OnInit {
         color: '#FFFFFF',
         bgColor: 'rgb(0, 102, 150)',
         borderColor: '#FFFFFF'
-      },
-      {
-        icon: 'trash',
-        event: this.onDelete,
-        color: '#FFFFFF',
-        bgColor: 'rgb(191, 0, 0)',
-        borderColor: '#FFFFFF'
-      },
+      }
     ];
     this.staticColumns.push(col);
+  }
+
+  df = (data: Object) => {
+    if (data['firstname'] === 'John') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   onEdit = (event: MouseEvent, data: Object) => {
   }
 
   onDelete = (event: MouseEvent, data: Object) => {
+    alert('polp');
+  }
+
+  onDeleteEvent(data) {
     alert('polp');
   }
 
@@ -465,6 +336,13 @@ export class StaticEditableComponent implements OnInit {
   }
 
   onRowEvent(actualRow, row, column) {
+
+  }
+
+  getClassHobby(col: Column, obj: Person, row: number) {
+    if (row % 2 === 0) {
+      return ['hobby'];
+    }
 
   }
 }

@@ -13,7 +13,8 @@ import {
   CellViewCheckboxComponent,
   CellEditCheckboxComponent,
   CellViewButtonComponent,
-  ItemEvent
+  ItemEvent,
+  NgDatasheetComponent
 } from 'projects/ng-datasheet/src/public_api';
 
 import * as moment_ from 'moment';
@@ -28,6 +29,7 @@ const moment = moment_;
 export class StaticWithEventComponent implements OnInit {
 
   @ViewChild('content') content: ElementRef;
+  @ViewChild('dg') dg: NgDatasheetComponent;
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];
   hobbiesDataSet: Array<Object>;
@@ -93,6 +95,7 @@ export class StaticWithEventComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
+    col.autoOpen = true;
     col.itemEvent.subscribe(this.onFirstnameChange);
     this.staticColumns.push(col);
 
@@ -146,7 +149,7 @@ export class StaticWithEventComponent implements OnInit {
     this.staticColumns.push(col);
   }
 
-  onEdit = (event: MouseEvent, data: Object) => {
+  onEdit(event: MouseEvent, data: Object) {
     alert('Edit clicked');
   }
 

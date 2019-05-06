@@ -27,6 +27,8 @@
       [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
       class="use-pointer">
     </th>
+    <th style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
+    </th>
   </tr>
   <tr class="header-tr">
     <td style="width: 26px"
@@ -48,6 +50,8 @@
       (click)="onFilterClick($event)"
       class="header">
     </td>
+    <td style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
+    </td>
   </tr>
   <ng-container *ngFor="let obj of dataSet; let row = index">
     <tr *ngIf="renderingService.isVisible(filterList, row)" [class.use-pointer]="usePointerOnLine" (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
@@ -58,19 +62,29 @@
         <td  [style.background-color]="getBgColor(row, column)" (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
           (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
           [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)" [class.cell-selected-down]="isSelected(row, col, 3)"
-          [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)" [class.view-read-only]="!columns[col].editable">
+          [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)" [class.view-read-only]="!columns[col].editable"
+          [class.is-invalid]="!column.isValid(obj)" [ngClass]="getClassList(column, obj, row)">
+          <div *ngIf="!column.isValid(obj) && !(edited.row === row && edited.col === col)" class="is-invalid-info"><i class="fas fa-exclamation-circle" 
+            ngbTooltip="{{ column.getValidationErrors(obj)}}" tooltipClass="is-invalid-tooltip"></i></div>
           <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView" (key)="onKeyView($event)"
           (blurinput)="onBlur($event)" [column]="column" [data]="obj" [row]="row"></ds-cell>
           <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
           (blurinput)="onBlur($event)" [column]="column" [data]="obj" [row]="row"></ds-cell>
+          
+          
         </td>
       </ng-container>
+      <td style="width: 26px">
+        <button class="trash-button" (click)="deleteRow(obj)" *ngIf="editable && withDeleteButton">
+          <i class="fas fa-trash"></i>
+        </button>
+      </td>
     </tr>
   </ng-container>
   <tr *ngIf="editable && withAdd && newModelFunction && newModel && printNew" 
   [style.background-color]="getBgColor(-1)" 
   (mouseover)="changeTRStyle(-1)" (mouseout)="changeTRStyle()"
-  >
+  class="addRow">
     <td *ngIf="globalMenu" 
     style="width: 26px"></td>
     <ng-container *ngFor="let column of columns; let col = index">
@@ -84,6 +98,11 @@
           (blurinput)="onBlur($event, true)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
       </td>
     </ng-container>
+    <td style="width: 26px">
+      <button class="add-button" (click)="addNewModel()" *ngIf="editable && withAddButton">
+        <i class="fas fa-plus"></i>
+      </button>
+    </td>
   </tr>
 </table>
 <ng-container *ngIf="pagination && withPagination && dataSet && dataSet.length > 0">

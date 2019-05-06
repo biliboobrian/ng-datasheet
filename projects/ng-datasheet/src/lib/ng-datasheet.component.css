@@ -79,10 +79,57 @@
     border-bottom: 3px solid #dee2e6 !important;
 }
 
+.addRow {
+    border-top: 3px solid #dee2e6 !important;
+}
+
 .view-read-only {
     background-color: #efefef;
 }
 
 .use-pointer {
     cursor: pointer;
+}
+
+.is-invalid {
+    background-color: #fff5f5;
+}
+
+.is-invalid-info {
+    margin-left: 4px;
+    float: right;
+}
+
+.is-invalid-info > i {
+    color: red;
+    font-size: 12px;
+}
+
+::ng-deep .is-invalid-tooltip .tooltip-inner {
+    background-color: red;
+    color: white;
+}
+
+::ng-deep .is-invalid-tooltip .arrow::before {
+    border-top-color: red;
+}
+
+.trash-button {
+    border: 0px;
+    border-radius: 4px;
+    margin: -2px 2px;
+    width: 26px;
+    cursor: pointer;
+    padding: 0px 4px;
+    color: rgb(191, 0, 0);
+}
+
+.add-button {
+    border: 0px;
+    border-radius: 4px;
+    margin: -2px 2px;
+    width: 26px;
+    cursor: pointer;
+    padding: 0px 4px;
+    color: rgb(58, 155, 1);
 }

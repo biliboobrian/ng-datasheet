@@ -1,4 +1,13 @@
-<button [style.background-color]="getBgColor(button)" [style.color]="getColor(button)" [style.border-color]="getBorderColor(button)" *ngFor="let button of column.options.dataSet"
-  (click)="button.event($event, data)" class="view-button" title="{{ button.title }}">
-  <i class="fa fa-{{ button.icon }}"></i>
-</button>
+<ng-container *ngFor="let button of column.options.dataSet" >
+  <button 
+    [style.background-color]="getBgColor(button)" 
+    [style.color]="getColor(button)" 
+    [style.border-color]="getBorderColor(button)" 
+    *ngIf="!button.displayFunction || (button.displayFunction && button.displayFunction(data))"
+    (click)="button.event($event, data)" 
+    class="view-button" 
+    title="{{ button.title }}"
+    >
+    <i class="fa fa-{{ button.icon }}"></i>
+  </button>
+</ng-container>

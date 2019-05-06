@@ -83,7 +83,10 @@ export class NgDatasheetComponent implements OnInit {
   @Input() public defaultTranslation: DefaultTranslation = new DefaultTranslation();
   @Input() public withFilters = true;
   @Input() public withAdd = true;
+  @Input() public withAddButton = true;
+  @Input() public withDeleteButton = true;
   @Input() public newModelFunction: Function;
+  @Input() public onDeleteRowFunction: Function;
   @Input() public dateFormat = 'MM-DD-YYYY';
   @Input() public static = true;
   @Input() public withPagination = false;
@@ -101,6 +104,7 @@ export class NgDatasheetComponent implements OnInit {
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
   @Output() public rowEvent: EventEmitter<RowEvent> = new EventEmitter<RowEvent>();
   @Output() public selectionEvent: EventEmitter<SelectionEvent> = new EventEmitter<SelectionEvent>();
+  @Output() public rowDeleteEvent: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('selectBox', { read: ElementRef }) selectBox: ElementRef;
   @ViewChild('tbl', { read: ElementRef }) tbl: ElementRef;
@@ -193,7 +197,12 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   onCheckSelection(event: Event, row: number, obj: object) {
-    this.selection[row] = obj;
+    if (this.selection[row]) {
+      this.selection[row] = obj;
+    } else {
+      delete (this.selection[row]);
+    }
+
     this.selectionEvent.emit(new SelectionEvent(this.selection));
   }
 
@@ -222,27 +231,6 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   onBlur(event: FocusEvent, newRow: boolean = false): void {
-    /* if (newRow) {
-      this.dataSet.push(this.newModel);
-      this.printNew = false;
-      delete (this.newModel);
-      this.newModel = this.newModelFunction();
-
-      this.dataService.filterDataSet(
-        this.dataSet,
-        this.filterList,
-        this.filters,
-        this.withPagination,
-        this.static,
-        this.pagination
-      );
-      this.edited.row = this.dataSet.length - 1;
-      this.main.row = this.dataSet.length - 1;
-
-      setTimeout(() => {
-        this.printNew = true;
-      }, 10);
-    } */
 
     if (this.selectBox.nativeElement !== event.relatedTarget) {
       this.end.empty();
@@ -251,6 +239,37 @@ export class NgDatasheetComponent implements OnInit {
       this.main.empty();
     }
 
+  }
+
+  deleteRow(obj: object) {
+    if (!this.onDeleteRowFunction || (this.onDeleteRowFunction && this.onDeleteRowFunction(obj))) {
+      this.dataSet.forEach((item, index) => {
+        if (item === obj) {
+          this.dataSet.splice(index, 1);
+        }
+      });
+      this.rowDeleteEvent.emit(obj);
+    }
+  }
+
+  addNewModel() {
+    this.dataSet.push(this.newModel);
+    this.printNew = false;
+    delete (this.newModel);
+    this.newModel = this.newModelFunction();
+
+    this.dataService.filterDataSet(
+      this.dataSet,
+      this.filterList,
+      this.filters,
+      this.withPagination,
+      this.static,
+      this.pagination
+    );
+
+    setTimeout(() => {
+      this.printNew = true;
+    }, 10);
   }
 
   getBgColor(row: number = null, column?: Column): string {
@@ -290,7 +309,7 @@ export class NgDatasheetComponent implements OnInit {
         }
       }
 
-      if (this.start.row === row && this.start.col === col) {
+      if ((this.start.row === row && this.start.col === col) || row === -1) {
         this.start.empty();
         this.end.empty();
 
@@ -424,6 +443,22 @@ export class NgDatasheetComponent implements OnInit {
     );
   }
 
+  isValid(): boolean {
+    let valid = true;
+
+    if (this.dataSet && this.columns) {
+      this.dataSet.forEach(data => {
+        this.columns.forEach(column => {
+          if (!column.isValid(data)) {
+            valid = false;
+          }
+        });
+      });
+    }
+
+    return valid;
+  }
+
   onKeyUp(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 9:
@@ -444,23 +479,7 @@ export class NgDatasheetComponent implements OnInit {
           && this.main.row === this._dataSet.length - 1) {
           this.main.row = -1;
         } else if (this.main.row === -1) {
-          this.dataSet.push(this.newModel);
-          this.printNew = false;
-          delete (this.newModel);
-          this.newModel = this.newModelFunction();
-
-          this.dataService.filterDataSet(
-            this.dataSet,
-            this.filterList,
-            this.filters,
-            this.withPagination,
-            this.static,
-            this.pagination
-          );
-
-          setTimeout(() => {
-            this.printNew = true;
-          }, 10);
+          this.addNewModel();
         } else if (this.main.row < this.dataSet.length - 1) {
           this.main.row++;
         }
@@ -776,6 +795,14 @@ export class NgDatasheetComponent implements OnInit {
         this.columns[this.main.col].setColumnData(this.dataSet[this.main.row], null);
       }
       event.preventDefault();
+    }
+  }
+
+  getClassList(col: Column, obj: object, row: number) {
+    if (col.cellClassFunction) {
+      return col.cellClassFunction(col, obj, row);
+    } else {
+      return {};
     }
   }
 }

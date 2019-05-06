@@ -22,7 +22,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <ds-datasheet [trBgColor]="'#fffede'" [dataSet]="staticDataSet" [columns]="staticColumns"
+      <ds-datasheet [trBgColor]="'#fffede'" (rowDeleteEvent)="onDeleteEvent($event)" [dataSet]="staticDataSet" [columns]="staticColumns"
         [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem" [formGroup]="formGroup" (rowEvent)="onRowEvent()"></ds-datasheet>
     </div>
   </div>

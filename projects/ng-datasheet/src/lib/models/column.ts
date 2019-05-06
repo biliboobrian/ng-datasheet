@@ -2,8 +2,12 @@ import { ItemEvent } from './item-event';
 import { EventEmitter } from '@angular/core';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Options } from './options';
+import { ColumnValidator } from './column-validator';
+import { FormControl } from '@angular/forms';
 
 export class Column {
+
+    _formControl: FormControl;
 
     title: string; // title of the TH header
     data: string | Array<string>; // field in the model representing data to give to the component
@@ -18,9 +22,11 @@ export class Column {
     isResizing = false;
     autoOpen = false;
     backgroundColor: string;
+    columnValidators: Array<ColumnValidator>;
     cellView: CellDynamicInterface;
     cellEdit: CellDynamicInterface;
     itemEvent: EventEmitter<ItemEvent> = new EventEmitter<ItemEvent>();
+    cellClassFunction: Function;
     componentParam: Object = {};
 
     constructor(
@@ -28,12 +34,18 @@ export class Column {
         data?: string | Array<string>,
         cellView?: CellDynamicInterface,
         cellEdit?: CellDynamicInterface,
-        width?: number
+        width?: number,
+        editable = true,
+        sortable =  true,
+        selectable = true,
     ) {
         this.title = title;
         this.data = data;
         this.cellView = cellView;
         this.cellEdit = cellEdit;
+        this.editable = editable;
+        this.sortable = sortable;
+        this.selectable = selectable;
 
         if (width && width !== 0) {
             this.width = width;
@@ -90,5 +102,45 @@ export class Column {
                 data[column] = val;
             }
         }
+    }
+
+    isValid(data: object): boolean {
+        let valid = true;
+        if (this.columnValidators) {
+
+            if (!this._formControl) {
+                this._formControl = new FormControl('');
+            }
+
+            this._formControl.setValue(this.getColumnData(data));
+
+            this.columnValidators.forEach(columnValidator => {
+                if (columnValidator.validator(this._formControl)) {
+                    valid = false;
+                }
+            });
+        }
+
+        return valid;
+    }
+
+    getValidationErrors(data: object): string {
+        let errors = '';
+        if (this.columnValidators) {
+
+            if (!this._formControl) {
+                this._formControl = new FormControl('');
+            }
+
+            this._formControl.setValue(this.getColumnData(data));
+
+            this.columnValidators.forEach(columnValidator => {
+                if (columnValidator.validator(this._formControl)) {
+                    errors += columnValidator.errorMessage;
+                }
+            });
+        }
+
+        return errors;
     }
 }
