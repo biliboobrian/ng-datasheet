@@ -447,9 +447,9 @@ export class NgDatasheetComponent implements OnInit {
     let valid = true;
 
     if (this.dataSet && this.columns) {
-      this.dataSet.forEach(data => {
+      this.dataSet.forEach((data, index) => {
         this.columns.forEach(column => {
-          if (!column.isValid(data)) {
+          if (!column.isValid(data, index)) {
             valid = false;
           }
         });

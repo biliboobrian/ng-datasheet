@@ -242,8 +242,9 @@ export class StaticEditableComponent implements OnInit {
         'Lastname is required.'
       ),
       new ColumnValidator(
-        Validators.minLength(4),
-        'Lastname must have more than 3 chars.'
+        null,
+        'val function.',
+        this.val
       ),
       new ColumnValidator(
         Validators.maxLength(5),
@@ -344,5 +345,9 @@ export class StaticEditableComponent implements OnInit {
       return ['hobby'];
     }
 
+  }
+
+  val(col: Column, data: Person, row: number): boolean {
+    return true;
   }
 }

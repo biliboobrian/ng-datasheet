@@ -63,9 +63,9 @@
           (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
           [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)" [class.cell-selected-down]="isSelected(row, col, 3)"
           [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)" [class.view-read-only]="!columns[col].editable"
-          [class.is-invalid]="!column.isValid(obj)" [ngClass]="getClassList(column, obj, row)">
-          <div *ngIf="!column.isValid(obj) && !(edited.row === row && edited.col === col)" class="is-invalid-info"><i class="fas fa-exclamation-circle" 
-            ngbTooltip="{{ column.getValidationErrors(obj)}}" tooltipClass="is-invalid-tooltip"></i></div>
+          [class.is-invalid]="!column.isValid(obj, row)" [ngClass]="getClassList(column, obj, row)">
+          <div *ngIf="!column.isValid(obj, row) && !(edited.row === row && edited.col === col)" class="is-invalid-info"><i class="fas fa-exclamation-circle" 
+            ngbTooltip="{{ column.getValidationErrors(obj, row)}}" tooltipClass="is-invalid-tooltip"></i></div>
           <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView" (key)="onKeyView($event)"
           (blurinput)="onBlur($event)" [column]="column" [data]="obj" [row]="row"></ds-cell>
           <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
@@ -74,7 +74,7 @@
           
         </td>
       </ng-container>
-      <td style="width: 26px">
+      <td style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
         <button class="trash-button" (click)="deleteRow(obj)" *ngIf="editable && withDeleteButton">
           <i class="fas fa-trash"></i>
         </button>
@@ -98,7 +98,7 @@
           (blurinput)="onBlur($event, true)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
       </td>
     </ng-container>
-    <td style="width: 26px">
+    <td style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
       <button class="add-button" (click)="addNewModel()" *ngIf="editable && withAddButton">
         <i class="fas fa-plus"></i>
       </button>

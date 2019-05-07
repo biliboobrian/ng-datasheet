@@ -36,7 +36,7 @@ export class Column {
         cellEdit?: CellDynamicInterface,
         width?: number,
         editable = true,
-        sortable =  true,
+        sortable = true,
         selectable = true,
     ) {
         this.title = title;
@@ -104,27 +104,35 @@ export class Column {
         }
     }
 
-    isValid(data: object): boolean {
+    isValid(data: object, row: number): boolean {
         let valid = true;
         if (this.columnValidators) {
 
-            if (!this._formControl) {
-                this._formControl = new FormControl('');
-            }
-
-            this._formControl.setValue(this.getColumnData(data));
 
             this.columnValidators.forEach(columnValidator => {
-                if (columnValidator.validator(this._formControl)) {
-                    valid = false;
+                if (columnValidator.validator) {
+                    if (!this._formControl) {
+                        this._formControl = new FormControl('');
+                    }
+                    this._formControl.setValue(this.getColumnData(data));
+
+
+                    if (columnValidator.validator(this._formControl)) {
+                        valid = false;
+                    }
+                } else {
+                    if (columnValidator.validationFn(this, data, row)) {
+                        valid = false;
+                    }
                 }
+
             });
         }
 
         return valid;
     }
 
-    getValidationErrors(data: object): string {
+    getValidationErrors(data: object, row: number): string {
         let errors = '';
         if (this.columnValidators) {
 
@@ -135,8 +143,14 @@ export class Column {
             this._formControl.setValue(this.getColumnData(data));
 
             this.columnValidators.forEach(columnValidator => {
-                if (columnValidator.validator(this._formControl)) {
-                    errors += columnValidator.errorMessage;
+                if (columnValidator.validator) {
+                    if (columnValidator.validator(this._formControl)) {
+                        errors += columnValidator.errorMessage + ' ';
+                    }
+                } else {
+                    if (columnValidator.validationFn(this, data, row)) {
+                        errors += columnValidator.errorMessage + ' ';
+                    }
                 }
             });
         }
