@@ -122,6 +122,7 @@
     cursor: pointer;
     padding: 0px 4px;
     color: rgb(191, 0, 0);
+    background-color: transparent;
 }
 
 .add-button {
@@ -132,4 +133,5 @@
     cursor: pointer;
     padding: 0px 4px;
     color: rgb(58, 155, 1);
+    background-color: transparent;
 }
