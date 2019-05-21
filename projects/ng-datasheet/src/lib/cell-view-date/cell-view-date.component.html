@@ -1,1 +1,3 @@
 <span>{{ getDisplayedLabel() }}</span>
+    <i *ngIf="column.isEditable(row) && dgEditable" class="fa fa-calendar view-dp-icon float-right" 
+    (click)="onOpen($event)"></i>

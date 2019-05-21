@@ -1,6 +1,7 @@
 <div class="text-center">
-  <i class="far" 
+  <i class="far" [class.cb-view]="dgEditable" 
     [class.fa-square]="column.getColumnData(data) === false" 
-    [class.fa-check-square]="column.getColumnData(data) === true">
+    [class.fa-check-square]="column.getColumnData(data) === true"
+    (click)="onOpen($event)">
   </i>
 </div>

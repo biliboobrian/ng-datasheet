@@ -61,16 +61,14 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
   }
 
   onClick(event: MouseEvent) {
+
     this.dataModel = !this.dataModel;
     if (!this.isFilter) {
       this.container.nativeElement.focus();
 
-      const ie: ItemEvent = new ItemEvent();
-      ie.item = this.container.nativeElement.checked;
-      ie.data = this.data;
-      ie.column = this.column;
-      ie.row = this.row;
-      this.column.itemEvent.emit(ie);
+      if (event.target !== this.container.nativeElement) {
+        this.onChange(event);
+      }
     }
   }
 
@@ -86,7 +84,6 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
 
   onChange(event: Event): void {
     // event.target['blur']();
-    // event.preventDefault();
 
     if (!this.isFilter) {
       const ie: ItemEvent = new ItemEvent();

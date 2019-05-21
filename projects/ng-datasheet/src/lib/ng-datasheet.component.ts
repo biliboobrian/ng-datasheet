@@ -180,7 +180,7 @@ export class NgDatasheetComponent implements OnInit {
 
     }
 
-    if (this.withAdd && this.newModelFunction) {
+    if (this.newModelFunction) {
       this.newModel = this.newModelFunction();
     }
   }
@@ -213,7 +213,10 @@ export class NgDatasheetComponent implements OnInit {
   onMouseDown(event: MouseEvent, obj: Object, row: number, col: number) {
     if (this.editable) {
       if (this.columns[col].selectable) {
-        this.main.setCoord(row, col);
+        if (row !== -1 || (row === -1 && this.withAdd)) {
+          this.main.setCoord(row, col);
+        }
+
         this.colOnTab = col;
         this.end.empty();
 
@@ -313,7 +316,8 @@ export class NgDatasheetComponent implements OnInit {
         this.start.empty();
         this.end.empty();
 
-        if (this.columns[col].autoOpen) {
+        if (this.columns[col].autoOpen && this.columns[col].isEditable(row)
+          && (row !== -1 || (row === -1 && this.withAdd))) {
           this.edited.setCoord(row, col);
         }
       }
@@ -330,7 +334,8 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   onDblClick(evnt: MouseEvent, row: number, col: number) {
-    if (this.editable && this.columns[col].editable) {
+    if (this.editable && this.columns[col].isEditable(row)
+      && (row !== -1 || (row === -1 && this.withAdd))) {
       this.edited.setCoord(row, col);
     }
   }
@@ -367,14 +372,14 @@ export class NgDatasheetComponent implements OnInit {
       text.split(lineSeparator).forEach(rowPaste => {
         col = this.main.col;
 
-        if (this.withAdd && this.newModelFunction) {
+        if (this.newModelFunction) {
           if (row === -1 || row === this.dataSet.length) {
             this.dataSet.push(this.newModelFunction());
           }
         }
 
         rowPaste.split('\t').forEach(colPaste => {
-          if (this.columns[col] && this.columns[col].editable) {
+          if (this.columns[col] && this.columns[col].isEditable(row)) {
             const data: any = this.dataService.pasteType(colPaste, this.columns[col]);
             const columnItem: Column = this.columns[col];
             const rowItem: number = (row === -1) ? this.dataSet.length - 1 : row;
@@ -467,14 +472,16 @@ export class NgDatasheetComponent implements OnInit {
     }
   }
 
-  onKeyView(event: KeyboardEvent) {
-
+  onKeyView(event: KeyboardEvent, row: number, col: number) {
+    if (this.columns[col].isEditable(row)) {
+      this.edited.setCoord(row, col);
+    }
   }
 
   onKeyEdit(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 13: // enter
-        if (this.withAdd && this.newModelFunction
+        if (this.newModelFunction
           && this._dataSet.length > 0
           && this.main.row === this._dataSet.length - 1) {
           this.main.row = -1;
@@ -589,7 +596,7 @@ export class NgDatasheetComponent implements OnInit {
             event.preventDefault();
             break;
           case 13: // enter
-            if (this.columns[this.main.col].editable) {
+            if (this.columns[this.main.col].isEditable(this.main.row)) {
               this.edited.setCoord(this.main.row, this.main.col);
             }
             break;
@@ -600,7 +607,7 @@ export class NgDatasheetComponent implements OnInit {
               }
 
             } else {
-              if (this.columns[this.main.col].editable) {
+              if (this.columns[this.main.col].isEditable(this.main.row)) {
                 this.columns[this.main.col].componentParam['type'] = 'byKey';
                 this.edited.setCoord(this.main.row, this.main.col);
 
@@ -639,7 +646,7 @@ export class NgDatasheetComponent implements OnInit {
             }
             break;
           default:
-            if (this.columns[this.main.col].editable && event.keyCode !== 16) {
+            if (this.columns[this.main.col].isEditable(this.main.row) && event.keyCode !== 16) {
               this.columns[this.main.col].componentParam['type'] = 'byKey';
               this.edited.setCoord(this.main.row, this.main.col);
 

@@ -11,6 +11,7 @@ export abstract class CellDynamicComponent {
     public placeHolder = '';
 
     @Input() isFilter = false;
+    @Input() dgEditable = false;
 
     @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
     @Output() blurinput: EventEmitter<FocusEvent> = new EventEmitter();
@@ -78,8 +79,13 @@ export abstract class CellDynamicComponent {
         return data;
     }
 
-    public static escapeRegExp(text) {
-        const regexp = new RegExp('\[\\-\\[\\]\\{\\}\\(\\)\\*\\+\\?\\.\\,\\\\\/\\^\\$\\|\\#\]', 'g');
-        return text.replace(regexp, '\\$&');
+    public static escapeRegExp(text): string {
+        if (isNaN(text)) {
+            const regexp = new RegExp('\[\\-\\[\\]\\{\\}\\(\\)\\*\\+\\?\\.\\,\\\\\/\\^\\$\\|\\#\]', 'g');
+            return text.replace(regexp, '\\$&');
+        } else {
+            return text.toString();
+        }
+
     }
 }

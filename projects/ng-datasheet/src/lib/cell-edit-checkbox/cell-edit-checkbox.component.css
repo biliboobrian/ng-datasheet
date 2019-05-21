@@ -6,3 +6,7 @@
     border-radius: 0px;
     width: 100%;
 }
+
+.cb-edit {
+    cursor: pointer;
+}

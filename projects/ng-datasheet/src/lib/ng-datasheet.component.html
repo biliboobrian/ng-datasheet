@@ -1,104 +1,95 @@
-<table class="table table-sm table-bordered data-grid" 
-  (paste)="onPaste($event)" (copy)="onCopy($event)" 
-  (cut)="onCut($event)"
-  #tbl>
+<table class="table table-sm table-bordered data-grid" (paste)="onPaste($event)" (copy)="onCopy($event)"
+  (cut)="onCut($event)" #tbl>
   <tr>
-    <th ds-global-menu 
-      *ngIf="globalMenu"
-      style="width: 26px" 
-      [dataSet]="dataSet" 
-      [(filterList)]="filterList" 
-      [parameterButtons]="parameterButtons" 
-      [selection]="selection"
-      [defaultTranslation]="defaultTranslation">
+    <th ds-global-menu *ngIf="globalMenu" style="width: 26px" [dataSet]="dataSet" [(filterList)]="filterList"
+      [parameterButtons]="parameterButtons" [selection]="selection" [defaultTranslation]="defaultTranslation">
     </th>
-    <th ds-column 
-      *ngFor="let column of columns; let col = index"
-      [dataSet]="dataSet" 
-      [(filterList)]="filterList" 
-      [column]="column"
-      [sort]="sort"
-      [filters]="filters"
-      [pagination]="pagination"
-      [staticDs]="static"
-      [previousNoWidth]="renderingService.previousNoWidth(columns, col)"
-      [withPagination]="withPagination"
-      (renderEvent)="rendering($event)"
-      [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
+    <th ds-column *ngFor="let column of columns; let col = index" [dataSet]="dataSet" [(filterList)]="filterList"
+      [column]="column" [sort]="sort" [filters]="filters" [pagination]="pagination" [staticDs]="static"
+      [previousNoWidth]="renderingService.previousNoWidth(columns, col)" [withPagination]="withPagination"
+      (renderEvent)="rendering($event)" [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
       class="use-pointer">
     </th>
-    <th style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
+    <th style="width: 26px"
+      *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
     </th>
   </tr>
   <tr class="header-tr">
-    <td style="width: 26px"
-    *ngIf="globalMenu">
-    <input [(ngModel)]="globalSelected" type="checkbox" class="checkbox" (change)="onGlobalSelectAll($event)"/>
-  </td>
-    <td ds-filter 
-      *ngFor="let column of columns; let col = index"
-      [dataSet]="dataSet" 
-      [(filterList)]="filterList" 
-      [column]="column"
-      [col]="col"
-      [sort]="sort"
-      [filters]="filters"
-      [pagination]="pagination"
-      [staticDs]="static"
-      [withPagination]="withPagination"
-      (renderEvent)="rendering($event)"
-      (click)="onFilterClick($event)"
+    <td style="width: 26px" *ngIf="globalMenu">
+      <input [(ngModel)]="globalSelected" type="checkbox" class="checkbox" (change)="onGlobalSelectAll($event)" />
+    </td>
+    <td ds-filter *ngFor="let column of columns; let col = index" [dataSet]="dataSet" [(filterList)]="filterList"
+      [column]="column" [col]="col" [sort]="sort" [filters]="filters" [pagination]="pagination" [staticDs]="static"
+      [withPagination]="withPagination" (renderEvent)="rendering($event)" (click)="onFilterClick($event)"
       class="header">
     </td>
-    <td style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
+    <td style="width: 26px"
+      *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
     </td>
   </tr>
   <ng-container *ngFor="let obj of dataSet; let row = index">
-    <tr *ngIf="renderingService.isVisible(filterList, row)" [class.use-pointer]="usePointerOnLine" (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
+    <tr *ngIf="renderingService.isVisible(filterList, row)" [class.use-pointer]="usePointerOnLine"
+      (mouseover)="changeTRStyle(row)" (mouseout)="changeTRStyle()">
       <td *ngIf="globalMenu">
-        <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox" (change)="onCheckSelection($event, row, obj)"/>
+        <input [(ngModel)]="selection[row]" type="checkbox" class="checkbox"
+          (change)="onCheckSelection($event, row, obj)" />
       </td>
       <ng-container *ngFor="let column of columns; let col = index">
-        <td  [style.background-color]="getBgColor(row, column)" (mousedown)="onMouseDown($event, obj, row, col)" (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
-          (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
-          [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)" [class.cell-selected-down]="isSelected(row, col, 3)"
-          [class.cell-selected-left]="isSelected(row, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, row, col)" [class.view-read-only]="!columns[col].editable"
-          [class.is-invalid]="!column.isValid(obj, row)" [ngClass]="getClassList(column, obj, row)">
-          <div *ngIf="!column.isValid(obj, row) && !(edited.row === row && edited.col === col)" class="is-invalid-info"><i class="fas fa-exclamation-circle" 
-            ngbTooltip="{{ column.getValidationErrors(obj, row)}}" tooltipClass="is-invalid-tooltip"></i></div>
-          <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView" (key)="onKeyView($event)"
-          (blurinput)="onBlur($event)" [column]="column" [data]="obj" [row]="row"></ds-cell>
-          <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
-          (blurinput)="onBlur($event)" [column]="column" [data]="obj" [row]="row"></ds-cell>
-          
-          
+        <td [style.background-color]="getBgColor(row, column)" (mousedown)="onMouseDown($event, obj, row, col)"
+          (mouseup)="onMouseUp($event, obj, row, col)" (mouseover)="onMouseOver($event, obj, row, col)"
+          (dblclick)="onDblClick($event, row, col)" [class.cell-selected]="isSelected(row, col)"
+          [class.cell-selected-main]="renderingService.isSelectedMain(main, row, col)"
+          [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)"
+          [class.cell-selected-down]="isSelected(row, col, 3)" [class.cell-selected-left]="isSelected(row, col, 4)"
+          [class.cell-edited]="renderingService.isEdited(edited, row, col)"
+          [class.view-read-only]="!columns[col].isEditable(row)" [class.is-invalid]="!column.isValid(obj, row)"
+          [ngClass]="getClassList(column, obj, row)">
+          <div *ngIf="!column.isValid(obj, row) && !(edited.row === row && edited.col === col)" class="is-invalid-info">
+            <i class="fas fa-exclamation-circle" ngbTooltip="{{ column.getValidationErrors(obj, row)}}"
+              tooltipClass="is-invalid-tooltip"></i></div>
+          <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView"
+            [dgEditable]="editable" (key)="onKeyView($event, row, col)" (blurinput)="onBlur($event)" [column]="column"
+            [data]="obj" [row]="row"></ds-cell>
+          <ds-cell *ngIf="renderingService.isEdited(edited, row, col)" [component]="column.cellEdit"
+            [dgEditable]="editable" (key)="onKeyEdit($event)" (blurinput)="onBlur($event)" [column]="column"
+            [data]="obj" [row]="row"></ds-cell>
+
+
         </td>
       </ng-container>
-      <td style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
+      <td style="width: 26px"
+        *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
         <button class="trash-button" (click)="deleteRow(obj)" *ngIf="editable && withDeleteButton">
           <i class="fas fa-trash"></i>
         </button>
       </td>
     </tr>
   </ng-container>
-  <tr *ngIf="editable && withAdd && newModelFunction && newModel && printNew" 
-  [style.background-color]="getBgColor(-1)" 
-  (mouseover)="changeTRStyle(-1)" (mouseout)="changeTRStyle()"
-  class="addRow">
-    <td *ngIf="globalMenu" 
-    style="width: 26px"></td>
+  <tr *ngIf="editable && newModelFunction && newModel && printNew" [style.background-color]="getBgColor(-1)"
+    (mouseover)="changeTRStyle(-1)" (mouseout)="changeTRStyle()" class="addRow">
+    <td *ngIf="globalMenu" style="width: 26px"></td>
+
     <ng-container *ngFor="let column of columns; let col = index">
       <td (mousedown)="onMouseDown($event, newModel, -1, col)" (mouseup)="onMouseUp($event, newModel, -1, col)"
-        (dblclick)="onDblClick($event, -1, col)" [class.cell-selected]="isSelected(-1, col)" [class.cell-selected-main]="renderingService.isSelectedMain(main, -1, col)"
-        [class.cell-selected-up]="isSelected(-1, col, 1)" [class.cell-selected-right]="isSelected(-1, col, 2)" [class.cell-selected-down]="isSelected(-1, col, 3)"
-        [class.cell-selected-left]="isSelected(-1, col, 4)" [class.cell-edited]="renderingService.isEdited(edited, -1, col)">
-        <ds-cell *ngIf="!renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellView" (key)="onKeyView($event)"
-          (blurinput)="onBlur($event)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
-        <ds-cell *ngIf="renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)" [component]="column.cellEdit" (key)="onKeyEdit($event)"
-          (blurinput)="onBlur($event, true)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
+        (dblclick)="onDblClick($event, -1, col)" [class.cell-selected]="isSelected(-1, col)"
+        [class.cell-selected-main]="renderingService.isSelectedMain(main, -1, col)"
+        [class.cell-selected-up]="isSelected(-1, col, 1)" [class.cell-selected-right]="isSelected(-1, col, 2)"
+        [class.cell-selected-down]="isSelected(-1, col, 3)" [class.cell-selected-left]="isSelected(-1, col, 4)"
+        [class.cell-edited]="renderingService.isEdited(edited, -1, col)">
+        <ng-container *ngIf="withAdd">
+          <ds-cell *ngIf="!renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)"
+            [dgEditable]="editable" [component]="column.cellView" (key)="onKeyView($event, -1, col)"
+            (blurinput)="onBlur($event)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
+          <ds-cell *ngIf="renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)"
+            [dgEditable]="editable" [component]="column.cellEdit" (key)="onKeyEdit($event)"
+            (blurinput)="onBlur($event, true)" [column]="column" [data]="newModel" [row]="-1"></ds-cell>
+        </ng-container>
       </td>
+
     </ng-container>
-    <td style="width: 26px" *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
+
+    <td style="width: 26px"
+      *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
       <button class="add-button" (click)="addNewModel()" *ngIf="editable && withAddButton">
         <i class="fas fa-plus"></i>
       </button>
@@ -106,30 +97,35 @@
   </tr>
 </table>
 <ng-container *ngIf="pagination && withPagination && dataSet && dataSet.length > 0">
-    <span class="float-left">Total: {{ pagination.total }}, pages: {{ pagination.lastPage + 1 }}</span>
-    <nav>
-      <ul class="pagination justify-content-end">
-        <li class="page-item" [class.disabled]="pagination.currentPage === 0">
-          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, 0)" tabindex="-1">{{ defaultTranslation.first }}</a>
-        </li>
-        <li class="page-item" [class.disabled]="pagination.currentPage === 0">
-          <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, pagination.previousPage)" tabindex="-1">{{ defaultTranslation.previous }}</a>
-        </li>
-        <li *ngFor="let page of pagination.pages" class="page-item" [class.disabled]="page === pagination.currentPage || page === -1">
-          <a class="page-link" (click)="goToPage($event, page)" href="javascript:void(0)">{{ (page !== -1)?page + 1:'...' }}</a>
-        </li>
-        <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
-          <a class="page-link" (click)="goToPage($event, pagination.nextPage)" href="javascript:void(0)">{{ defaultTranslation.next }}</a>
-        </li>
-        <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
-          <a class="page-link" (click)="goToPage($event, pagination.lastPage)" href="javascript:void(0)" tabindex="-1">{{ defaultTranslation.last }}</a>
-        </li>
-      </ul>
-    </nav>
+  <span class="float-left">Total: {{ pagination.total }}, pages: {{ pagination.lastPage + 1 }}</span>
+  <nav>
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [class.disabled]="pagination.currentPage === 0">
+        <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, 0)"
+          tabindex="-1">{{ defaultTranslation.first }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="pagination.currentPage === 0">
+        <a class="page-link" href="javascript:void(0)" (click)="goToPage($event, pagination.previousPage)"
+          tabindex="-1">{{ defaultTranslation.previous }}</a>
+      </li>
+      <li *ngFor="let page of pagination.pages" class="page-item"
+        [class.disabled]="page === pagination.currentPage || page === -1">
+        <a class="page-link" (click)="goToPage($event, page)"
+          href="javascript:void(0)">{{ (page !== -1)?page + 1:'...' }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
+        <a class="page-link" (click)="goToPage($event, pagination.nextPage)"
+          href="javascript:void(0)">{{ defaultTranslation.next }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="pagination.currentPage === pagination.lastPage">
+        <a class="page-link" (click)="goToPage($event, pagination.lastPage)" href="javascript:void(0)"
+          tabindex="-1">{{ defaultTranslation.last }}</a>
+      </li>
+    </ul>
+  </nav>
 </ng-container>
 
 <div class="select">
-  <textarea (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)" 
-  (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event)" (blur)="onTableBlur($event)"
-    #selectBox tabIndex="-1" ></textarea>
+  <textarea (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)" (keydown)="onKeyDown($event)"
+    (keyup)="onKeyUp($event)" (blur)="onTableBlur($event)" #selectBox tabIndex="-1"></textarea>
 </div>

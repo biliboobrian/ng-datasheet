@@ -1,5 +1,7 @@
-<div *ngIf="!isFilter" class="text-center" (click)="onClick($event)">
-  <input type="checkbox" [(ngModel)]="dataModel" #container (keydown)="onKeyDown($event)" (blur)="onBlur($event)"
+<div *ngIf="!isFilter" class="text-center cb-edit" (click)="onClick($event)">
+  <input type="checkbox" [(ngModel)]="dataModel" #container 
+    (keydown)="onKeyDown($event)" 
+    (blur)="onBlur($event)"
     (change)="onChange($event)" />
 </div>
 <div  *ngIf="isFilter" class="d-flex justify-content-center">

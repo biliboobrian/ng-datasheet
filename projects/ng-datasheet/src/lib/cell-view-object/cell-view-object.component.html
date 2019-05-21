@@ -1,1 +1,5 @@
 <span>{{ getLabel(column.getColumnData(data)) }}</span>
+<div class="float-right arrow-color pl-1" (click)="onOpen($event)">
+    <i *ngIf="column.isEditable(row) && dgEditable" class="fas fa-sort-down">
+    </i>
+</div>

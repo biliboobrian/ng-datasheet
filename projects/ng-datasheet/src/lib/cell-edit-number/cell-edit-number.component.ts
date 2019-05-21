@@ -14,18 +14,26 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
-  public _model = 0;
+  public _model: string;
 
   public set model(val: number) {
     if (val) {
-      this._model = val;
+      if (val !== 0) {
+        this._model = val.toString();
+      } else {
+        this._model = '';
+      }
     } else {
-      this._model = 0;
+      this._model = null;
     }
   }
 
   public get model(): number {
-    return this._model;
+    if (this._model) {
+      return parseFloat(this._model.replace(/,/g, '.'));
+    } else {
+      return 0;
+    }
   }
 
   constructor() {
@@ -37,7 +45,7 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
       this.container.nativeElement.focus();
     }
     if (this.column.componentParam['type'] === 'byKey') {
-      this._model = 0;
+      this._model = null;
     } else {
       if (this.isFilter) {
         const filters: Array<Filter> = this.data as Array<Filter>;
@@ -45,7 +53,11 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
           return filter.column === this.column;
         }).value;
       } else {
-        this._model = this.columnData;
+        if (this.columnData !== 0) {
+          this._model = this.columnData.toString();
+        } else {
+          this._model = '';
+        }
       }
     }
     this.column.componentParam['type'] = '';
@@ -64,6 +76,7 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
   }
 
   onKeyDown(event: KeyboardEvent): void {
+
     let input: HTMLInputElement;
     switch (event.keyCode) {
       case 37: // left
@@ -88,15 +101,29 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
       case 40: // down
         this.key.emit(event);
         break;
+      default:
+        if (
+          (event.keyCode < 48 || event.keyCode > 57)
+          && (event.keyCode < 96 || event.keyCode > 105)
+          && ([8, 110, 188, 190].indexOf(event.keyCode) === -1)
+        ) {
+          if ([65, 67, 86].indexOf(event.keyCode) !== -1 && event.ctrlKey) {
+          } else {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        }
+        break;
     }
   }
 
   onKeyUp(event: KeyboardEvent): void {
+
     if (this.isFilter) {
       const filters: Array<Filter> = this.data as Array<Filter>;
       filters.find(filter => {
         return filter.column === this.column;
-      }).value = this._model;
+      }).value = this.model;
     }
 
     this.cellChange.emit(this.data);
@@ -107,15 +134,16 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
       const filters: Array<Filter> = this.data as Array<Filter>;
       filters.find(filter => {
         return filter.column === this.column;
-      }).value = this._model;
+      }).value = this.model;
     } else {
-      this.columnData = this._model;
+      this.columnData = this.model;
     }
     this.blurinput.emit(event);
   }
 
   onChange(event: Event) {
-    this.columnData = this._model;
+
+    this.columnData = this.model;
     const ie: ItemEvent = new ItemEvent();
     ie.item = this.container.nativeElement.value;
     ie.data = this.data;

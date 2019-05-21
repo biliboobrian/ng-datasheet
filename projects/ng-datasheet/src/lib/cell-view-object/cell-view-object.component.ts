@@ -20,11 +20,11 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
 
   public static filter(data: any, filterText: any, column: Column): boolean {
     if (filterText && data) {
-        if (data === filterText) {
-          return true;
-        } else {
-          return false;
-        }
+      if (data === filterText) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     if (filterText) {
@@ -80,9 +80,17 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
 
   }
 
+  onOpen(event: MouseEvent) {
+    if (this.column.editable && this.dgEditable) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.key.emit();
+    }
+  }
+
   getLabel(obj: object) {
     if (!this.column.options.value) {
-      if(obj) {
+      if (obj) {
         return obj[this.column.options.label];
       }
       return '';

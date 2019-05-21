@@ -27,6 +27,7 @@ export class Column {
     cellEdit: CellDynamicInterface;
     itemEvent: EventEmitter<ItemEvent> = new EventEmitter<ItemEvent>();
     cellClassFunction: Function;
+    cellEditableFunction: Function;
     componentParam: Object = {};
 
     constructor(
@@ -130,6 +131,14 @@ export class Column {
         }
 
         return valid;
+    }
+
+    isEditable(row: number): boolean {
+        if (this.cellEditableFunction) {
+            return this.cellEditableFunction(this, row);
+        } else {
+            return this.editable;
+        }
     }
 
     getValidationErrors(data: object, row: number): string {

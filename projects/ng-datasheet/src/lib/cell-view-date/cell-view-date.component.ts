@@ -57,6 +57,14 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
 
   }
 
+  onOpen(event: MouseEvent) {
+    if (this.column.isEditable(this.row) && this.dgEditable) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.key.emit();
+    }
+  }
+
   formatText(date: moment_.Moment): string {
     if (date && this.column.options && this.column.options.format) {
       return date.format(this.column.options.format);

@@ -1,7 +1,7 @@
 {
   "name": "@biliboobrian/ng-datasheet",
   "author": "Pierre Hanauer <biliboobrian@yahoo.fr>",
-  "version": "0.2.14",
+  "version": "0.2.19",
   "homepage": "https://biliboobrian.github.io/ng-datasheet/",
   "description": "Native Angular inline spreadsheet component",
   "license": "MIT",
@@ -12,11 +12,13 @@
   "keywords": [
     "angular",
     "datasheet",
+    "datagrid",
     "ng",
     "ng2",
     "angular2",
     "spreadsheet",
-    "ng-datasheet"
+    "ng-datasheet",
+    "ng-datagrid"
   ],
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",

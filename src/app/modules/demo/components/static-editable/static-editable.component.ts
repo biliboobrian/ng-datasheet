@@ -223,9 +223,11 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns = new Array<Column>();
 
     let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
+    col.cellEditableFunction = this.editableFunc;
     this.staticColumns.push(col);
 
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
+    col.cellEditableFunction = this.editableFunc;
     col.columnValidators = [
       new ColumnValidator(
         Validators.required,
@@ -236,6 +238,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
+    col.cellEditableFunction = this.editableFunc;
     col.columnValidators = [
       new ColumnValidator(
         Validators.required,
@@ -256,6 +259,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 70);
+    col.cellEditableFunction = this.editableFunc;
     col.columnValidators = [
       new ColumnValidator(
         Validators.max(18),
@@ -265,25 +269,42 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
+    col.cellEditableFunction = this.editableFunc;
     this.staticColumns.push(col);
 
     col = new Column('Birthdate', ['parent', 'birthdate'], CellViewDateComponent, CellEditDateComponent, 200);
+    col.cellEditableFunction = this.editableFunc;
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
+    col.columnValidators = [
+      new ColumnValidator(
+        Validators.required,
+        'Lastname is required.'
+      )
+    ];
     this.staticColumns.push(col);
 
     col = new Column('Parent Deleted?', ['parent', 'deleted'], CellViewCheckboxComponent, CellEditCheckboxComponent, 200);
+    col.cellEditableFunction = this.editableFunc;
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
     });
     this.staticColumns.push(col);
 
     col = new Column('Hobby', ['parent', 'hobby'], CellViewObjectComponent, CellEditDropDownComponent, 200);
+    col.cellEditableFunction = this.editableFunc;
     col.options = new Options();
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';
     col.backgroundColor = '#b9ffc9';
+    
+    col.columnValidators = [
+      new ColumnValidator(
+        Validators.required,
+        'Lastname is required.'
+      )
+    ];
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
     });
@@ -291,6 +312,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 30);
+    col.cellEditableFunction = this.editableFunc;
     col.selectable = false;
     col.searchable = false;
     col.editable = false;
@@ -333,7 +355,7 @@ export class StaticEditableComponent implements OnInit {
   }
 
   itemEv(event: ItemEvent) {
-
+    console.log('plop');
   }
 
   onRowEvent(actualRow, row, column) {
@@ -345,6 +367,15 @@ export class StaticEditableComponent implements OnInit {
       return ['hobby'];
     }
 
+  }
+
+  editableFunc(col:Column, row: number) {
+    if(row < 5) {
+      return true;
+    } else {
+      return false;
+    }
+    
   }
 
   val(col: Column, data: Person, row: number): boolean {

@@ -21,6 +21,7 @@ export class CellComponent implements OnInit, OnDestroy {
   @Input() isFilter = false;
   @Input() data: Object;
   @Input() placeHolder: string;
+  @Input() dgEditable = true;
   @Output() cellChange: EventEmitter<object> = new EventEmitter();
   @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
   @Output() blurinput: EventEmitter<KeyboardEvent> = new EventEmitter();
@@ -48,6 +49,8 @@ export class CellComponent implements OnInit, OnDestroy {
       instance.row = this.row;
       instance.isFilter = this.isFilter;
       instance.placeHolder = this.placeHolder;
+      instance.dgEditable = this.dgEditable;
+
       this.cellSubscription = instance.cellChange.subscribe(data => {
         this.cellChange.emit(data);
       });

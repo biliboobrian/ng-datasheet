@@ -1,0 +1,10 @@
+.view-dp-icon {
+    padding: 4px 1px;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.view-dp-icon:hover {
+    color: #000;
+}
