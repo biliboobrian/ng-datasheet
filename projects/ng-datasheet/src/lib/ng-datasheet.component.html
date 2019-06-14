@@ -2,7 +2,8 @@
   (cut)="onCut($event)" #tbl>
   <tr>
     <th ds-global-menu *ngIf="globalMenu" style="width: 26px" [dataSet]="dataSet" [(filterList)]="filterList"
-      [parameterButtons]="parameterButtons" [selection]="selection" [defaultTranslation]="defaultTranslation">
+      [parameterButtons]="parameterButtons" [selection]="selection" [defaultTranslation]="defaultTranslation"
+      (selectEvent)="onglobalSelectEvent($event)">
     </th>
     <th ds-column *ngFor="let column of columns; let col = index" [dataSet]="dataSet" [(filterList)]="filterList"
       [column]="column" [sort]="sort" [filters]="filters" [pagination]="pagination" [staticDs]="static"
@@ -42,9 +43,9 @@
           [class.cell-selected-up]="isSelected(row, col, 1)" [class.cell-selected-right]="isSelected(row, col, 2)"
           [class.cell-selected-down]="isSelected(row, col, 3)" [class.cell-selected-left]="isSelected(row, col, 4)"
           [class.cell-edited]="renderingService.isEdited(edited, row, col)"
-          [class.view-read-only]="!columns[col].isEditable(row)" [class.is-invalid]="!column.isValid(obj, row)"
+          [class.view-read-only]="!columns[col].isEditable(row)" [class.is-invalid]="!column.isValid(obj, row) && touched[col][row]"
           [ngClass]="getClassList(column, obj, row)">
-          <div *ngIf="!column.isValid(obj, row) && !(edited.row === row && edited.col === col)" class="is-invalid-info">
+          <div *ngIf="!column.isValid(obj, row) && !(edited.row === row && edited.col === col) && touched[col][row]" class="is-invalid-info">
             <i class="fas fa-exclamation-circle" ngbTooltip="{{ column.getValidationErrors(obj, row)}}"
               tooltipClass="is-invalid-tooltip"></i></div>
           <ds-cell *ngIf="!renderingService.isEdited(edited, row, col)" [component]="column.cellView"
@@ -75,7 +76,8 @@
         [class.cell-selected-main]="renderingService.isSelectedMain(main, -1, col)"
         [class.cell-selected-up]="isSelected(-1, col, 1)" [class.cell-selected-right]="isSelected(-1, col, 2)"
         [class.cell-selected-down]="isSelected(-1, col, 3)" [class.cell-selected-left]="isSelected(-1, col, 4)"
-        [class.cell-edited]="renderingService.isEdited(edited, -1, col)">
+        [class.cell-edited]="renderingService.isEdited(edited, -1, col)"
+        [class.border-0]="!withAdd">
         <ng-container *ngIf="withAdd">
           <ds-cell *ngIf="!renderingService.isEdited(edited, -1, col) && renderingService.isNeededForAdd(column)"
             [dgEditable]="editable" [component]="column.cellView" (key)="onKeyView($event, -1, col)"
@@ -89,6 +91,7 @@
     </ng-container>
 
     <td style="width: 26px"
+    [class.border-0]="!withAdd"
       *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
       <button class="add-button" (click)="addNewModel()" *ngIf="editable && withAddButton">
         <i class="fas fa-plus"></i>

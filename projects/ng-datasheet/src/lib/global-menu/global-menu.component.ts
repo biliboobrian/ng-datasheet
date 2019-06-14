@@ -1,5 +1,5 @@
 import { DefaultTranslation } from './../models/default-translation';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ParameterButton } from '../models/parameter-button';
 
 @Component({
@@ -16,6 +16,8 @@ export class GlobalMenuComponent implements OnInit {
   @Input() public filterList: Array<number>;
   @Input() public selection: Object = {};
 
+  @Output() public selectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor() { }
 
   ngOnInit() {
@@ -23,9 +25,7 @@ export class GlobalMenuComponent implements OnInit {
 
   onSelectAll(event: MouseEvent) {
     if (this.dataSet) {
-      for (let index = 0; index < this.dataSet.length; index++) {
-        this.selection[index] = true;
-      }
+      this.selectEvent.emit(true);
     }
 
   }
@@ -40,9 +40,7 @@ export class GlobalMenuComponent implements OnInit {
 
   onUnselectAll(event: MouseEvent) {
     if (this.dataSet) {
-      for (let index = 0; index < this.dataSet.length; index++) {
-        this.selection[index] = false;
-      }
+      this.selectEvent.emit(false);
     }
   }
 

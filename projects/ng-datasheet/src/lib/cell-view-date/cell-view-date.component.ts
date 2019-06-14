@@ -21,7 +21,7 @@ export class CellViewDateComponent extends CellDynamicComponent implements OnIni
   public static filter(data: any, filterText: any, column: Column): boolean {
     if (filterText) {
       if (data !== null && data !== undefined) {
-        if (data.toString() === filterText.toString()) {
+        if (data.format(column.options.format) === filterText.format(column.options.format)) {
           return true;
         } else {
           return false;

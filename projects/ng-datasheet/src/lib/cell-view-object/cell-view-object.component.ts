@@ -35,7 +35,7 @@ export class CellViewObjectComponent extends CellDynamicComponent implements OnI
   }
 
   public static copyData(data: any, column: Column): string {
-    if (!column.options.value) {
+    if (column.options.value) {
       const elem = column.options.dataSet.find(element => {
         return element[column.options.value] === data;
       });

@@ -20,7 +20,9 @@ placeholder="{{ getPlaceHolder() }}"
 bindLabel="{{ column.options.label }}"
 bindValue="{{ column.options.value }}"
 [items]="column.options.dataSet"
+[selectOnTab]="true"
 [(ngModel)]="dataModel"
 (keydown)="onKeyDown($event)"
-(change)="onChange($event)">
+(change)="onChange($event)"
+[markFirst]="false">
 </ng-select>

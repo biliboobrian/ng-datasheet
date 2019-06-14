@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   CellViewBasicComponent,
   CellEditBasicComponent,
@@ -14,7 +14,11 @@ import {
   CellEditCheckboxComponent,
   CellViewButtonComponent,
   ItemEvent,
-  ColumnValidator
+  ColumnValidator,
+  SelectionEvent,
+  NgDatasheetComponent,
+  Coordinate,
+  CellEvent
 } from 'projects/ng-datasheet/src/public_api';
 
 import * as moment_ from 'moment';
@@ -29,11 +33,13 @@ const moment = moment_;
 })
 export class StaticEditableComponent implements OnInit {
 
+  @ViewChild('dg') dg: NgDatasheetComponent;
 
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];
   hobbiesDataSet: Array<Object>;
   formGroup: FormGroup;
+  navFlag = 'test';
 
   constructor(
     private fb: FormBuilder
@@ -223,22 +229,21 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns = new Array<Column>();
 
     let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
-    col.cellEditableFunction = this.editableFunc;
+
     this.staticColumns.push(col);
 
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
-    col.cellEditableFunction = this.editableFunc;
+
     col.columnValidators = [
       new ColumnValidator(
         Validators.required,
         'Lastname is required.'
       )
     ];
-    col.autoOpen = true;
     this.staticColumns.push(col);
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
-    col.cellEditableFunction = this.editableFunc;
+
     col.columnValidators = [
       new ColumnValidator(
         Validators.required,
@@ -259,7 +264,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 70);
-    col.cellEditableFunction = this.editableFunc;
+
     col.columnValidators = [
       new ColumnValidator(
         Validators.max(18),
@@ -269,11 +274,11 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
-    col.cellEditableFunction = this.editableFunc;
+
     this.staticColumns.push(col);
 
-    col = new Column('Birthdate', ['parent', 'birthdate'], CellViewDateComponent, CellEditDateComponent, 200);
-    col.cellEditableFunction = this.editableFunc;
+    col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
+
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
     col.columnValidators = [
@@ -284,15 +289,15 @@ export class StaticEditableComponent implements OnInit {
     ];
     this.staticColumns.push(col);
 
-    col = new Column('Parent Deleted?', ['parent', 'deleted'], CellViewCheckboxComponent, CellEditCheckboxComponent, 200);
-    col.cellEditableFunction = this.editableFunc;
+    col = new Column('Parent Deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 200);
+
     col.itemEvent.subscribe(data => {
       this.itemEv(data);
     });
     this.staticColumns.push(col);
 
-    col = new Column('Hobby', ['parent', 'hobby'], CellViewObjectComponent, CellEditDropDownComponent, 200);
-    col.cellEditableFunction = this.editableFunc;
+    col = new Column('Hobby', 'hobby', CellViewObjectComponent, CellEditDropDownComponent, 200);
+
     col.options = new Options();
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
@@ -312,7 +317,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('', null, CellViewButtonComponent, CellViewButtonComponent, 30);
-    col.cellEditableFunction = this.editableFunc;
+
     col.selectable = false;
     col.searchable = false;
     col.editable = false;
@@ -339,6 +344,11 @@ export class StaticEditableComponent implements OnInit {
     }
   }
 
+  onSelectEvent(event: SelectionEvent) {
+    console.log('--- selectionEvent ---');
+    console.log(event);
+  }
+
   onEdit = (event: MouseEvent, data: Object) => {
   }
 
@@ -350,8 +360,16 @@ export class StaticEditableComponent implements OnInit {
     alert('polp');
   }
 
+  setCoord() {
+    this.dg.setSelectedCell(2, 2);
+  }
+
   createItem() {
     return new Person();
+  }
+
+  onBtnClick(event:MouseEvent) {
+    alert('helo');
   }
 
   itemEv(event: ItemEvent) {
@@ -360,6 +378,10 @@ export class StaticEditableComponent implements OnInit {
 
   onRowEvent(actualRow, row, column) {
 
+  } 
+  
+  onSelectCell(event: CellEvent) {
+    console.log(event);
   }
 
   getClassHobby(col: Column, obj: Person, row: number) {

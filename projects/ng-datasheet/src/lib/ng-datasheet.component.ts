@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import { RowEvent } from './models/row-event';
 import { SelectionEvent } from './models/selection-event';
 import { FormGroup } from '@angular/forms';
+import { CellEvent } from './models/cell-event';
 
 let COL_FORMAT = '';
 
@@ -60,6 +61,8 @@ export class NgDatasheetComponent implements OnInit {
       }
     }
 
+    this.initTouched();
+
     this.filterList = this.dataService.filterDataSet(
       this.dataSet,
       this.filterList,
@@ -77,6 +80,7 @@ export class NgDatasheetComponent implements OnInit {
 
       this.renderingService.setNoWidthColumn(this.columns, this.tbl.nativeElement, this.dsKey);
     }
+    this.initTouched();
   }
 
   @Input() public parameterButtons: Array<ParameterButton>;
@@ -105,6 +109,7 @@ export class NgDatasheetComponent implements OnInit {
   @Output() public rowEvent: EventEmitter<RowEvent> = new EventEmitter<RowEvent>();
   @Output() public selectionEvent: EventEmitter<SelectionEvent> = new EventEmitter<SelectionEvent>();
   @Output() public rowDeleteEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public selectCellEvent: EventEmitter<CellEvent> = new EventEmitter<CellEvent>();
 
   @ViewChild('selectBox', { read: ElementRef }) selectBox: ElementRef;
   @ViewChild('tbl', { read: ElementRef }) tbl: ElementRef;
@@ -120,6 +125,7 @@ export class NgDatasheetComponent implements OnInit {
   public selected: Boolean = false;
   public colOnTab: number;
   public globalSelected = false;
+  public touched: Array<Array<boolean>>;
 
   private _dataSet: Array<Object>;
   private _columns: Array<Column>;
@@ -134,13 +140,37 @@ export class NgDatasheetComponent implements OnInit {
     private eRef: ElementRef
   ) { }
 
-  @HostListener('document:click', ['$event']) clickout(event) {
+  @HostListener('document:mousedown', ['$event']) clickout(event) {
     if (!this.eRef.nativeElement.contains(event.target)) {
       this.end.empty();
       this.start.empty();
       this.edited.empty();
       this.main.empty();
     }
+  }
+
+  initTouched() {
+    if (this.dataSet && this.columns) {
+      this.touched = new Array();
+
+      this.columns.forEach((column, i) => {
+        if (column.columnValidators) {
+          this.touched[i] = new Array();
+
+          this.dataSet.forEach((data, j) => {
+            this.touched[i][j] = false;
+          });
+        }
+      });
+    }
+  }
+
+  addTouchedNew(index: number, touch: boolean = this.withAdd) {
+    this.columns.forEach((column, i) => {
+      if (column.columnValidators) {
+        this.touched[i][index] = touch;
+      }
+    });
   }
 
   ngOnInit() {
@@ -185,7 +215,12 @@ export class NgDatasheetComponent implements OnInit {
     }
   }
 
-  onGlobalSelectAll(event: Event) {
+  onglobalSelectEvent(checked: boolean) {
+    this.globalSelected = checked;
+    this.onGlobalSelectAll();
+  }
+
+  onGlobalSelectAll(event?: Event) {
     if (this.globalSelected) {
       this._dataSet.forEach((obj, index) => {
         this.selection[index] = obj;
@@ -221,6 +256,10 @@ export class NgDatasheetComponent implements OnInit {
         this.end.empty();
 
         if (this.edited.row !== row || this.edited.col !== col) {
+          if (!this.edited.isEmpty() && this.columns[this.edited.col] && this.columns[this.edited.col].columnValidators) {
+            this.touched[this.edited.col][this.edited.row] = true;
+          }
+
           this.edited.empty();
         }
 
@@ -236,6 +275,9 @@ export class NgDatasheetComponent implements OnInit {
   onBlur(event: FocusEvent, newRow: boolean = false): void {
 
     if (this.selectBox.nativeElement !== event.relatedTarget) {
+      if (!this.edited.isEmpty() && this.columns[this.edited.col] && this.columns[this.edited.col].columnValidators) {
+        this.touched[this.edited.col][this.edited.row] = true;
+      }
       this.end.empty();
       this.start.empty();
       this.edited.empty();
@@ -256,7 +298,10 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   addNewModel() {
+    this.addTouchedNew(this.dataSet.length);
     this.dataSet.push(this.newModel);
+
+
     this.printNew = false;
     delete (this.newModel);
     this.newModel = this.newModelFunction();
@@ -331,6 +376,7 @@ export class NgDatasheetComponent implements OnInit {
     } else {
       this.rowEvent.emit(new RowEvent(obj, row));
     }
+    this.selectCellEvent.emit(new CellEvent(this.main, this.start, this.end, this.edited));
   }
 
   onDblClick(evnt: MouseEvent, row: number, col: number) {
@@ -374,6 +420,7 @@ export class NgDatasheetComponent implements OnInit {
 
         if (this.newModelFunction) {
           if (row === -1 || row === this.dataSet.length) {
+            this.addTouchedNew(this.dataSet.length, false);
             this.dataSet.push(this.newModelFunction());
           }
         }
@@ -453,9 +500,13 @@ export class NgDatasheetComponent implements OnInit {
 
     if (this.dataSet && this.columns) {
       this.dataSet.forEach((data, index) => {
-        this.columns.forEach(column => {
+        this.columns.forEach((column, j) => {
           if (!column.isValid(data, index)) {
             valid = false;
+          }
+
+          if (column.columnValidators) {
+            this.touched[j][index] = true;
           }
         });
       });
@@ -479,11 +530,16 @@ export class NgDatasheetComponent implements OnInit {
   }
 
   onKeyEdit(event: KeyboardEvent) {
+    if (this.columns[this.main.col].columnValidators) {
+      this.touched[this.main.col][this.main.row] = true;
+    }
+
     switch (event.keyCode) {
       case 13: // enter
         if (this.newModelFunction
           && this._dataSet.length > 0
-          && this.main.row === this._dataSet.length - 1) {
+          && this.main.row === this._dataSet.length - 1
+          && this.withAdd) {
           this.main.row = -1;
         } else if (this.main.row === -1) {
           this.addNewModel();
@@ -513,7 +569,11 @@ export class NgDatasheetComponent implements OnInit {
           if (this.main.row < this.dataSet.length - 1) {
             this.main.row++;
           } else {
-            this.main.row = -1;
+            if (!this.withAdd) {
+              this.main.row = 0;
+            } else {
+              this.main.row = -1;
+            }
           }
         } else {
           this.main.col = next;
@@ -567,9 +627,11 @@ export class NgDatasheetComponent implements OnInit {
 
         this.selectBox.nativeElement.focus({ preventScroll: true });
     }
+    this.selectCellEvent.emit(new CellEvent(this.main, this.start, this.end, this.edited));
   }
 
   onKeyDown(event: KeyboardEvent) {
+    let controlChar = false;
     if (!this.main.isEmpty() && !event.ctrlKey) {
       if (!event.shiftKey || (event.shiftKey
         && [9, 13, 32, 37, 38, 39, 40].indexOf(event.keyCode) === -1)) {
@@ -588,17 +650,23 @@ export class NgDatasheetComponent implements OnInit {
               if (this.main.row < this.dataSet.length - 1) {
                 this.main.row++;
               } else {
-                this.main.row = -1;
+                if (!this.withAdd) {
+                  this.main.row = 0;
+                } else {
+                  this.main.row = -1;
+                }
               }
             } else {
               this.main.col = next;
             }
             event.preventDefault();
+            controlChar = true;
             break;
           case 13: // enter
             if (this.columns[this.main.col].isEditable(this.main.row)) {
               this.edited.setCoord(this.main.row, this.main.col);
             }
+            controlChar = true;
             break;
           case 32: // space
             if (this.globalMenu) {
@@ -614,36 +682,53 @@ export class NgDatasheetComponent implements OnInit {
               }
             }
 
+            controlChar = true;
             break;
           case 35: // end
             this.main.setCoord(this.dataSet.length - 1, this.columns.length - 1);
+            controlChar = true;
             break;
           case 36: // home
             this.main.setCoord(0, 0);
+            controlChar = true;
             break;
           case 37: // left
             if (this.main.col > 0) {
               this.main.col = this.renderingService.getNextColumnSelectable(this.columns, false, this.main.col, this.main.col);
             }
+            controlChar = true;
             break;
           case 38: // up
-            if (this.main.row >= 0) {
+            if (this.main.row > 0) {
               this.main.row--;
             } else {
-              this.main.row = this.dataSet.length - 1;
+              if (this.withAdd) {
+                this.main.row = -1;
+              } else {
+                this.main.row = this.dataSet.length - 1;
+              }
+
             }
+            controlChar = true;
             break;
           case 39: // right
             if (this.main.col < this.columns.length - 1) {
               this.main.col = this.renderingService.getNextColumnSelectable(this.columns, true, this.main.col, this.main.col);
             }
+            controlChar = true;
             break;
           case 40: // down
             if (this.main.row < this.dataSet.length - 1) {
               this.main.row++;
             } else {
-              this.main.row = -1;
+              if (this.withAdd) {
+                this.main.row = -1;
+              } else {
+                this.main.row = 0;
+              }
+
             }
+            controlChar = true;
             break;
           default:
             if (this.columns[this.main.col].isEditable(this.main.row) && event.keyCode !== 16) {
@@ -663,25 +748,36 @@ export class NgDatasheetComponent implements OnInit {
             if (this.end.col > 0) {
               this.end.col--;
             }
+            controlChar = true;
             break;
           case 38: // up
             if (this.end.row > 0) {
               this.end.row--;
             }
+            controlChar = true;
             break;
           case 39: // right
             if (this.end.col < this.columns.length - 1) {
               this.end.col++;
             }
+            controlChar = true;
             break;
           case 40: // down
             if (this.end.row < this.dataSet.length - 1) {
               this.end.row++;
             }
+            controlChar = true;
             break;
         }
       }
+
+      if (controlChar) {
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+        event.preventDefault();
+      }
     }
+    this.selectCellEvent.emit(new CellEvent(this.main, this.start, this.end, this.edited));
   }
 
   onFilterClick(event: MouseEvent) {
@@ -724,8 +820,21 @@ export class NgDatasheetComponent implements OnInit {
     this.renderEvent.emit(new RenderEvent(this.pagination, this.filters, this.sort, this.filterList));
   }
 
+  getRenderEvent(): RenderEvent {
+    return new RenderEvent(this.pagination, this.filters, this.sort, this.filterList);
+  }
+
+  setSelectedCell(row: number, col: number) {
+    this.main.setCoord(row, col);
+    this.end.empty();
+    this.start.empty();
+    this.edited.empty();
+    this.selectBox.nativeElement.focus({ preventScroll: true });
+  }
+
   rendering(event: RenderEvent) {
     this.filterList = event.filterList;
+    this.filters = event.filters;
     this.renderEvent.emit(event);
   }
 
@@ -763,16 +872,19 @@ export class NgDatasheetComponent implements OnInit {
         if (side === 0) {
           return true;
         } else {
-          switch (side) {
-            case 1: // top
-              return (sRow === row) ? true : false;
-            case 2: // right
-              return (eCol === col) ? true : false;
-            case 3: // bottom
-              return (eRow === row) ? true : false;
-            case 4: // left
-              return (sCol === col) ? true : false;
+          if (!(row === this.main.row && col === this.main.col)) {
+            switch (side) {
+              case 1: // top
+                return (sRow === row) ? true : false;
+              case 2: // right
+                return (eCol === col) ? true : false;
+              case 3: // bottom
+                return (eRow === row) ? true : false;
+              case 4: // left
+                return (sCol === col) ? true : false;
+            }
           }
+
         }
 
       }

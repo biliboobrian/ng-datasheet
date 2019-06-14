@@ -53,7 +53,7 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
           return filter.column === this.column;
         }).value;
       } else {
-        if (this.columnData !== 0) {
+        if (this.columnData && this.columnData !== 0) {
           this._model = this.columnData.toString();
         } else {
           this._model = '';

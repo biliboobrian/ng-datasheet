@@ -20,10 +20,13 @@
       <div><code>End</code> : Go to the last cell of the last row</div>
     </div>
   </div>
+
+  <button type="button" (click)="setCoord()">clcick</button>
   <div class="row">
     <div class="col-12">
-      <ds-datasheet [trBgColor]="'#fffede'" (rowDeleteEvent)="onDeleteEvent($event)" [dataSet]="staticDataSet" [columns]="staticColumns"
-        [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem" [formGroup]="formGroup" (rowEvent)="onRowEvent()"></ds-datasheet>
+      <ds-datasheet #dg [globalMenu]="true" [trBgColor]="'#fffede'" (rowDeleteEvent)="onDeleteEvent($event)" [dataSet]="staticDataSet" [columns]="staticColumns"
+        [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem" [formGroup]="formGroup" (rowEvent)="onRowEvent()" [withAdd]="false"
+        (selectionEvent)="onSelectEvent($event)" (selectCellEvent)="onSelectCell($event)"></ds-datasheet>
     </div>
   </div>
 </div>

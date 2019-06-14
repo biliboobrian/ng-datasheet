@@ -1,5 +1,5 @@
 import { ItemEvent } from './../models/item-event';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentChecked } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Filter } from '../models/filter';
@@ -10,7 +10,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
   templateUrl: './cell-edit-drop-down.component.html',
   styleUrls: ['./cell-edit-drop-down.component.css']
 })
-export class CellEditDropDownComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
+export class CellEditDropDownComponent extends CellDynamicComponent implements OnInit, AfterContentChecked, CellDynamicInterface {
 
   @ViewChild('container', { read: NgSelectComponent })
   container: NgSelectComponent;
@@ -20,6 +20,10 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   }
 
   ngOnInit() {
+
+  }
+
+  ngAfterContentChecked() {
     if (!this.isFilter) {
       this.container.open();
     }
@@ -28,6 +32,10 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   onKeyDown(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 9: // tab
+
+        //this.dataModel = this.container.itemsList.markedItem.value;
+        this.key.emit(event);
+        break;
       case 13: // enter
       case 27: // esc
       case 37: // left
@@ -77,5 +85,11 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
 
     this.column.itemEvent.emit(ie);
     this.cellChange.emit(this.data);
+  }
+
+  onOpen() {
+    if (this.column && this.column.options && this.column.options.value) {
+      this.container.itemsList.markItem(this.column.options.dataSet[this.columnData]);
+    }
   }
 }

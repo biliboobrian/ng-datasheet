@@ -64,7 +64,8 @@
 
 .cell-edited {
     padding: 0px !important;
-    box-shadow: 2px 5px 4px rgba(0,0,0,0.4);
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.5);
+    z-index: -1;
 }
 
 .checkbox {
