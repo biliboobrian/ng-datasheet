@@ -2,6 +2,7 @@
     border: none;
     width: 28px;
     cursor: pointer;
+    background: transparent;
 }
 
 .parameter::after {

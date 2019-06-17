@@ -17,14 +17,13 @@ import {
   ColumnValidator,
   SelectionEvent,
   NgDatasheetComponent,
-  Coordinate,
-  CellEvent
+  CellEvent,
+  ColumnType
 } from 'projects/ng-datasheet/src/public_api';
 
 import * as moment_ from 'moment';
 import { Person } from '../../../../models/person';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-const moment = moment_;
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-static-editable',
@@ -147,7 +146,7 @@ export class StaticEditableComponent implements OnInit {
     p.birthdate = moment_(new Date(1990, 7, 8));
 
     p = new Person();
-    p.id = 1;
+    p.id = 10;
     p.lastname = 'BANNING';
     p.firstname = 'Peter';
     p.deleted = false;
@@ -157,7 +156,7 @@ export class StaticEditableComponent implements OnInit {
 
     this.staticDataSet.push(p);
     p = new Person();
-    p.id = 2;
+    p.id = 20;
     p.lastname = 'DOE';
     p.firstname = 'John';
     p.deleted = false;
@@ -167,7 +166,7 @@ export class StaticEditableComponent implements OnInit {
 
     this.staticDataSet.push(p);
     p = new Person();
-    p.id = 3;
+    p.id = 30;
     p.lastname = 'ANDERSON';
     p.firstname = 'Thomas';
     p.deleted = false;
@@ -229,7 +228,7 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns = new Array<Column>();
 
     let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
-
+    col.type = ColumnType.INT;
     this.staticColumns.push(col);
 
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
@@ -274,11 +273,11 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('is deleted?', 'deleted', CellViewCheckboxComponent, CellEditCheckboxComponent, 150);
-
+    col.type = ColumnType.BOOLEAN;
     this.staticColumns.push(col);
 
     col = new Column('Birthdate', 'birthdate', CellViewDateComponent, CellEditDateComponent, 200);
-
+    col.type = ColumnType.DATE;
     col.options = new Options();
     col.options.format = 'DD/MM/YYYY';
     col.columnValidators = [

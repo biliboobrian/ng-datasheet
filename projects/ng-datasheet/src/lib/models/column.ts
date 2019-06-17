@@ -4,6 +4,7 @@ import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Options } from './options';
 import { ColumnValidator } from './column-validator';
 import { FormControl } from '@angular/forms';
+import { ColumnType } from './column-type';
 
 export class Column {
 
@@ -29,6 +30,7 @@ export class Column {
     cellClassFunction: Function;
     cellEditableFunction: Function;
     componentParam: Object = {};
+    type: string = 'string';
 
     constructor(
         title?: string,

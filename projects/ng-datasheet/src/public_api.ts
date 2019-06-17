@@ -20,6 +20,7 @@ export * from './lib/cell-edit-checkbox/cell-edit-checkbox.component';
 
 // models
 export * from './lib/models/column';
+export * from './lib/models/column-type';
 export * from './lib/models/column-validator';
 export * from './lib/models/filter';
 export * from './lib/models/sort';

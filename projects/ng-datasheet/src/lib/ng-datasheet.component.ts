@@ -780,11 +780,12 @@ export class NgDatasheetComponent implements OnInit {
     this.selectCellEvent.emit(new CellEvent(this.main, this.start, this.end, this.edited));
   }
 
-  onFilterClick(event: MouseEvent) {
+  onFilterSortClick(event: MouseEvent) {
     this.end.empty();
     this.start.empty();
     this.edited.empty();
     this.main.empty();
+    this.isValid();
   }
 
   onSelectAll(event: MouseEvent) {

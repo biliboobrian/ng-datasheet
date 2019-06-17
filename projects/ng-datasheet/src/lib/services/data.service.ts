@@ -3,6 +3,9 @@ import { Column } from '../models/column';
 import { Sort } from '../models/sort';
 import { Filter } from '../models/filter';
 import { Pagination } from '../models/pagination';
+import { ColumnType } from '../models/column-type';
+import * as moment_ from 'moment'; const moment = moment_;
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,49 +17,75 @@ export class DataService {
   sortDataSet(dataSet: Array<Object>, sort: Sort): void {
     dataSet.sort((a, b) => {
       if (sort) {
-        if (!sort.column.getColumnData(a)
+        if (sort.column.getColumnData(a) === null
           || !this.copyType(sort.column.getColumnData(a), sort.column)
           || this.copyType(sort.column.getColumnData(a), sort.column) === '') {
           return 1;
         }
 
-        if (!sort.column.getColumnData(b)
+        if (sort.column.getColumnData(b) === null
           || !this.copyType(sort.column.getColumnData(b), sort.column)
           || this.copyType(sort.column.getColumnData(b), sort.column) === '') {
           return -1;
         }
-        if (sort.type === 'string') {
-          if (this.copyType(sort.column.getColumnData(a), sort.column).toLowerCase()
-            < this.copyType(sort.column.getColumnData(b), sort.column).toLowerCase()) {
-            return (sort.asc) ? -1 : 1;
-          }
+        switch (sort.column.type) {
+          case ColumnType.STRING:
+            if (this.copyType(sort.column.getColumnData(a), sort.column).toLowerCase()
+              < this.copyType(sort.column.getColumnData(b), sort.column).toLowerCase()) {
+              return (sort.asc) ? -1 : 1;
+            }
 
-          if (this.copyType(sort.column.getColumnData(b), sort.column).toLowerCase()
-            < this.copyType(sort.column.getColumnData(a), sort.column).toLowerCase()) {
-            return (sort.asc) ? 1 : -1;
-          }
-        } else if (sort.type === 'int') {
-          if (parseInt(this.copyType(sort.column.getColumnData(a), sort.column), 10)
-            < parseInt(this.copyType(sort.column.getColumnData(b), sort.column), 10)) {
-            return (sort.asc) ? -1 : 1;
-          }
+            if (this.copyType(sort.column.getColumnData(b), sort.column).toLowerCase()
+              < this.copyType(sort.column.getColumnData(a), sort.column).toLowerCase()) {
+              return (sort.asc) ? 1 : -1;
+            }
+            break;
+          case ColumnType.INT:
+            if (parseInt(this.copyType(sort.column.getColumnData(a), sort.column), 10)
+              < parseInt(this.copyType(sort.column.getColumnData(b), sort.column), 10)) {
+              return (sort.asc) ? -1 : 1;
+            }
 
-          if (parseInt(this.copyType(sort.column.getColumnData(b), sort.column), 10)
-            < parseInt(this.copyType(sort.column.getColumnData(a), sort.column), 10)) {
-            return (sort.asc) ? 1 : -1;
-          }
-        } else if (sort.type === 'number') {
-          if (parseFloat(this.copyType(sort.column.getColumnData(a), sort.column))
-            < parseFloat(this.copyType(sort.column.getColumnData(b), sort.column))) {
-            return (sort.asc) ? -1 : 1;
-          }
+            if (parseInt(this.copyType(sort.column.getColumnData(b), sort.column), 10)
+              < parseInt(this.copyType(sort.column.getColumnData(a), sort.column), 10)) {
+              return (sort.asc) ? 1 : -1;
+            }
+            break;
+          case ColumnType.NUMBER:
+            if (parseFloat(this.copyType(sort.column.getColumnData(a), sort.column))
+              < parseFloat(this.copyType(sort.column.getColumnData(b), sort.column))) {
+              return (sort.asc) ? -1 : 1;
+            }
 
-          if (parseFloat(this.copyType(sort.column.getColumnData(b), sort.column))
-            < parseFloat(this.copyType(sort.column.getColumnData(a), sort.column))) {
-            return (sort.asc) ? 1 : -1;
-          }
+            if (parseFloat(this.copyType(sort.column.getColumnData(b), sort.column))
+              < parseFloat(this.copyType(sort.column.getColumnData(a), sort.column))) {
+              return (sort.asc) ? 1 : -1;
+            }
+            break;
+          case ColumnType.DATE:
+            if (sort.column.getColumnData(a)
+              < sort.column.getColumnData(b)) {
+              return (sort.asc) ? -1 : 1;
+            }
+
+            if (sort.column.getColumnData(b)
+              < sort.column.getColumnData(a)) {
+              return (sort.asc) ? 1 : -1;
+            }
+            break;
+          case ColumnType.BOOLEAN:
+            if (sort.column.getColumnData(a)
+              && !sort.column.getColumnData(b)) {
+              return (sort.asc) ? -1 : 1;
+            }
+
+            if (sort.column.getColumnData(b)
+              && !sort.column.getColumnData(a)) {
+              return (sort.asc) ? 1 : -1;
+            }
+            break;
+
         }
-
       }
       return 0;
     });

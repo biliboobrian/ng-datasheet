@@ -9,7 +9,7 @@
       [column]="column" [sort]="sort" [filters]="filters" [pagination]="pagination" [staticDs]="static"
       [previousNoWidth]="renderingService.previousNoWidth(columns, col)" [withPagination]="withPagination"
       (renderEvent)="rendering($event)" [ngStyle]="(column)?renderingService.getColumnWidth(column):''"
-      class="use-pointer">
+      class="use-pointer" (click)="onFilterSortClick($event)">
     </th>
     <th style="width: 26px"
       *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
@@ -21,7 +21,7 @@
     </td>
     <td ds-filter *ngFor="let column of columns; let col = index" [dataSet]="dataSet" [(filterList)]="filterList"
       [column]="column" [col]="col" [sort]="sort" [filters]="filters" [pagination]="pagination" [staticDs]="static"
-      [withPagination]="withPagination" (renderEvent)="rendering($event)" (click)="onFilterClick($event)"
+      [withPagination]="withPagination" (renderEvent)="rendering($event)" (click)="onFilterSortClick($event)"
       class="header">
     </td>
     <td style="width: 26px"
