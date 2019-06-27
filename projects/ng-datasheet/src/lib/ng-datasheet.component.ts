@@ -430,6 +430,7 @@ export class NgDatasheetComponent implements OnInit {
             const data: any = this.dataService.pasteType(colPaste, this.columns[col]);
             const columnItem: Column = this.columns[col];
             const rowItem: number = (row === -1) ? this.dataSet.length - 1 : row;
+
             if (data instanceof Observable) {
               data.subscribe(function (rowItemPasted: number, columnItemPasted: Column, dataItem: Array<any>) {
                 let newData: Object = null;
@@ -447,11 +448,21 @@ export class NgDatasheetComponent implements OnInit {
 
               }.bind(this, rowItem, columnItem));
             } else {
+              const ie = new ItemEvent();
+
               if (row === -1) {
                 this.columns[col].setColumnData(this.dataSet[this.dataSet.length - 1], data);
+                ie.data = this.dataSet[this.dataSet.length - 1];
+                ie.row = this.dataSet.length - 1;
               } else {
                 this.columns[col].setColumnData(this.dataSet[row], data);
+                ie.data = this.dataSet[row];
+                ie.row = row;
               }
+
+              ie.column = this.columns[col];
+              ie.item = data;
+              this.columns[col].itemEvent.emit(ie);
             }
           }
           col++;
@@ -521,6 +532,18 @@ export class NgDatasheetComponent implements OnInit {
         event.preventDefault();
         break;
     }
+
+    if (document.getElementsByClassName('cell-selected-main').length > 0) {
+      const mainBound = document.getElementsByClassName('cell-selected-main')[0].getBoundingClientRect();
+      const windowBound = document.body.getBoundingClientRect();
+
+      if (mainBound.bottom > windowBound.height) {
+        window.scrollTo(0, - windowBound['y'] + mainBound.height);
+      } else if (mainBound.top < 0) {
+        window.scrollTo(0, window.scrollY - mainBound.height);
+      }
+    }
+
   }
 
   onKeyView(event: KeyboardEvent, row: number, col: number) {
