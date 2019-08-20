@@ -32,9 +32,14 @@ export class CellViewNumberComponent extends CellDynamicComponent implements OnI
             return false;
           }
         } else {
-
-          if (!data.toString().match(new RegExp('^(' + keywords + ')', 'gi'))) {
-            return false;
+          if (column.searchContains) {
+            if (!data.toString().match(new RegExp('(' + keywords + ')', 'gi'))) {
+              return false;
+            }
+          } else {
+            if (!data.toString().match(new RegExp('^(' + keywords + ')', 'gi'))) {
+              return false;
+            }
           }
         }
 

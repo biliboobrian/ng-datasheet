@@ -26,7 +26,12 @@ export class Pagination {
     }
 
     get lastPage(): number {
-        return Math.trunc(this.total / this.perPage);
+        if (this.total % this.perPage === 0) {
+            return this.total / this.perPage - 1;
+        } else {
+            return Math.trunc(this.total / this.perPage);
+        }
+
     }
 
     get pages(): Array<number> {
@@ -51,12 +56,12 @@ export class Pagination {
                 ];
             } else {
                 p = [-1,
-                    this.lastPage - 5,
-                    this.lastPage - 4,
-                    this.lastPage - 3,
-                    this.lastPage - 2,
-                    this.lastPage - 1,
-                    this.lastPage
+                this.lastPage - 5,
+                this.lastPage - 4,
+                this.lastPage - 3,
+                this.lastPage - 2,
+                this.lastPage - 1,
+                this.lastPage
                 ];
             }
         }

@@ -1,14 +1,13 @@
 
 import * as moment_ from 'moment';
 import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
- const moment = moment_;
-
+const moment = moment_;
 
 export class DateParserFormatter extends NgbDateParserFormatter {
 
-    constructor(
-        public formatDate: string
-    ) {
+    public formatDate: string;
+
+    constructor() {
         super();
     }
 

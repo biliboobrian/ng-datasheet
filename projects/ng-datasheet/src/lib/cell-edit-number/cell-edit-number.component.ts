@@ -1,6 +1,6 @@
 import { ItemEvent } from './../models/item-event';
 import { CellDynamicInterface } from './../cell/cell-dynamic-interface';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { Filter } from '../models/filter';
 
@@ -9,12 +9,13 @@ import { Filter } from '../models/filter';
   templateUrl: './cell-edit-number.component.html',
   styleUrls: ['./cell-edit-number.component.css']
 })
-export class CellEditNumberComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
+export class CellEditNumberComponent extends CellDynamicComponent implements OnInit, AfterViewChecked, CellDynamicInterface {
 
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
   public _model: string;
+
 
   public set model(val: number) {
     if (val) {
@@ -30,9 +31,13 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
 
   public get model(): number {
     if (this._model) {
-      return parseFloat(this._model.replace(/,/g, '.'));
+      if (isNaN(parseFloat(this._model.replace(/,/g, '.')))) {
+        return this._model as any;
+      } else {
+        return parseFloat(this._model.replace(/,/g, '.'));
+      }
     } else {
-      return 0;
+      return this._model as any;
     }
   }
 
@@ -41,9 +46,6 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
   }
 
   ngOnInit() {
-    if (!this.isFilter) {
-      this.container.nativeElement.focus();
-    }
     if (this.column.componentParam['type'] === 'byKey') {
       this._model = null;
     } else {
@@ -61,6 +63,12 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
       }
     }
     this.column.componentParam['type'] = '';
+  }
+
+  ngAfterViewChecked() {
+    if (!this.isFilter) {
+      this.container.nativeElement.focus();
+    }
   }
 
   getStep(): number {
@@ -102,22 +110,23 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
         this.key.emit(event);
         break;
       default:
-        if (
+        /*if (
           (event.keyCode < 48 || event.keyCode > 57)
           && (event.keyCode < 96 || event.keyCode > 105)
-          && ([8, 110, 188, 190].indexOf(event.keyCode) === -1)
+          && ([8, 109, 110, 188, 190].indexOf(event.keyCode) === -1)
         ) {
           if ([65, 67, 86].indexOf(event.keyCode) !== -1 && event.ctrlKey) {
           } else {
             event.preventDefault();
             event.stopPropagation();
           }
-        }
+        }*/
         break;
     }
   }
 
   onKeyUp(event: KeyboardEvent): void {
+
 
     if (this.isFilter) {
       const filters: Array<Filter> = this.data as Array<Filter>;
@@ -143,6 +152,7 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
 
   onChange(event: Event) {
 
+    this._model = this._model.replace(/[^0-9.-]/g, '');
     this.columnData = this.model;
     const ie: ItemEvent = new ItemEvent();
     ie.item = this.container.nativeElement.value;

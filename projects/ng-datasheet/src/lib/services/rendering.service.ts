@@ -32,9 +32,9 @@ export class RenderingService {
     }
 
     if (userColumnsWidths) {
-      for (let i = 0; i < userColumnsWidths.length; i++) {
-        if (userColumnsWidths[i] > 0) {
-          columns[i].width = userColumnsWidths[i];
+      for (let j = 0; j < userColumnsWidths.length; j++) {
+        if (userColumnsWidths[j] > 0) {
+          columns[j].width = userColumnsWidths[j];
         }
       }
     }

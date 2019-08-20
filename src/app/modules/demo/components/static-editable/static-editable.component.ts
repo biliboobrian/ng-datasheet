@@ -32,7 +32,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class StaticEditableComponent implements OnInit {
 
-  @ViewChild('dg') dg: NgDatasheetComponent;
+  @ViewChild('dg',  { read: NgDatasheetComponent }) dg: NgDatasheetComponent;
 
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];
@@ -51,16 +51,6 @@ export class StaticEditableComponent implements OnInit {
       { id: 3, name: 'Foot ball' },
       { id: 4, name: 'Swimming' }
     ];
-
-    this.formGroup = this.fb.group({
-      id: [''],
-      firstname: ['', Validators.required],
-      lastname: [''],
-      deleted: [''],
-      hobby: [''],
-      age: [''],
-      birthdate: ['']
-    });
 
 
     this.staticDataSet = [];
@@ -223,8 +213,43 @@ export class StaticEditableComponent implements OnInit {
     p.age = 19;
     p.birthdate = moment_(new Date(1990, 7, 8));
 
-
-
+    this.staticDataSet.push(p);
+    p = new Person();
+    p.id = 4;
+    p.lastname = 'WATSON';
+    p.firstname = 'Sherlock';
+    p.deleted = true;
+    p.hobby = 4;
+    p.age = 19;
+    p.birthdate = moment_(new Date(1990, 7, 8));
+    this.staticDataSet.push(p);
+    p = new Person();
+    p.id = 4;
+    p.lastname = 'WATSON';
+    p.firstname = 'Sherlock';
+    p.deleted = true;
+    p.hobby = 4;
+    p.age = 19;
+    p.birthdate = moment_(new Date(1990, 7, 8));
+    this.staticDataSet.push(p);
+    p = new Person();
+    p.id = 4;
+    p.lastname = 'WATSON';
+    p.firstname = 'Sherlock';
+    p.deleted = true;
+    p.hobby = 4;
+    p.age = 19;
+    p.birthdate = moment_(new Date(1990, 7, 8));
+    this.staticDataSet.push(p);
+    p = new Person();
+    p.id = 4;
+    p.lastname = 'WATSON';
+    p.firstname = 'Sherlock';
+    p.deleted = true;
+    p.hobby = 4;
+    p.age = 19;
+    p.birthdate = moment_(new Date(1990, 7, 8));
+    this.staticDataSet.push(p);
     this.staticColumns = new Array<Column>();
 
     let col: Column = new Column('ID', 'id', CellViewBasicComponent, CellEditBasicComponent, 60);
@@ -232,7 +257,8 @@ export class StaticEditableComponent implements OnInit {
     this.staticColumns.push(col);
 
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
-
+    col.autoOpen = true;
+    col.searchContains = true;
     col.columnValidators = [
       new ColumnValidator(
         Validators.required,
@@ -298,6 +324,7 @@ export class StaticEditableComponent implements OnInit {
     col = new Column('Hobby', 'hobby', CellViewObjectComponent, CellEditDropDownComponent, 200);
 
     col.options = new Options();
+    col.autoOpen = true;
     col.options.dataSet = this.hobbiesDataSet;
     col.options.value = 'id';
     col.options.label = 'name';

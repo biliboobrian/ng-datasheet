@@ -15,18 +15,19 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
   @ViewChild('container', { read: NgSelectComponent })
   container: NgSelectComponent;
 
+  isOpen = false;
+
   constructor() {
     super();
   }
 
   ngOnInit() {
-
-  }
-
-  ngAfterContentChecked() {
     if (!this.isFilter) {
       this.container.open();
     }
+  }
+
+  ngAfterContentChecked() {
   }
 
   onKeyDown(event: KeyboardEvent) {
@@ -36,7 +37,6 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
         //this.dataModel = this.container.itemsList.markedItem.value;
         this.key.emit(event);
         break;
-      case 13: // enter
       case 27: // esc
       case 37: // left
       case 39: // right
@@ -85,6 +85,12 @@ export class CellEditDropDownComponent extends CellDynamicComponent implements O
 
     this.column.itemEvent.emit(ie);
     this.cellChange.emit(this.data);
+  }
+
+  onClick(event: MouseEvent) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.container.focus();
   }
 
   onOpen() {

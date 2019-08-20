@@ -17,13 +17,14 @@ import { Coordinate } from './models/coordinate';
 import { Observable } from 'rxjs';
 import { RowEvent } from './models/row-event';
 import { SelectionEvent } from './models/selection-event';
-import { FormGroup } from '@angular/forms';
 import { CellEvent } from './models/cell-event';
 
 let COL_FORMAT = '';
 
 export function dateParseFactory() {
-  return new DateParserFormatter(COL_FORMAT);
+  const dpf = new DateParserFormatter();
+  dpf.formatDate = COL_FORMAT;
+  return dpf;
 }
 
 // @dynamic
@@ -85,25 +86,25 @@ export class NgDatasheetComponent implements OnInit {
 
   @Input() public parameterButtons: Array<ParameterButton>;
   @Input() public defaultTranslation: DefaultTranslation = new DefaultTranslation();
-  @Input() public withFilters = true;
-  @Input() public withAdd = true;
-  @Input() public withAddButton = true;
-  @Input() public withDeleteButton = true;
   @Input() public newModelFunction: Function;
   @Input() public onDeleteRowFunction: Function;
   @Input() public dateFormat = 'MM-DD-YYYY';
-  @Input() public static = true;
-  @Input() public withPagination = false;
   @Input() public filters: Array<Filter>;
   @Input() public pagination: Pagination;
   @Input() public sort: Sort;
   @Input() public dsKey: string;
   @Input() public trBgColor: string;
   @Input() public trBgColorFunction: Function;
+
+  @Input() public withAdd = true;
+  @Input() public withAddButton = true;
+  @Input() public withDeleteButton = true;
+  @Input() public static = true;
+  @Input() public withPagination = false;
   @Input() public editable = true;
+  @Input() public searchable = true;
   @Input() public globalMenu = false;
   @Input() public usePointerOnLine = false;
-  @Input() public formGroup: FormGroup;
 
   @Output() public renderEvent: EventEmitter<RenderEvent> = new EventEmitter<RenderEvent>();
   @Output() public rowEvent: EventEmitter<RowEvent> = new EventEmitter<RowEvent>();
@@ -140,7 +141,7 @@ export class NgDatasheetComponent implements OnInit {
     private eRef: ElementRef
   ) { }
 
-  @HostListener('document:mousedown', ['$event']) clickout(event) {
+  @HostListener('document:click', ['$event']) clickout(event) {
     if (!this.eRef.nativeElement.contains(event.target)) {
       this.end.empty();
       this.start.empty();
@@ -402,24 +403,24 @@ export class NgDatasheetComponent implements OnInit {
       let row: number = this.main.row;
       let col: number = this.main.col;
 
-      if (this.main.row !== -1) {
-        this.start.setCoord(this.main.row, this.main.col);
-      } else {
-        this.start.setCoord(this.dataSet.length, this.main.col);
-        this.main.setCoord(this.dataSet.length, this.main.col);
-      }
-
       let lineSeparator = '\r\n';
 
       if (text.indexOf(lineSeparator) === -1) {
         lineSeparator = '\n';
       }
 
+      if (this.main.row !== -1 || text.split(lineSeparator).length === 1) {
+        this.start.setCoord(this.main.row, this.main.col);
+      } else {
+        this.start.setCoord(this.dataSet.length, this.main.col);
+        this.main.setCoord(this.dataSet.length, this.main.col);
+      }
+
       text.split(lineSeparator).forEach(rowPaste => {
         col = this.main.col;
 
         if (this.newModelFunction) {
-          if (row === -1 || row === this.dataSet.length) {
+          if ((row === -1 || row === this.dataSet.length) && text.split(lineSeparator).length > 1) {
             this.addTouchedNew(this.dataSet.length, false);
             this.dataSet.push(this.newModelFunction());
           }
@@ -451,9 +452,15 @@ export class NgDatasheetComponent implements OnInit {
               const ie = new ItemEvent();
 
               if (row === -1) {
-                this.columns[col].setColumnData(this.dataSet[this.dataSet.length - 1], data);
-                ie.data = this.dataSet[this.dataSet.length - 1];
-                ie.row = this.dataSet.length - 1;
+                if (text.split(lineSeparator).length > 1) {
+                  this.columns[col].setColumnData(this.dataSet[this.dataSet.length - 1], data);
+                  ie.data = this.dataSet[this.dataSet.length - 1];
+                  ie.row = this.dataSet.length - 1;
+                } else {
+                  this.columns[col].setColumnData(this.newModel, data);
+                  ie.data = this.newModel;
+                  ie.row = -1;
+                }
               } else {
                 this.columns[col].setColumnData(this.dataSet[row], data);
                 ie.data = this.dataSet[row];
@@ -473,7 +480,7 @@ export class NgDatasheetComponent implements OnInit {
         }
       });
 
-      if (row !== -1) {
+      if (row !== -1 || text.split(lineSeparator).length === 1) {
         this.end.setCoord(row - 1, col - 1);
       } else {
         this.end.setCoord(this.dataSet.length - 1, col - 1);

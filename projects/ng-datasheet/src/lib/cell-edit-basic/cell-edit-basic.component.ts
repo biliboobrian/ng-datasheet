@@ -14,15 +14,8 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
-  public _model = '';
+  public model = '';
 
-  public set model(val: string) {
-    this._model = val;
-  }
-
-  public get model(): string {
-    return this._model;
-  }
 
   constructor() {
     super();
@@ -34,7 +27,7 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
     }
 
     if (this.column.componentParam['type'] === 'byKey') {
-      this._model = '';
+      this.model = '';
     } else {
       if (this.isFilter) {
         const filters: Array<Filter> = this.data as Array<Filter>;
@@ -43,11 +36,11 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
         });
 
         if (f) {
-          this._model = f.value;
+          this.model = f.value;
         }
 
       } else {
-        this._model = this.columnData;
+        this.model = this.columnData;
       }
     }
     this.column.componentParam['type'] = '';
@@ -69,7 +62,7 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
         }
         break;
       case 27: // esc
-        this._model = this.columnData;
+        this.model = this.columnData;
         this.key.emit(event);
         break;
       case 9: // tab
@@ -86,7 +79,7 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
       const filters: Array<Filter> = this.data as Array<Filter>;
       filters.find(filter => {
         return filter.column === this.column;
-      }).value = this._model;
+      }).value = this.model;
     }
 
     this.cellChange.emit(this.data);
@@ -97,15 +90,15 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
       const filters: Array<Filter> = this.data as Array<Filter>;
       filters.find(filter => {
         return filter.column === this.column;
-      }).value = this._model;
+      }).value = this.model;
     } else {
-      this.columnData = this._model;
+      this.columnData = this.model;
     }
     this.blurinput.emit(event);
   }
 
-  onChange(event: Event) {
-    this.columnData = this._model;
+  onChange(event) {
+    this.columnData = this.model;
     const ie: ItemEvent = new ItemEvent();
     ie.item = this.container.nativeElement.value;
     ie.data = this.data;

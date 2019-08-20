@@ -15,7 +15,7 @@
       *ngIf="editable && ((withAddButton && withDeleteButton) || withAddButton || withDeleteButton)">
     </th>
   </tr>
-  <tr class="header-tr">
+  <tr class="header-tr" *ngIf="searchable">
     <td style="width: 26px" *ngIf="globalMenu">
       <input [(ngModel)]="globalSelected" type="checkbox" class="checkbox" (change)="onGlobalSelectAll($event)" />
     </td>

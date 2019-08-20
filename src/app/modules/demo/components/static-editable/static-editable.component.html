@@ -25,8 +25,8 @@
   <div class="row">
     <div class="col-12">
       <ds-datasheet #dg [globalMenu]="true" [trBgColor]="'#fffede'" (rowDeleteEvent)="onDeleteEvent($event)" [dataSet]="staticDataSet" [columns]="staticColumns"
-        [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem" [formGroup]="formGroup" (rowEvent)="onRowEvent()" [withAdd]="false"
-        (selectionEvent)="onSelectEvent($event)" (selectCellEvent)="onSelectCell($event)"></ds-datasheet>
+        [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem" (rowEvent)="onRowEvent()" [withAdd]="true" [searchable]="true"
+        (selectionEvent)="onSelectEvent($event)" (selectCellEvent)="onSelectCell($event)" [withPagination]="true"></ds-datasheet>
     </div>
   </div>
 </div>

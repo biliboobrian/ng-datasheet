@@ -117,24 +117,6 @@ export class DataService {
               filters[index].column)) {
               visible = false;
             }
-
-            /* const keywords = filters[index].value.toString().split(' ').join('|');
-            if (obj[filters[index].column.data] !== null) {
-              const txt: string = this.copyType(obj[filters[index].column.data], filters[index].column);
-
-              if (keywords.indexOf('*') === 0) {
-                if (!txt.toString().match(new RegExp('(' + keywords.substring(1) + ')', 'gi'))) {
-                  visible = false;
-                }
-              } else {
-
-                if (!txt.toString().match(new RegExp('^(' + keywords + ')', 'gi'))) {
-                  visible = false;
-                }
-              }
-            } else {
-              visible = false;
-            } */
           }
         }
 
@@ -147,11 +129,11 @@ export class DataService {
         pagination.total = filterList.length;
 
         const paginatedList: Array<number> = [];
-        for (let index = pagination.currentPage * pagination.perPage;
-          index < (pagination.currentPage + 1) * pagination.perPage;
-          index++) {
-          if (filterList[index] !== null) {
-            paginatedList.push(filterList[index]);
+        for (let indexPage = pagination.currentPage * pagination.perPage;
+          indexPage < (pagination.currentPage + 1) * pagination.perPage;
+          indexPage++) {
+          if (filterList[indexPage] !== null) {
+            paginatedList.push(filterList[indexPage]);
           }
         }
         filterList = paginatedList;

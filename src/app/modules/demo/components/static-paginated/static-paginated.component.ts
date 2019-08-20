@@ -15,7 +15,7 @@ import { Observable, of } from 'rxjs';
 })
 export class StaticPaginatedComponent implements OnInit {
 
-  @ViewChild('paginatedDataSheet') paginatedDataSheet: NgDatasheetComponent;
+  @ViewChild('paginatedDataSheet',  { read: NgDatasheetComponent }) paginatedDataSheet: NgDatasheetComponent;
 
   paginatedColumns: Array<Column>;
   paginatedDataSet: Array<Object> = [];

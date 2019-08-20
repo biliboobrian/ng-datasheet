@@ -28,8 +28,8 @@ const moment = moment_;
 })
 export class StaticWithEventComponent implements OnInit {
 
-  @ViewChild('content') content: ElementRef;
-  @ViewChild('dg') dg: NgDatasheetComponent;
+  @ViewChild('content',  { read: ElementRef }) content: ElementRef;
+  @ViewChild('dg',  { read: NgDatasheetComponent }) dg: NgDatasheetComponent;
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];
   hobbiesDataSet: Array<Object>;

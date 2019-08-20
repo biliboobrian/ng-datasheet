@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Filter } from '../models/filter';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 @Component({
   selector: 'ds-cell-edit-checkbox',
@@ -11,8 +12,8 @@ import { Filter } from '../models/filter';
 })
 export class CellEditCheckboxComponent extends CellDynamicComponent implements OnInit, AfterViewInit, CellDynamicInterface {
 
-  @ViewChild('container', { read: ElementRef })
-  container: ElementRef;
+  @ViewChild('containerCheckBox', { read: ElementRef }) containerCheckBox: ElementRef;
+  @ViewChild('containerSelect', { read: NgSelectComponent }) containerSelect: NgSelectComponent;
 
   items: Array<object> = [
     {
@@ -64,9 +65,9 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
 
     this.dataModel = !this.dataModel;
     if (!this.isFilter) {
-      this.container.nativeElement.focus();
+      this.containerCheckBox.nativeElement.focus();
 
-      if (event.target !== this.container.nativeElement) {
+      if (event.target !== this.containerCheckBox.nativeElement) {
         this.onChange(event);
       }
     }
@@ -74,7 +75,7 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
 
   ngAfterViewInit() {
     if (!this.isFilter) {
-      this.container.nativeElement.focus();
+      this.containerCheckBox.nativeElement.focus();
     }
   }
 
@@ -87,7 +88,7 @@ export class CellEditCheckboxComponent extends CellDynamicComponent implements O
 
     if (!this.isFilter) {
       const ie: ItemEvent = new ItemEvent();
-      ie.item = this.container.nativeElement.checked;
+      ie.item = this.containerCheckBox.nativeElement.checked;
       ie.data = this.data;
       ie.column = this.column;
       ie.row = this.row;
