@@ -110,6 +110,7 @@ export class NgDatasheetComponent implements OnInit {
   @Output() public rowEvent: EventEmitter<RowEvent> = new EventEmitter<RowEvent>();
   @Output() public selectionEvent: EventEmitter<SelectionEvent> = new EventEmitter<SelectionEvent>();
   @Output() public rowDeleteEvent: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public rowAddEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() public selectCellEvent: EventEmitter<CellEvent> = new EventEmitter<CellEvent>();
 
   @ViewChild('selectBox', { read: ElementRef }) selectBox: ElementRef;
@@ -302,6 +303,7 @@ export class NgDatasheetComponent implements OnInit {
     this.addTouchedNew(this.dataSet.length);
     this.dataSet.push(this.newModel);
 
+    this.rowAddEvent.emit(this.newModel);
 
     this.printNew = false;
     delete (this.newModel);
@@ -319,6 +321,12 @@ export class NgDatasheetComponent implements OnInit {
     setTimeout(() => {
       this.printNew = true;
     }, 10);
+  }
+
+  resetNewModel() {
+    if (this.newModelFunction) {
+      this.newModel = this.newModelFunction();
+    }
   }
 
   getBgColor(row: number = null, column?: Column): string {
