@@ -1,5 +1,5 @@
 <table class="table table-sm table-bordered data-grid" (paste)="onPaste($event)" (copy)="onCopy($event)"
-  (cut)="onCut($event)" #tbl>
+  (cut)="onCut($event)" (contextmenu)="onRightClick($event)" #tbl>
   <tr>
     <th ds-global-menu *ngIf="globalMenu" style="width: 26px" [dataSet]="dataSet" [(filterList)]="filterList"
       [parameterButtons]="parameterButtons" [selection]="selection" [defaultTranslation]="defaultTranslation"
@@ -132,3 +132,5 @@
   <textarea (paste)="onPaste($event)" (copy)="onCopy($event)" (cut)="onCut($event)" (keydown)="onKeyDown($event)"
     (keyup)="onKeyUp($event)" (blur)="onTableBlur($event)" #selectBox tabIndex="-1"></textarea>
 </div>
+
+<ds-context-menu #contextMenu></ds-context-menu>

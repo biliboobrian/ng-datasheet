@@ -1,16 +1,37 @@
 <header class="header-getting text-white">
-    <div class="container text-center">
-      <h1>Welcome to Ng-DataSheet</h1>
-      <p class="lead">All-in-one Angular 6+ inline spreadsheet</p>
-    </div>
-  </header>
-  
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-6 text-center pt-5">
-          <p>Ng-DataSheet is a free project proposing an extensible datagrid with or without inline editing.</p>
-          <p>See it in action <a routerLink="/demo">here</a> and installation guide <a routerLink="/doc">here</a></p>
-      </div>
-    </div>
-    
+  <div class="container text-center">
+    <h1>Welcome to Ng-DataSheet</h1>
+    <p class="lead">All-in-one Angular 6+ inline spreadsheet</p>
   </div>
+</header>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6 text-center pt-5">
+      <p>Ng-DataSheet is a free project proposing an extensible datagrid with or without inline editing.</p>
+      <p>Installation guide <a routerLink="/doc">here</a></p>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <ds-datasheet #dg [globalMenu]="true" [trBgColor]="'#eeeeee'" (rowDeleteEvent)="onDeleteEvent($event)"
+        [dataSet]="dataSet" [columns]="columns" [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem"
+        (rowEvent)="onRowEvent()" [withAdd]="true" [searchable]="true" (selectionEvent)="onSelectEvent($event)"
+        (selectCellEvent)="onSelectCell($event)"></ds-datasheet>
+    </div>
+  </div>
+  <div class="row pb-5">
+    <div class="col-12">
+      <div><code>Enter or Double click</code> : Switch to edition mode, switch to read mode on new line first selected column</div>
+      <div><code>Tab</code> : Go to next column, if you reach end of selectable column in table, go to next row first column</div>
+      <div><code>Arrow</code> : Navigate in cells</div>
+      <div><code>Shift + Arrow</code> : Make a selection</div>
+      <div><code>Ctrl + C</code> : Copy mouse selection (can be paste on spreadsheet applications)</div>
+      <div><code>Ctrl + V</code> : Paste data in cell(s) (ca be copied from spreadsheet applications)</div>
+      <div><code>Esc</code> : Remove current modifications</div>
+      <div><code>Home</code> : Go to the first cell of the first row</div>
+      <div><code>End</code> : Go to the last cell of the last row</div>
+    </div>
+  </div>
+</div>

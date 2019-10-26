@@ -28,6 +28,7 @@ import { CellViewNumberComponent } from './cell-view-number/cell-view-number.com
 import { CellViewCheckboxComponent } from './cell-view-checkbox/cell-view-checkbox.component';
 import { CellEditCheckboxComponent } from './cell-edit-checkbox/cell-edit-checkbox.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CellEditNumberComponent,
     CellViewNumberComponent,
     CellViewCheckboxComponent,
-    CellEditCheckboxComponent
+    CellEditCheckboxComponent,
+    ContextMenuComponent
   ],
   entryComponents: [
     CellViewBasicComponent,

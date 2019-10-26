@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import { RowEvent } from './models/row-event';
 import { SelectionEvent } from './models/selection-event';
 import { CellEvent } from './models/cell-event';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
 
 let COL_FORMAT = '';
 
@@ -115,6 +116,7 @@ export class NgDatasheetComponent implements OnInit {
 
   @ViewChild('selectBox', { read: ElementRef }) selectBox: ElementRef;
   @ViewChild('tbl', { read: ElementRef }) tbl: ElementRef;
+  @ViewChild('contextMenu', { read: ContextMenuComponent }) contextMenu: ContextMenuComponent;
 
   public selection: Object = {};
   public newModel: Object;
@@ -388,11 +390,17 @@ export class NgDatasheetComponent implements OnInit {
     this.selectCellEvent.emit(new CellEvent(this.main, this.start, this.end, this.edited));
   }
 
-  onDblClick(evnt: MouseEvent, row: number, col: number) {
+  onDblClick(event: MouseEvent, row: number, col: number): void {
     if (this.editable && this.columns[col].isEditable(row)
       && (row !== -1 || (row === -1 && this.withAdd))) {
       this.edited.setCoord(row, col);
     }
+  }
+  onRightClick(event: MouseEvent): void {
+    const pos = event.currentTarget['getBoundingClientRect']();
+
+    this.contextMenu.openContext(event.pageX - pos.x, event.pageY - pos.y);
+    event.preventDefault();
   }
 
   onCopy(event: ClipboardEvent) {
