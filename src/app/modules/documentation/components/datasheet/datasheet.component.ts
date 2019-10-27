@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DatasheetComponent implements OnInit {
 
-  nav: string = 'ng-datasheet';
+  nav = 'ng-datasheet';
 
   constructor(
     private route: ActivatedRoute

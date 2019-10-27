@@ -1,3 +1,30 @@
-<p>
-  Under construction
-</p>
+<div class="d-flex m-0 doc-container">
+    <div class="left-menu col-2">
+  
+      <ul class="mt-4 pl-0 text-right">
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells">Cells</a></li>
+        <li class="mt-4"><h5>Class</h5></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/auto-complete">Auto complete</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/basic">Basic</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/button">Button</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/checkbox">Checkbox</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/date">Date</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/drop-down">Drop Down</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/link">Link</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/number">Number</a></li>
+        <li><a class="menu-link" routerLinkActive="active" routerLink="/doc/cells/object">Object</a></li>
+      </ul>
+    </div>
+    <div class="content mt-3 offset-2">
+        <app-cls-cells *ngIf="nav === 'cells'"></app-cls-cells>
+        <app-cls-auto-complete *ngIf="nav === 'auto-complete'"></app-cls-auto-complete>
+        <app-cls-basic *ngIf="nav === 'basic'"></app-cls-basic>
+        <app-cls-button *ngIf="nav === 'button'"></app-cls-button>
+        <app-cls-checkbox *ngIf="nav === 'checkbox'"></app-cls-checkbox>
+        <app-cls-date *ngIf="nav === 'date'"></app-cls-date>
+        <app-cls-drop-down *ngIf="nav === 'drop-down'"></app-cls-drop-down>
+        <app-cls-link *ngIf="nav === 'link'"></app-cls-link>
+        <app-cls-number *ngIf="nav === 'number'"></app-cls-number>
+        <app-cls-object *ngIf="nav === 'object'"></app-cls-object>
+    </div>
+  </div>

@@ -1,0 +1,283 @@
+<div class="container">
+    <div class="api-doc-component">
+      <h3 class="title"><span> Cell
+        </span></h3>
+      <h5>
+        <span class="badge badge-success">Set of Components</span>
+      </h5>
+  
+      <p class="lead"> By default, Ng-Datasheet comes with a set of View and edit Cells. For every Columns you set, you need to set a View and an edit apply to datas in your column. If you want to add some cells view or edit to the Ng-datasheet see here how to do it. You can see below method and properties shared by any edits/views.</p>
+
+  
+      <section>
+        <h4>Inputs</h4>
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td class="label-cell">
+                <code>component</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">View / Edit class to use for this cell.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Class</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>column</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Column object from the ngdatasheet component.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Column</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>row</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">row number.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Number</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>isFilter</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">[ edit cells only ] Let used component if the display is for a filter or for the cell itself, by default both are the same, see drop-down component to see a different filter display.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>false</code></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>data</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Global flag to use the filters on columns.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Object</code></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>withAdd</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Global flag to insert a "new line on the datasheet to insert directly at end of
+                  dataset a new item.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>newModelFunction</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">A given function to return an empty object for "new line" > valid only with
+                  withAdd set to true.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Function</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>dateFormat</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Date format for datePicker cells.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>String</code></div>
+                  <div><span><i>Default value: </i><code>MM-DD-YYYY</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>static</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Set if the dataset is a complete set of data or a part only</p>
+                <ul>
+                  <li>in case of static equal false filters, sort and pagination will not apply to the dataset, only a
+                    renderEvent with fire on every change.</li>
+                  <li>if static equal false, filters, sorting and pagination will apply directly to dataset.</li>
+                </ul>CellsComponent
+
+  CellsComponent
+
+                <div clasCellsComponent
+s="meta">
+                  <div><iCellsComponent
+>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>withPagination</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Add a pagination to your datasheet > cannot be used with withAdd flag set to true.</p>
+                <ul>
+                  <li>in case of static equal false filters, sort and pagination will not apply to the dataset, only a
+                    renderEvent with fire on every change.</li>
+                  <li>if static equal false, filters, sorting and pagination will apply directly to dataset.</li>
+                </ul>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>false</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>filters</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Initial filters apply to the datasheet, this property is given on renderEvent
+                  fire.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Filter[]</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>pagination</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Initial pagination apply to datasheet.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Pagination</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>sort</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Initial sorting apply to datasheet.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Sort</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>dsKey</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">If set, dsKey store in local storage informations about columns user preset.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>String</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>trBgColor</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Background color apply to row on mouse over.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>String</code></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>editable</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Set if datagrid can be globally editable</p>
+                <ul>
+                  <li>if editable equal true, in case of column non editable, column will be grey en disable.</li>
+                  <li>if editable equal false, all columns will be view only and non of them will be in grey background.</li>
+                </ul>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>true</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="label-cell">
+                <code>globalMenu</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="description">Set if up/right global menu with row selection column under it.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>Boolean</code></div>
+                  <div><span><i>Default value: </i><code>false</code></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+  
+      <section>
+        <h4>Outputs</h4>
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td class="label-cell">
+                <code>renderEvent</code><br>
+              </td>
+              <td class="content-cell">
+  
+                <p class="description">RenderEvent fire every change on sort, filters or pagination modifications.</p>
+                <div class="meta">
+                  <div><i>Type: </i><code>RenderEvent</code></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+  
+      <section>
+        <h4>Methods</h4>
+        <table class="table table-sm">
+          <tbody>
+            <tr>
+              <td class="label-cell">
+                <code>updateDatasheet</code><br>
+              </td>
+              <td class="content-cell">
+                <p class="signature"><code>updateDatasheet()</code> <small class="text-muted" title="Return type">=&gt;
+                    void</small></p>
+  
+                <p class="description">Reapply all column render to the datasheet, when you change column set for exemple.</p>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cells',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CellsComponent implements OnInit {
 
-  constructor() { }
+  nav = 'cells';
+
+  constructor(
+    private route: ActivatedRoute
+    ) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params['nav']) {
+        this.nav = params['nav'];
+      } else {
+        this.nav = 'cells';
+      }
+
+    });
   }
 
 }

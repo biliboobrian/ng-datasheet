@@ -23,6 +23,10 @@ const routes: Routes = [
         component: CellsComponent
       },
       {
+        path: 'cells/:nav',
+        component: CellsComponent
+      },
+      {
         path: 'models',
         component: ModelsComponent
       },
