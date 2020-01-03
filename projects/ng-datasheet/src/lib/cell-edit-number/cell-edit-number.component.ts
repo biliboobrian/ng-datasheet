@@ -68,6 +68,14 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
   ngAfterViewChecked() {
     if (!this.isFilter) {
       this.container.nativeElement.focus();
+      if (this.column.autoOpen
+        && this.column.selectOnTab
+        && this.column.componentParam['selectOnTab']
+        && this.container.nativeElement.value.length > 0
+      ) {
+        this.container.nativeElement.selectionStart = 0;
+        this.column.componentParam['selectOnTab'] = false;
+      }
     }
   }
 

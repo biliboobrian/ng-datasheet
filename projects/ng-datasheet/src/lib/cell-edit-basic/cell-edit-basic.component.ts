@@ -1,5 +1,11 @@
 import { ItemEvent } from './../models/item-event';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  AfterViewChecked
+} from '@angular/core';
 import { CellDynamicComponent } from '../cell/cell-dynamic-component';
 import { CellDynamicInterface } from '../cell/cell-dynamic-interface';
 import { Filter } from '../models/filter';
@@ -9,23 +15,18 @@ import { Filter } from '../models/filter';
   templateUrl: './cell-edit-basic.component.html',
   styleUrls: ['./cell-edit-basic.component.css']
 })
-export class CellEditBasicComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface {
-
+export class CellEditBasicComponent extends CellDynamicComponent
+  implements OnInit, AfterViewChecked, CellDynamicInterface {
   @ViewChild('container', { read: ElementRef })
   container: ElementRef;
 
   public model = '';
-
 
   constructor() {
     super();
   }
 
   ngOnInit() {
-    if (!this.isFilter) {
-      this.container.nativeElement.focus();
-    }
-
     if (this.column.componentParam['type'] === 'byKey') {
       this.model = '';
     } else {
@@ -38,12 +39,28 @@ export class CellEditBasicComponent extends CellDynamicComponent implements OnIn
         if (f) {
           this.model = f.value;
         }
-
       } else {
         this.model = this.columnData;
       }
     }
+
     this.column.componentParam['type'] = '';
+  }
+
+  ngAfterViewChecked() {
+    if (!this.isFilter) {
+      this.container.nativeElement.focus();
+      if (
+        this.column.autoOpen &&
+        this.column.selectOnTab &&
+        this.column.componentParam['selectOnTab'] &&
+        this.container.nativeElement.value.length > 0
+      ) {
+        this.container.nativeElement.selectionStart = 0;
+        this.container.nativeElement.selectionEnd = this.columnData.length;
+        this.column.componentParam['selectOnTab'] = false;
+      }
+    }
   }
 
   onKeyDown(event: KeyboardEvent): void {

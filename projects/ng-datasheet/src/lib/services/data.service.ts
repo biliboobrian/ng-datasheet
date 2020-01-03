@@ -91,6 +91,14 @@ export class DataService {
     });
   }
 
+   selectText(node) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
   filterDataSet(
     dataSet: Array<Object>,
     filterList: Array<number>,

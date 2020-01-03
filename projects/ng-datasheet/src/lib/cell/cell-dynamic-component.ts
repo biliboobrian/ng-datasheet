@@ -1,14 +1,17 @@
 import { Column } from '../models/column';
 import { EventEmitter, Output, Input } from '@angular/core';
+import { DataService } from '../services/data.service';
 
 
 export abstract class CellDynamicComponent {
 
+    protected _dataService: DataService = new DataService();
     protected _column: Column = new Column();
     protected _data: Object = {};
     protected _row = 0;
     public autoOpen = false;
     public placeHolder = '';
+    public selectOnTab = false;
 
     @Input() isFilter = false;
     @Input() dgEditable = false;

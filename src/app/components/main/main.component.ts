@@ -42,6 +42,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.peopleService.createDB();
+
     this.peopleService.getPeoples().subscribe(people => {
       this.dataSet = people;
       this.initColumns();
@@ -57,12 +58,15 @@ export class MainComponent implements OnInit {
     col.columnValidators = [
       new ColumnValidator(
         Validators.required,
-        'Lastname is required.'
+        'Firstname is required.'
       )
     ];
     this.columns.push(col);
 
-    col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
+    col = new Column('Lasjijtname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
+    col.autoOpen = true;
+    col.selectOnTab = true;
+
 
     col.columnValidators = [
       new ColumnValidator(
@@ -78,7 +82,8 @@ export class MainComponent implements OnInit {
     this.columns.push(col);
 
     col = new Column('Age', 'age', CellViewNumberComponent, CellEditNumberComponent, 70);
-
+    col.autoOpen = true;
+    col.selectOnTab = true;
     col.columnValidators = [
       new ColumnValidator(
         Validators.max(18),

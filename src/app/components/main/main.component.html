@@ -17,8 +17,7 @@
     <div class="col-12">
       <ds-datasheet #dg [globalMenu]="true" [trBgColor]="'#eeeeee'" (rowDeleteEvent)="onDeleteEvent($event)"
         [dataSet]="dataSet" [columns]="columns" [dateFormat]="'DD/MM/YYYY'" [newModelFunction]="createItem"
-        (rowEvent)="onRowEvent()" [withAdd]="true" [searchable]="true" (selectionEvent)="onSelectEvent($event)"
-        (selectCellEvent)="onSelectCell($event)"></ds-datasheet>
+       [withAdd]="true" [searchable]="true" (selectionEvent)="onSelectEvent($event)"></ds-datasheet>
     </div>
   </div>
   <div class="row pb-5">

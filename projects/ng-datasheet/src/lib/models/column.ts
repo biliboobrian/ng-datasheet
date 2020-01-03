@@ -22,6 +22,7 @@ export class Column {
     editable = true;
     isResizing = false;
     autoOpen = false;
+    selectOnTab = false;
     searchContains = false;
     backgroundColor: string;
     columnValidators: Array<ColumnValidator>;
