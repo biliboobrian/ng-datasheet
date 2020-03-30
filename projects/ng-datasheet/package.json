@@ -1,7 +1,7 @@
 {
   "name": "@biliboobrian/ng-datasheet",
   "author": "Pierre Hanauer <biliboobrian@yahoo.fr>",
-  "version": "0.2.55",
+  "version": "0.2.56",
   "homepage": "https://biliboobrian.github.io/ng-datasheet/",
   "description": "Native Angular inline spreadsheet component",
   "license": "MIT",
@@ -27,6 +27,6 @@
     "@ng-select/ng-select": "^2.16.2 || ^3.0.0",
     "@fortawesome/fontawesome-free": "^5.6.0",
     "moment": "^2.22.2",
-    "moment-es6":"^1.0.0"
+    "moment-es6": "^1.0.0"
   }
 }

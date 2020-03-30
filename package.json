@@ -11,7 +11,9 @@
     "build_lib": "ng build ng-datasheet",
     "build_lib_prod": "ng build ng-datasheet --prod",
     "copy-readme": "copy .\\README.md .\\dist\\ng-datasheet",
-    "package": "npm run build_lib_prod && npm run copy-readme"
+    "copy-readme-linux": "cp ./README.md ./dist/ng-datasheet",
+    "package": "npm run build_lib_prod && npm run copy-readme",
+    "package-linux": "npm run build_lib_prod && npm run copy-readme-linux"
   },
   "private": true,
   "dependencies": {

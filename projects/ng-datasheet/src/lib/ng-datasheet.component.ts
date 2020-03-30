@@ -162,7 +162,7 @@ export class NgDatasheetComponent implements OnInit {
     public resizingService: ResizingService,
     public dataService: DataService,
     private eRef: ElementRef
-  ) {}
+  ) { }
 
   @HostListener('document:click', ['$event']) clickout(event) {
     if (!this.eRef.nativeElement.contains(event.target)) {
@@ -268,7 +268,7 @@ export class NgDatasheetComponent implements OnInit {
     this.selectionEvent.emit(new SelectionEvent(this.selection));
   }
 
-  onTableBlur(event: Event) {}
+  onTableBlur(event: Event) { }
 
   onMouseDown(event: MouseEvent, obj: Object, row: number, col: number) {
     if (this.editable) {
@@ -434,10 +434,10 @@ export class NgDatasheetComponent implements OnInit {
     }
   }
   onRightClick(event: MouseEvent): void {
-    const pos = event.currentTarget['getBoundingClientRect']();
+    /* const pos = event.currentTarget['getBoundingClientRect']();
 
     this.contextMenu.openContext(event.pageX - pos.x, event.pageY - pos.y);
-    event.preventDefault();
+    event.preventDefault();*/
   }
 
   onCopy(event: ClipboardEvent) {
@@ -493,7 +493,7 @@ export class NgDatasheetComponent implements OnInit {
 
             if (data instanceof Observable) {
               data.subscribe(
-                function(
+                function (
                   rowItemPasted: number,
                   columnItemPasted: Column,
                   dataItem: Array<any>
@@ -738,7 +738,7 @@ export class NgDatasheetComponent implements OnInit {
 
         this.selectBox.nativeElement.focus({ preventScroll: true });
 
-        if (this.columns[this.main.col].selectOnTab 
+        if (this.columns[this.main.col].selectOnTab
           && this.columns[this.main.col].getColumnData(this.dataSet[this.main.row])
           && this.columns[this.main.col].getColumnData(this.dataSet[this.main.row]).toString().length > 0
         ) {
@@ -925,6 +925,10 @@ export class NgDatasheetComponent implements OnInit {
             }
             controlChar = true;
             break;
+          case 18:  // alt
+
+            controlChar = true;
+            break;
           default:
             if (
               this.columns[this.main.col].isEditable(this.main.row) &&
@@ -937,8 +941,8 @@ export class NgDatasheetComponent implements OnInit {
       } else {
         if (event.keyCode === 9) {
 
-        this.start.empty();
-        this.end.empty();
+          this.start.empty();
+          this.end.empty();
 
           const next = this.renderingService.getNextColumnEditable(
             this.columns,
@@ -1008,7 +1012,7 @@ export class NgDatasheetComponent implements OnInit {
               break;
           }
         }
-        
+
       }
 
       if (controlChar) {
