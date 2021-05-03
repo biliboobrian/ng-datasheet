@@ -16,7 +16,7 @@ export class GlobalMenuComponent implements OnInit {
   @Input() public filterList: Array<number>;
   @Input() public selection: Object = {};
 
-  @Output() public selectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public selectEvent: EventEmitter<Object> = new EventEmitter<Object>();
 
   constructor() { }
 
@@ -25,22 +25,29 @@ export class GlobalMenuComponent implements OnInit {
 
   onSelectAll(event: MouseEvent) {
     if (this.dataSet) {
-      this.selectEvent.emit(true);
+      this.selection = {};
+      this.dataSet.forEach((obj, index) => {
+        this.selection[index] = obj;
+      });
+      this.selectEvent.emit(this.selection);
     }
 
   }
 
   onSelectDisplayed(event: MouseEvent) {
-    if (this.filterList) {
+    if (this.filterList &&  this.filterList.length !== this.dataSet.length) {
+      this.selection = {};
       for (let index = 0; index < this.filterList.length; index++) {
         this.selection[this.filterList[index]] = true;
       }
+      this.selectEvent.emit(this.selection);
     }
   }
 
   onUnselectAll(event: MouseEvent) {
+    this.selection = {};
     if (this.dataSet) {
-      this.selectEvent.emit(false);
+      this.selectEvent.emit(this.selection);
     }
   }
 

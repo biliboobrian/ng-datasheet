@@ -18,6 +18,7 @@ import {
 import { Validators } from '@angular/forms';
 import { PersonService } from 'src/app/services/person.service';
 import { Person } from 'src/app/models/person';
+import { SelectionEvent } from 'ng-datasheet/public_api';
 
 @Component({
   selector: 'app-main',
@@ -63,7 +64,7 @@ export class MainComponent implements OnInit {
     ];
     this.columns.push(col);
 
-    col = new Column('Lasjijtname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
+    col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
     col.autoOpen = true;
     col.selectOnTab = true;
 
@@ -127,6 +128,10 @@ export class MainComponent implements OnInit {
 
   createItem() {
     return new Person();
+  }
+
+  onSelectEvent(event: SelectionEvent): void {
+    console.log(event);
   }
 
 }

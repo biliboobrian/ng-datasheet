@@ -149,7 +149,7 @@ export class NgDatasheetComponent implements OnInit {
   public end: Coordinate = new Coordinate();
   public selected: Boolean = false;
   public colOnTab: number;
-  public globalSelected = false;
+  public globalSelected: boolean = false;
   public touched: Array<Array<boolean>>;
 
   private _dataSet: Array<Object>;
@@ -242,9 +242,9 @@ export class NgDatasheetComponent implements OnInit {
     }
   }
 
-  onglobalSelectEvent(checked: boolean) {
-    this.globalSelected = checked;
-    this.onGlobalSelectAll();
+  onglobalSelectEvent(selected: Object) {
+    this.selection = selected;
+    this.selectionEvent.emit(new SelectionEvent(this.selection));
   }
 
   onGlobalSelectAll(event?: Event) {
