@@ -17,7 +17,7 @@ import { Filter } from '../models/filter';
 })
 export class CellEditBasicComponent extends CellDynamicComponent
   implements OnInit, AfterViewChecked, CellDynamicInterface {
-  @ViewChild('container', { read: ElementRef })
+  @ViewChild('container', { read: ElementRef, static: true })
   container: ElementRef;
 
   public model = '';

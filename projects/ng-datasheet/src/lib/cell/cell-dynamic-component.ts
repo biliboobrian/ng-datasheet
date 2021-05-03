@@ -1,9 +1,11 @@
 import { Column } from '../models/column';
-import { EventEmitter, Output, Input } from '@angular/core';
+import { EventEmitter, Output, Input, Component } from '@angular/core';
 import { DataService } from '../services/data.service';
 
-
-export abstract class CellDynamicComponent {
+@Component({
+    template: ''
+  })
+export class CellDynamicComponent {
 
     protected _dataService: DataService = new DataService();
     protected _column: Column = new Column();

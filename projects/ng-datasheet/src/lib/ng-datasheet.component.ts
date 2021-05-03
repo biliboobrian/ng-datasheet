@@ -134,9 +134,9 @@ export class NgDatasheetComponent implements OnInit {
     CellEvent
   >();
 
-  @ViewChild('selectBox', { read: ElementRef }) selectBox: ElementRef;
-  @ViewChild('tbl', { read: ElementRef }) tbl: ElementRef;
-  @ViewChild('contextMenu', { read: ContextMenuComponent })
+  @ViewChild('selectBox', { read: ElementRef, static: true }) selectBox: ElementRef;
+  @ViewChild('tbl', { read: ElementRef, static: true }) tbl: ElementRef;
+  @ViewChild('contextMenu', { read: ContextMenuComponent, static: true })
   contextMenu: ContextMenuComponent;
 
   public selection: Object = {};

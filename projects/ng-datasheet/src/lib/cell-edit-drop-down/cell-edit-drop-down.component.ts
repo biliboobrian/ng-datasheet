@@ -12,7 +12,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 })
 export class CellEditDropDownComponent extends CellDynamicComponent implements OnInit, AfterContentChecked, CellDynamicInterface {
 
-  @ViewChild('container', { read: NgSelectComponent })
+  @ViewChild('container', { read: NgSelectComponent, static: true })
   container: NgSelectComponent;
 
   isOpen = false;

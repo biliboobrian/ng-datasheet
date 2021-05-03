@@ -29,6 +29,7 @@ import { CellViewCheckboxComponent } from './cell-view-checkbox/cell-view-checkb
 import { CellEditCheckboxComponent } from './cell-edit-checkbox/cell-edit-checkbox.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
+import { CellDynamicComponent } from './cell/cell-dynamic-component';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { ContextMenuComponent } from './context-menu/context-menu.component';
   declarations: [
     NgDatasheetComponent,
     CellComponent,
+    CellDynamicComponent,
     CellViewBasicComponent,
     CellViewButtonComponent,
     CellViewDateComponent,

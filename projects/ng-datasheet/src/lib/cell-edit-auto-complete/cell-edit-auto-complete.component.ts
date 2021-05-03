@@ -13,7 +13,7 @@ import { Filter } from '../models/filter';
 })
 export class CellEditAutoCompleteComponent extends CellDynamicComponent implements OnInit, CellDynamicInterface, OnDestroy {
 
-  @ViewChild('container', { read: ElementRef })
+  @ViewChild('container', { read: ElementRef, static: true })
   container: ElementRef;
 
   searching = false;

@@ -24,8 +24,8 @@ export class CellComponent implements OnInit, OnDestroy {
   @Input() dgEditable = true;
   @Output() cellChange: EventEmitter<object> = new EventEmitter();
   @Output() key: EventEmitter<KeyboardEvent> = new EventEmitter();
-  @Output() blurinput: EventEmitter<KeyboardEvent> = new EventEmitter();
-  @ViewChild('container', { read: ViewContainerRef })
+  @Output() blurinput: EventEmitter<FocusEvent> = new EventEmitter();
+  @ViewChild('container', { read: ViewContainerRef, static: true })
   container: ViewContainerRef;
 
   keySubscription: Subscription;

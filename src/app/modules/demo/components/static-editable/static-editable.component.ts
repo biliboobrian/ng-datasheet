@@ -32,7 +32,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class StaticEditableComponent implements OnInit {
 
-  @ViewChild('dg',  { read: NgDatasheetComponent }) dg: NgDatasheetComponent;
+  @ViewChild('dg',  { read: NgDatasheetComponent, static: true }) dg: NgDatasheetComponent;
 
   staticColumns: Array<Column>;
   staticDataSet: Array<Person> = [];

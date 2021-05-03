@@ -8,7 +8,7 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ContextMenuComponent implements OnInit {
 
-  @ViewChild('myDrop', { read: ElementRef }) myDrop: ElementRef;
+  @ViewChild('myDrop', { read: ElementRef, static: true }) myDrop: ElementRef;
 
   private isOpen = false;
 

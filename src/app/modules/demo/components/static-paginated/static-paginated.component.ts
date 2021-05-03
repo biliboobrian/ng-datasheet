@@ -15,7 +15,7 @@ import { Observable, of } from 'rxjs';
 })
 export class StaticPaginatedComponent implements OnInit {
 
-  @ViewChild('paginatedDataSheet',  { read: NgDatasheetComponent }) paginatedDataSheet: NgDatasheetComponent;
+  @ViewChild('paginatedDataSheet',  { read: NgDatasheetComponent, static: true }) paginatedDataSheet: NgDatasheetComponent;
 
   paginatedColumns: Array<Column>;
   paginatedDataSet: Array<Object> = [];
@@ -42,7 +42,7 @@ export class StaticPaginatedComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged(),
       tap(() => this.searching = true),
-      switchMap(term =>
+      switchMap((term: string) =>
         this.wikiService.search(term).pipe(
           tap(() => this.searchFailed = false),
           catchError(() => {

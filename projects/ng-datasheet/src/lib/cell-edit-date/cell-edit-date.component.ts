@@ -17,10 +17,10 @@ export class CellEditDateComponent extends CellDynamicComponent implements OnIni
 
   _dateModel: NgbDateStruct;
 
-  @ViewChild('container', { read: ElementRef })
+  @ViewChild('container', { read: ElementRef, static: true })
   container: ElementRef;
 
-  @ViewChild('d', { read: NgbInputDatepicker })
+  @ViewChild('d', { read: NgbInputDatepicker, static: true })
   d: NgbInputDatepicker;
 
   constructor() {
