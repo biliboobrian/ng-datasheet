@@ -149,7 +149,8 @@ export class NgDatasheetComponent implements OnInit {
   public end: Coordinate = new Coordinate();
   public selected: Boolean = false;
   public colOnTab: number;
-  public globalSelected: boolean = false;
+  public globalSelected = false;
+  public globalIndeterminate = false;
   public touched: Array<Array<boolean>>;
 
   private _dataSet: Array<Object>;
@@ -242,19 +243,39 @@ export class NgDatasheetComponent implements OnInit {
     }
   }
 
-  onglobalSelectEvent(selected: Object) {
-    this.selection = selected;
+  onglobalSelectEvent(selected: object) {
+    this.selection = {};
+    this.globalSelected = true;
+
+    for (const property in selected) {
+      this._dataSet.forEach((obj, index) => {
+        if(property === index.toString()) {
+          this.selection[index] = obj;
+        }
+      });
+    }
+
+    this.globalIndeterminate = (Object.keys(this.selection).length === 0 || Object.keys(this.selection).length === this._dataSet.length) ? false : true;
+    
     this.selectionEvent.emit(new SelectionEvent(this.selection));
   }
 
   onGlobalSelectAll(event?: Event) {
+    this.selection = {};
+    
     if (this.globalSelected) {
-      this._dataSet.forEach((obj, index) => {
-        this.selection[index] = obj;
+      this.filterList.forEach((fObj, fIndex) => {
+        this._dataSet.forEach((obj, index) => {
+          if(fObj === index) {
+            this.selection[index] = obj;
+          }
+        });
       });
-    } else {
-      this.selection = {};
     }
+
+    this.globalSelected = (Object.keys(this.selection).length === this._dataSet.length) ? true : false;
+    this.globalIndeterminate = (Object.keys(this.selection).length === 0 || Object.keys(this.selection).length === this._dataSet.length) ? false : true;
+
     this.selectionEvent.emit(new SelectionEvent(this.selection));
   }
 
@@ -264,6 +285,8 @@ export class NgDatasheetComponent implements OnInit {
     } else {
       delete this.selection[row];
     }
+
+    this.globalIndeterminate = (Object.keys(this.selection).length > 0) ? true : false;
 
     this.selectionEvent.emit(new SelectionEvent(this.selection));
   }

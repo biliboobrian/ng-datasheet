@@ -17,7 +17,7 @@
   </tr>
   <tr class="header-tr" *ngIf="searchable">
     <td style="width: 26px" *ngIf="globalMenu">
-      <input [(ngModel)]="globalSelected" type="checkbox" class="checkbox" (change)="onGlobalSelectAll($event)" />
+      <input [(ngModel)]="globalSelected" [indeterminate]="globalIndeterminate" type="checkbox" class="checkbox" (change)="onGlobalSelectAll($event)" />
     </td>
     <td ds-filter *ngFor="let column of columns; let col = index" [dataSet]="dataSet" [(filterList)]="filterList"
       [column]="column" [col]="col" [sort]="sort" [filters]="filters" [pagination]="pagination" [staticDs]="static"
