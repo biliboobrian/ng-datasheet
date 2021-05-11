@@ -1,11 +1,10 @@
-<ng-template #rt let-r="result" let-t="term">
-    <span [innerHTML]="formatText(r[column.options.label], t)"></span>
-  </ng-template>
+
 
   <div class="inner-addon right-addon">
 <input id="typeahead-http" type="text" class="form-control edit-ac" [class.is-invalid]="searchFailed" 
 [(ngModel)]="dataModel" [ngbTypeahead]="column.options.retrieveFunction" placeholder="{{ getPlaceHolder() }}" 
-[resultTemplate]="rt" [inputFormatter]="formatter" tabindex="-1" (keydown)="onKeyDown($event)" (selectItem)="onSelectItem($event)"
+[resultFormatter]="formatter"
+ [inputFormatter]="formatter" tabindex="-1" (keydown)="onKeyDown($event)" (selectItem)="onSelectItem($event)"
 (blur)="onBlur($event)" #container/>
   <i *ngIf="searching" class="fa fa-spinner fa-spin"></i>
 </div>
