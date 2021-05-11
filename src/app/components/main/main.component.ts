@@ -13,12 +13,15 @@ import {
   CellEditDateComponent,
   CellEditDropDownComponent,
   CellViewObjectComponent,
-  Options
+  Options,
+  CellEditAutoCompleteComponent
 } from 'projects/ng-datasheet/src/public_api';
 import { Validators } from '@angular/forms';
 import { PersonService } from 'src/app/services/person.service';
 import { Person } from 'src/app/models/person';
 import { SelectionEvent } from 'ng-datasheet/public_api';
+import { Observable, of } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main',
@@ -55,6 +58,11 @@ export class MainComponent implements OnInit {
     col.type = ColumnType.INT;
     this.columns.push(col);
 
+    col = new Column('Find Person', 'person', CellViewObjectComponent, CellEditAutoCompleteComponent, 150);
+    col.options.retrieveFunction = this.inlineSearchPerson;
+    col.options.label = 'lastname';
+    this.columns.push(col);
+
     col = new Column('Firstname', 'firstname', CellViewBasicComponent, CellEditBasicComponent, 0);
     col.columnValidators = [
       new ColumnValidator(
@@ -63,6 +71,7 @@ export class MainComponent implements OnInit {
       )
     ];
     this.columns.push(col);
+    
 
     col = new Column('Lastname', 'lastname', CellViewBasicComponent, CellEditBasicComponent, 150);
     col.autoOpen = true;
@@ -132,6 +141,19 @@ export class MainComponent implements OnInit {
 
   onSelectEvent(event: SelectionEvent): void {
     console.log(event);
+  }
+
+  inlineSearchPerson = (text$: Observable<string>) => {
+    return text$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => {
+        return this.peopleService.getPeoplesByTerm(term).pipe(
+          catchError(() => {
+            return of([]);
+          }));
+      })
+    );
   }
 
 }

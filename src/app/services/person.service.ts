@@ -207,6 +207,7 @@ export class PersonService {
     this.data.push(p);
 
     p = new Person();
+    
     p.id = 19;
     p.lastname = 'WATSON';
     p.firstname = 'Sherlock';
@@ -220,6 +221,15 @@ export class PersonService {
   public getPeoples(): Observable<Person[]> {
     return new Observable<Person[]>(subscriber => {
       subscriber.next(this.data);
+      subscriber.complete();
+    });
+  }
+
+  public getPeoplesByTerm(term: string): Observable<Person[]> {
+    return new Observable<Person[]>(subscriber => {
+      subscriber.next(this.data.filter(person => {
+        return (person.lastname.indexOf(term) !== -1);
+      }));
       subscriber.complete();
     });
   }
