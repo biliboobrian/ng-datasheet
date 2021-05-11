@@ -1,7 +1,7 @@
 {
   "name": "@biliboobrian/ng-datasheet",
   "author": "Pierre Hanauer <biliboobrian@yahoo.fr>",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "homepage": "https://biliboobrian.github.io/ng-datasheet/",
   "description": "Native Angular inline spreadsheet component",
   "license": "MIT",
@@ -21,12 +21,12 @@
     "ng-datagrid"
   ],
   "peerDependencies": {
-    "@angular/common": "*",
-    "@angular/core": "*",
-    "@ng-bootstrap/ng-bootstrap": "*",
-    "@ng-select/ng-select": "*",
-    "@fortawesome/fontawesome-free": "*",
-    "moment": "*",
-    "moment-es6": "*"
+    "@angular/common": ">=11.0.0",
+    "@angular/core": ">=11.0.0",
+    "@ng-bootstrap/ng-bootstrap": ">=9.0.0",
+    "@ng-select/ng-select": ">=6.0.0",
+    "@fortawesome/fontawesome-free": ">=5.15.0",
+    "moment": ">=2.29.1",
+    "moment-es6": ">=1.0.0"
   }
 }
