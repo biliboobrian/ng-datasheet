@@ -160,7 +160,7 @@ export class CellEditNumberComponent extends CellDynamicComponent implements OnI
 
   onChange(event: Event) {
 
-    this._model = this._model.replace(/[^0-9.-]/g, '');
+    this._model = this._model.toString().replace(/[^0-9.-]/g, '');
     this.columnData = this.model;
     const ie: ItemEvent = new ItemEvent();
     ie.item = this.container.nativeElement.value;

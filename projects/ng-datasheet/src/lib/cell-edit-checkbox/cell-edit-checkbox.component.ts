@@ -12,7 +12,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 })
 export class CellEditCheckboxComponent extends CellDynamicComponent implements OnInit, AfterViewInit, CellDynamicInterface {
 
-  @ViewChild('containerCheckBox', { read: ElementRef, static: true }) containerCheckBox: ElementRef;
+  @ViewChild('containerCheckBox', { read: ElementRef, static: false }) containerCheckBox: ElementRef;
   @ViewChild('containerSelect', { read: NgSelectComponent, static: true }) containerSelect: NgSelectComponent;
 
   items: Array<object> = [

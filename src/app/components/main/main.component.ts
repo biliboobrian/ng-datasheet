@@ -14,12 +14,12 @@ import {
   CellEditDropDownComponent,
   CellViewObjectComponent,
   Options,
-  CellEditAutoCompleteComponent
+  CellEditAutoCompleteComponent,
+  SelectionEvent
 } from 'projects/ng-datasheet/src/public_api';
 import { Validators } from '@angular/forms';
 import { PersonService } from 'src/app/services/person.service';
 import { Person } from 'src/app/models/person';
-import { SelectionEvent } from 'ng-datasheet/public_api';
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
